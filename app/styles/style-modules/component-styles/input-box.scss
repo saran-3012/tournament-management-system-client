@@ -1,0 +1,29 @@
+.input{
+    @include flex(normal, center, column);
+    width: 100%;
+}
+
+.input-box{
+    @include flex(normal, center, column);
+    width: 100%;
+    border-width: 1.5px;
+    border-style: solid;
+    background-color: $pale-white;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+}
+
+.input-label{
+    color: $grey;
+}
+
+.text-input{
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.input-error{
+    color: $red;
+    font-size: 0.75rem;
+}

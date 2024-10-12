@@ -1,0 +1,11 @@
+<section class="container section auth">
+    {{#form-model class='w-50 mxw-500' formHeader='Login' onSubmit=(action 'handleSubmit') }}
+        {{text-input inputName='email' inputId='login-email' inputPlaceholder='Email' errorMessage=validationErrors.email }}
+        {{text-input inputName='password' inputId='login-password' inputPlaceholder='Password' errorMessage=validationErrors.password }}
+        <p class="auth-switch">
+            Don't have an account? {{#link-to 'register' }}Register{{/link-to}}
+        </p> 
+        {{general-button type='submit' buttonName='Login' class='bg-blue ft-white full-width no-border'}}
+    {{/form-model}}
+</section>
+{{outlet}}

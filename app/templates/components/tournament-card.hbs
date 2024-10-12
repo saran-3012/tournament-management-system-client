@@ -1,0 +1,20 @@
+<div class="tournament-card-image" style="--tournament-image : url('images/tournament-place-holder.svg');">
+    <div class="tournament-card-status">{{tournament-status cardDetail.tournamentStatus}}</div>
+</div>
+<div class="tournament-card-details">
+    <h2 class="tournament-card-title">{{cardDetail.tournamentName}}</h2>
+    <div class="tournament-card-box">
+        {{card-item itemIconClass='cube-icon' itemName=cardDetail.sportName}}
+        {{card-item itemIconClass='people-icon' itemName=(sport-type cardDetail.sportType)}}
+    </div>
+    <div class="tournament-card-box">
+        <div class="tournament-card-innerbox">
+            {{card-item itemIconClass='calander-icon' itemName=(get-date cardDetail.tournamentDate)}}
+            {{card-item itemIconClass='clock-icon' itemName=(calculate-deadline cardDetail.registrationEndDate)}}
+        </div>
+        {{#link-to 'index' class='no-decoration'}}
+            {{general-button class='bg-light-grey br-grey rounded' buttonName='Details'}}
+        {{/link-to}}
+    </div>
+</div>
+{{yield}}

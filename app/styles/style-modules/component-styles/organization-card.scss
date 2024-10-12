@@ -1,0 +1,79 @@
+.organization-card{
+    @include flex(flex-start, space-between, column);
+    background-color: $pale-white;
+    @include background('images/auth-background.svg', cover, right);
+
+    width: 75%;
+    border-radius: 0.5rem;
+    transition: all 150ms;
+    padding: 1rem;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.314);
+    gap: 0.5rem;
+    &:hover{
+        transform: scale(1.05);
+    }
+}
+
+.organization-card-title{
+    text-transform: capitalize;
+    font-weight: 500;
+    font-size: 1.25rem;
+}
+
+
+.organization-card-box{
+    @include flex(flex-end, space-between);
+    width: 100%;
+    gap: 1rem;
+}
+
+.organization-card-detail-box{
+    @include flex(normal, flex-start, column);
+
+    gap: 0.5rem;
+    flex-grow: 1;
+}
+
+.organization-card-button-box{
+    @include flex(center, space-between);
+
+    gap: 0.75rem;
+}
+
+.organization-card{
+    .button{
+        &:hover{
+            &.no-border{
+                &.ft-blue{
+                    color: $dark-blue;
+                }
+            }
+            &.br-red{
+                &.bg-white{
+                    background-color: $red;
+                }
+                &.ft-red{
+                    color: $white;
+                }
+            }
+
+            &.br-green{
+                &.bg-green{
+                    background-color: $white;
+                }
+                &.ft-white{
+                    color: $green;
+                }
+            }
+
+            &.br-orange{
+                &.bg-orange{
+                    background-color: $white;
+                }
+                &.ft-white{
+                    color: $orange;
+                }
+            }
+        }
+    }
+}

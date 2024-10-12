@@ -1,0 +1,43 @@
+.card-item{
+    @include flex(center);
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.card-item-icon{
+    height: 1rem;
+    width: 1rem;
+    min-width: 1rem;
+    min-height: 1rem;
+    flex-shrink: 0;
+
+    &.clock-icon{
+        @include background('images/clock-icon.svg')
+    }
+    &.people-icon{
+        @include background('images/people-icon.svg')
+    }
+    &.calander-icon{
+        @include background('images/calander-icon.svg')
+    }
+    &.cube-icon{
+        @include background('images/cube-icon.svg')
+    }
+    &.location-icon{
+        @include background('images/location-icon.svg')
+    }
+    &.admin-icon{
+        @include background('images/admin-icon.svg')
+    }
+    &.badge-icon{
+        @include background('images/badge-icon.svg')
+    }
+    &.building-icon{
+        @include background('images/building-icon.svg')
+    }
+}
+
+.card-item-name{
+    @extend %elipsis;
+    max-width: 100%;
+}

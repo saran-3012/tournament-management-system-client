@@ -6,7 +6,14 @@ const Router = Ember.Router.extend({
   rootURL: config.rootURL
 });
 
-Router.map(function() {
+Router.map(function () {
+  this.route('login');
+  this.route('register');
+  this.route('dashboard');
+  this.route('tournaments', function() {
+    this.route('tournament', { path : '/:tournament_id' });
+  });
+  this.route('organizations');
 });
 
 export default Router;

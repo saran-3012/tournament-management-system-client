@@ -1,0 +1,41 @@
+.button{
+    @include flex(center, center);
+
+    gap: 0.5rem;
+    padding: 0.5rem 0.8rem;
+    outline: none;
+    border-width: 1px;
+    border-style: solid;
+    font-weight: 500;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 150ms;
+
+    &.no-border{
+        border: none;
+    }
+
+    &.soft-corner{
+        border-radius: 0.125rem;
+    }
+
+    &.rounded{
+        border-radius: 0.5rem;
+    }
+
+    &.curved{
+        border-radius: 2rem;
+    }
+
+    &.full-width{
+        width: 100%;
+    }
+
+    &.reverse{
+        flex-direction: row-reverse;
+    }
+
+    &.cr-not-allowed{
+        cursor: not-allowed;
+    }
+}

@@ -1,0 +1,30 @@
+<section class="container section auth">
+    {{#form-model class="w-80" formHeader='Register' onSubmit=(action 'handleSubmit') }}
+        <div class="auth-wrapper">
+            <div class="auth-box">
+                <div class="auth-innerbox">
+                    {{text-input inputName='userName' inputId='register-username' inputPlaceholder='User Name' errorMessage=validationErrors.userName }}
+                    {{text-input inputName='dateOfBirth' inputId='register-dateofbirth' inputPlaceholder='Date Of Birth (dd/mm/yyyy)' errorMessage=validationErrors.dateOfBirth }}
+                    {{text-input inputName='phoneNumber' inputId='register-phonenumber' inputPlaceholder='Phone Number' errorMessage=validationErrors.phoneNumber }}
+                    {{text-input inputName='email' inputId='register-email' inputPlaceholder='Email' errorMessage=validationErrors.email }}
+                    {{text-input inputName='password' inputId='register-password' inputPlaceholder='Password' errorMessage=validationErrors.password}}
+                </div>
+            </div>
+            <div class="auth-box">
+                <div class="auth-innerbox">
+                    {{text-input inputName='organizationName' inputId='register-organizationname' inputPlaceholder='Organization Name' errorMessage=validationErrors.organizationName }}
+                    {{text-input inputName='organizationAddress' inputId='register-organizationaddress' inputPlaceholder='Organization Address' errorMessage=validationErrors.organizationAddress }}
+                    {{text-input inputName='startedYear' inputId='register-startedyear' inputPlaceholder='Started Year' errorMessage=validationErrors.startedYear }}
+                </div>
+                <div class="space"></div>
+                <div class="auth-innerbox">
+                    <p class="auth-switch">
+                        Already have an account? {{#link-to 'login' }}Login{{/link-to}}
+                    </p> 
+                    {{general-button type='submit' buttonName='Register' class='bg-blue ft-white full-width no-border'}}
+                </div>
+            </div>
+        </div>
+    {{/form-model}}
+</section>
+{{outlet}}

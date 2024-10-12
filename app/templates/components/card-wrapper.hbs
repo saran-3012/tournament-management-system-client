@@ -1,0 +1,5 @@
+{{#each cardDetails as |cardDetail|}}
+    {{component card-component cardDetail=cardDetail handleEvent=handleEvent }}
+{{/each}}
+
+{{yield}}

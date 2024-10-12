@@ -1,0 +1,27 @@
+{{card-item class='organization-card-title' itemIconClass='building-icon' itemName=cardDetail.organizationName}}
+{{card-item itemIconClass='location-icon' itemName=cardDetail.organizationAddress}}
+<div class="organization-card-box">
+    <div class="organization-card-detail-box">
+        {{card-item itemIconClass='calander-icon' itemName=cardDetail.startedYear}}
+        {{card-item itemIconClass='admin-icon' itemName=cardDetail.userName}}
+        {{card-item itemIconClass='badge-icon' itemName=(organization-status cardDetail.organizationStatus) }}
+    </div>
+    <div class="organization-card-button-box">
+        {{general-button class='bg-transparent no-border ft-blue soft-corner' buttonName='Details' }}
+        {{#if (eq cardDetail.organizationStatus 0)}}
+            {{general-button class='bg-green br-green ft-white soft-corner' buttonName='Approve' onClick=(action 'handleEvent' cardDetail.organizationId 1) }}
+        {{else}}
+            {{#if (eq cardDetail.organizationStatus 1)}}
+                {{general-button class='bg-orange br-organe ft-white soft-corner' buttonName='Restrict' onClick=(action 'handleEvent' cardDetail.organizationId 0) }}
+            {{else}}
+                {{general-button class='bg-pale-white br-grey ft-light-grey soft-corner cr-not-allowed' buttonName='Blocked' disabled=true }}
+            {{/if}}
+        {{/if}}
+
+        {{#unless (eq cardDetail.organizationStatus 2)}}
+            {{general-button class='br-red bg-white ft-red soft-corner' buttonName='Block' onClick=(action 'handleEvent' cardDetail.organizationId 2) }}
+        {{else}}
+            {{general-button class='br-green bg-black ft-green soft-corner' buttonName='Unblock' onClick=(action 'handleEvent' cardDetail.organizationId 1) }}
+        {{/unless}}
+    </div>
+</div>

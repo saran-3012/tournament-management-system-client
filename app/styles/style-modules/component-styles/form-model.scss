@@ -1,0 +1,49 @@
+.form-model{
+    @include flex(center, center, column);
+ 
+    height: max-content;
+    padding: 2rem 1.5rem;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.125);
+    gap: 1.5rem;
+    background-color: $white;
+    border-radius: 0.25rem;
+
+    &.w-50{
+        width: 50%;
+    }
+
+    &.w-80{
+        width: 80%;
+    }
+
+    &.mxw-500{
+        max-width: 500px;
+    }
+
+    &.mxw-800{
+        max-width: 800px;
+    }
+}
+
+.form-header-box{
+    @include flex(center, space-between);
+    width: 100%;
+}
+
+.form-header{
+    font-weight: 400;
+    text-transform: uppercase
+}
+
+.form-logo{
+    @include background('images/applogo.png', contain);
+    height: 2rem;
+    width: 5rem;
+}
+
+.form{
+    @include flex(center, center, column);
+    gap: 2rem;
+    width: 100%;
+}
+

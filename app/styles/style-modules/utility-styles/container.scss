@@ -1,0 +1,10 @@
+.container{
+    width: 100svw;
+    max-width: 100%;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.section{
+    min-height: calc(100svh - #{$navbar-height});
+}

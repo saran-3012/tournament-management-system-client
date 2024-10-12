@@ -1,0 +1,36 @@
+.auth{
+    @include flex(center, center);
+    @include background('images/auth-background.svg');
+}
+
+.auth-wrapper{
+    @include flex(center, center);
+    width: 100%;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.auth-box{
+    @include flex(center, space-between, column);
+    gap: 1.65rem;
+    width: calc(50% - 0.5rem);
+    min-width: 500px;
+}
+
+
+.auth-innerbox{
+    @include flex(center, center, column);
+    gap: 1rem;
+    width: 100%;
+}
+
+.auth-switch{
+    align-self: flex-start;
+    font-size: 0.875rem;
+
+    a{
+        color: $blue;
+        font-weight: 500;
+        text-decoration: none;
+    }
+}

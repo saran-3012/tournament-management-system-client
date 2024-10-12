@@ -1,0 +1,35 @@
+.navbar{
+    @include flex(center, space-between);
+
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background-color: $white;
+    height: $navbar-height;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.125);
+}
+
+.navbar-logo{
+    @include flex(center, center);
+    @include background('images/applogo.png', contain);
+    width: 7.5rem;
+    height: 3rem;
+}
+
+.navbar-menu{
+    @include flex(center);
+
+    gap: 1rem;
+}
+
+.navbar-link{
+    text-decoration: none;
+    text-transform: uppercase;
+
+    &.active{
+        .nav-button{
+            color: $blue;
+        }
+    }
+}

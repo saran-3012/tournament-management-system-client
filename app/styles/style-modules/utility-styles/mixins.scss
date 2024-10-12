@@ -1,0 +1,19 @@
+@mixin flex($align-items: normal, $justify-content: flex-start, $flex-direction: row){
+    display: flex;
+    align-items: $align-items;
+    justify-content: $justify-content;
+    flex-direction: $flex-direction;
+}
+
+@mixin background($url, $size: cover, $position: center, $repeat: no-repeat){
+    background-image: url($url);
+    background-size: $size;
+    background-position: $position;
+    background-repeat: $repeat;
+}
+
+%elipsis{
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+}
