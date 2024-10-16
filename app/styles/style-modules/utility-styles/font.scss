@@ -1,3 +1,5 @@
+// Font colors
+
 .ft-black{
     color: $black;
 }
@@ -22,6 +24,69 @@
     color: $red;
 }
 
+// Font styles
+
 .no-decoration{
     text-decoration: none;
+}
+
+.uppercase{
+    text-transform: uppercase;
+}
+
+.capitalize{
+    text-transform: capitalize;
+}
+
+.txt-wrap{
+    text-wrap: wrap;
+}
+
+
+// Font sizes
+
+.ft-sm{
+    font-size: 0.875rem;
+}
+
+.ft-lg{
+    font-size: 1.125rem;
+}
+
+.ft-xl{
+    font-size: 1.25rem;
+}
+
+.ft-2xl{
+    font-size: 1.375rem;
+}
+
+.ft-3xl{
+    font-size: 1.5rem;
+}
+
+.ft-4xl{
+    font-size: 1.75rem;
+}
+
+// Font weights
+
+.wt-300{
+    font-weight: 300;
+}
+
+.wt-400{
+    font-weight: 400;
+}
+
+.wt-500{
+    font-weight: 500;
+}
+
+.wt-600{
+    font-weight: 600;
+}
+
+.wt-700{
+    font-weight: 700;
 }

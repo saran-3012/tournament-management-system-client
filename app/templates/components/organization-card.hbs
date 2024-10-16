@@ -1,27 +1,23 @@
-{{card-item class='organization-card-title' itemIconClass='building-icon' itemName=cardDetail.organizationName}}
-{{card-item itemIconClass='location-icon' itemName=cardDetail.organizationAddress}}
+{{card-item class='organization-card-title' itemIconClass='no-icon' itemNameClass='elipsis captialize' itemName=organization.organizationName}}
+{{card-item itemIconClass='location-icon' itemNameClass='elipsis' itemName=organization.organizationAddress}}
 <div class="organization-card-box">
     <div class="organization-card-detail-box">
-        {{card-item itemIconClass='calander-icon' itemName=cardDetail.startedYear}}
-        {{card-item itemIconClass='admin-icon' itemName=cardDetail.userName}}
-        {{card-item itemIconClass='badge-icon' itemName=(organization-status cardDetail.organizationStatus) }}
+        {{card-item itemIconClass='calander-icon' itemName=organization.startedYear}}
+        {{card-item itemIconClass='admin-icon' itemNameClass='elipsis' itemName=organization.userName}}
+        {{card-item itemIconClass='badge-icon' itemNameClass='uppercase ft-sm' itemName=(organization-status organization.organizationStatus) }}
     </div>
     <div class="organization-card-button-box">
-        {{general-button class='bg-transparent no-border ft-blue soft-corner' buttonName='Details' }}
-        {{#if (eq cardDetail.organizationStatus 0)}}
-            {{general-button class='bg-green br-green ft-white soft-corner' buttonName='Approve' onClick=(action 'handleEvent' cardDetail.organizationId 1) }}
-        {{else}}
-            {{#if (eq cardDetail.organizationStatus 1)}}
-                {{general-button class='bg-orange br-organe ft-white soft-corner' buttonName='Restrict' onClick=(action 'handleEvent' cardDetail.organizationId 0) }}
-            {{else}}
-                {{general-button class='bg-pale-white br-grey ft-light-grey soft-corner cr-not-allowed' buttonName='Blocked' disabled=true }}
-            {{/if}}
+        {{#link-to 'organizations.organization' organization.organizationId class='no-decoration'}}
+            {{general-button class='bg-transparent no-border ft-blue soft-corner' buttonName='Details' }}
+        {{/link-to}}
+        {{#if (eq organization.organizationStatus 0)}}
+            {{general-button class='bg-green br-green ft-white soft-corner' buttonName='Approve' onClick=(action changeOrganizationStatus organization.organizationId 1) }}
         {{/if}}
 
-        {{#unless (eq cardDetail.organizationStatus 2)}}
-            {{general-button class='br-red bg-white ft-red soft-corner' buttonName='Block' onClick=(action 'handleEvent' cardDetail.organizationId 2) }}
+        {{#unless (eq organization.organizationStatus 2)}}
+            {{general-button class='br-red bg-white ft-red soft-corner' buttonName='Block' onClick=(action changeOrganizationStatus organization.organizationId 2) }}
         {{else}}
-            {{general-button class='br-green bg-black ft-green soft-corner' buttonName='Unblock' onClick=(action 'handleEvent' cardDetail.organizationId 1) }}
+            {{general-button class='br-green bg-white ft-green soft-corner' buttonName='Unblock' onClick=(action changeOrganizationStatus organization.organizationId 0) }}
         {{/unless}}
     </div>
 </div>

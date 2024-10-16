@@ -1,0 +1,87 @@
+.tournament-card-wrapper{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    width: 100%;
+    flex-wrap: wrap;
+} 
+
+.tournament{
+    padding: 0;
+}
+
+.tournament-wrapper{
+    @include flex(center, flex-start, column);
+
+    gap: 1rem;
+}
+
+.tournament-poster-image-container{
+    position: relative;
+    width: 100%;
+    height: 25rem;
+    overflow: hidden;
+}
+
+.tournament-poster-image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.tournament-poster-overlay{
+    @include flex(flex-end, flex-start);
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 3rem 5rem;
+    background-image: linear-gradient(180deg, #00000060, #00000075);
+}
+
+.tournament-poster-header{
+    font-weight: 500;
+    font-size: 3rem;
+}
+
+.tournament-detail-container{
+    @include flex(flex-start, space-between);
+
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 1rem;
+    padding-left: 3rem;
+    padding-right: 3rem; 
+}
+
+.tournament-detail-box{
+    @include flex(flex-start, flex-start, column);
+
+    padding: 2rem;
+    flex-grow: 3;
+    min-width: 40rem;
+    border-radius: 1rem;
+}
+
+.tournament-registration-box{
+    @include flex(flex-start, flex-start, column);
+
+    padding: 2rem;
+    flex-grow: 1;
+    min-width: 20rem;
+    border-radius: 1rem;
+}
+
+
+
+
+
+
+.contestants-wrapper{
+
+}

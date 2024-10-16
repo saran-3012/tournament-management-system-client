@@ -2,6 +2,10 @@
     @include flex(center);
     gap: 0.5rem;
     width: 100%;
+
+    &.align-end{
+        justify-content: flex-end;
+    }
 }
 
 .card-item-icon{
@@ -10,6 +14,10 @@
     min-width: 1rem;
     min-height: 1rem;
     flex-shrink: 0;
+
+    &.no-icon{
+        display: none;
+    }
 
     &.clock-icon{
         @include background('images/clock-icon.svg')
@@ -35,9 +43,16 @@
     &.building-icon{
         @include background('images/building-icon.svg')
     }
+
+    &.mail-icon{
+        @include background('images/mail-icon.svg')
+    }
 }
 
 .card-item-name{
-    @extend %elipsis;
     max-width: 100%;
+
+    &.elipsis{
+        @extend %elipsis;
+    }
 }

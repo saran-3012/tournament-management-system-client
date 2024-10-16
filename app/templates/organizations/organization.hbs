@@ -1,0 +1,22 @@
+<section class="container section organization bg-pale-white">
+    <div class="org-wrapper bg-white">
+        <div class="org-details-box">
+            {{card-item itemIconClass='no-icon' itemNameClass='ft-3xl wt-600 txt-wrap capitalize' itemName=model.organization.organizationName}}
+            {{card-item itemIconClass='location-icon' itemNameClass='txt-wrap' itemName=model.organization.organizationAddress}}
+            {{card-item itemIconClass='calander-icon' itemName=model.organization.startedYear}}
+            {{card-item itemIconClass='badge-icon' itemNameClass='uppercase ft-sm' itemName=(organization-status model.organization.organizationStatus)}}
+            <p class="txt-wrap ft-sm ft-light-grey">Created at {{millis-to-date-time model.organization.organizationCreatedAt}}</p>
+        </div>
+        <div class="org-admin-details-box">
+            <span>{{admin.userId}}</span>
+            {{card-item itemIconClass='admin-icon' itemNameClass='elipsis' itemName=model.admin.userName}}
+            {{card-item itemIconClass='mail-icon' itemNameClass='elipsis' itemName=model.admin.email}}
+        </div>
+    </div>
+    <div class="org-users-wrapper">
+        {{#each model.users as |user|}}
+            {{user-card class='bg-white' user=user}}
+        {{/each}} 
+    </div>
+</section>
+{{outlet}}

@@ -1,5 +1,5 @@
 <section class="container section auth">
-    {{#form-model class='w-50 mxw-500' formHeader='Login' onSubmit=(action 'handleSubmit') }}
+    {{#form-model class='login-form' formHeader='Login' onSubmit=(action 'handleSubmit') }}
         {{text-input inputName='email' inputId='login-email' inputPlaceholder='Email' errorMessage=validationErrors.email }}
         {{text-input inputName='password' inputId='login-password' inputPlaceholder='Password' errorMessage=validationErrors.password }}
         <p class="auth-switch">

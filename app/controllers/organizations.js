@@ -8,11 +8,17 @@ export default Ember.Controller.extend({
         const userInfo = this.get('authenticationService').userInfo;
         return userInfo || {};
     }),
+    updateOrganization(updatedOrg){
+        const orgs = this.get('model');
+        const updatedOrgs = orgs.map((org) => (org.organizationId !== updatedOrg.organizationId)? org : Object.assign({}, org, updatedOrg));
+        this.set('model', updatedOrgs);
+    },
     actions: {
         changeOrganizationStatus(orgId, newStatus){
             if(this.get('userInfo') == null || this.get('userInfo') == undefined || +this.get('userInfo').role !== 2 ){
                 return;
             }
+
             const config = this.get('envService');
             const apiURL = `${config.getEnv('BASE_API_URL')}/api/v1/orgs/${orgId}`;
 
@@ -27,11 +33,11 @@ export default Ember.Controller.extend({
                 },
                 processData: false
             })
-            .done(function(data, textStatus, jqXHR) {
-                console.log(data, textStatus, jqXHR)
+            .then((response) => {
+                this.updateOrganization(response.data);
             })
-            .fail(function(jqXHR, textStatus, errorThrown){
-                console.log(jqXHR, textStatus, errorThrown)
+            .catch((err) => {
+                console.log("error" , err);
             });
         }
     }

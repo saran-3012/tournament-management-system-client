@@ -1,0 +1,10 @@
+<section class="container section bg-pale-white flex column">
+    {{tournament-navbar}}
+    <div class="tournament-card-wrapper">
+        {{#each model as |tournament|}}
+            {{tournament-card class='bg-white' tournament=tournament}}
+        {{/each}}
+    </div>
+</section>
+
+{{outlet}}

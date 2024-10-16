@@ -8,3 +8,11 @@
 .section{
     min-height: calc(100svh - #{$navbar-height});
 }
+
+.flex{
+    display: flex;
+
+    &.column{
+        flex-direction: column;
+    }
+}

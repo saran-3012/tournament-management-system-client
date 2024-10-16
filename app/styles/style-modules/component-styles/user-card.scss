@@ -1,0 +1,49 @@
+.user-card{
+    @include flex(center, space-between, column);
+
+    gap: 0.5rem;
+    min-width: 16rem;
+    box-shadow: 1px 1px 4px rgba(160, 160, 162, 0.4);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    transition: all 150ms;
+    &:hover{
+        box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.35);
+    }
+}
+
+.user-card-image-box{
+    @include flex(center, center);
+    width: 100%;
+}
+
+.user-card-profile-img{
+    @include background('images/profile-place-holder.svg');
+    aspect-ratio: 1;
+    width: 40%;
+    cursor: pointer;
+}
+
+.user-card-detail-box{
+    @include flex(center, center, column);
+
+    gap: 0.5rem;
+}
+
+.user-card-item{
+    text-align: center;
+
+    strong{
+        @extend %elipsis;
+    }
+
+    &.ft-grey{
+        &.ft-sm{
+            &:hover{
+                color: $dark-grey;
+                text-decoration: underline;
+            }
+        }
+    }
+
+}

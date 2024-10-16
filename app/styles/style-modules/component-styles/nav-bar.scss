@@ -27,6 +27,12 @@
     text-decoration: none;
     text-transform: uppercase;
 
+    &:hover{
+        .nav-button{
+            color: $dark-grey;
+        }
+    }
+
     &.active{
         .nav-button{
             color: $blue;

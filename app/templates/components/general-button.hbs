@@ -1,9 +1,15 @@
 {{#if buttonIcon}}
-    <img src={{buttonIcon}} alt="ButtonIcon" />
+    <img class="button-icon" src={{prepend-root buttonIcon}} alt="ButtonIcon" />
 {{/if}}
-
+{{#if hasBlock}}
+    {{#if isSVG}}
+        <div class="button-svg">
+            {{yield}}
+        </div>
+    {{else}}
+        {{yield}}
+    {{/if}}
+{{/if}}
 {{#if buttonName}}
-    <span>{{buttonName}}</span>
+    <span class="button-name">{{buttonName}}</span>
 {{/if}}
-
-{{yield}}

@@ -1,1 +1,35 @@
+<section class="section container tournament bg-pale-white">
+    <div class="tournament-wrapper">
+        <div class="tournament-poster-image-container">
+            <img class="tournament-poster-image" src={{prepend-root tournament.tournamentPoster}} alt="Tournament Image">
+            <div class="tournament-poster-overlay">
+                <h1 class="tournament-poster-header ft-white capitalize">{{tournament.tournamentName}}</h1>
+            </div>
+        </div>
+        <div class="tournament-detail-container">
+            <div class="tournament-detail-box bg-white">
+                <strong>tn {{tournament.tournamentName}}</strong>
+                <p>tv {{tournament.tournamentVenue}}</p>
+                <p>td {{tournament.tournamentDate}}</p>
+                <p>rsd {{millis-to-date-time tournament.registrationStartDate}}</p>
+                <p>red {{millis-to-date-time tournament.registrationEndDate}}</p>
+            </div>
+            <div class="tournament-registration-box bg-white">
+                {{#link-to 'tournaments.tournament.register' class='no-decoration'}}
+                    {{general-button buttonName='Register'}}
+                {{/link-to}}
+                <p>sn {{tournament.sportName}}</p>
+                <p>pl {{tournament.maxParticipation}}</p>
+                <p>rc {{tournament.registeredCount}}</p>
+                <p>st {{sport-type tournament.sportType tournament.teamSize}}</p>
+                <p>ts {{tournament-status tournament.tournamentStatus}}</p>
+                <p>{{calculate-deadline tournament.registrationStartDate tournament.registrationEndDate}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="contestants-wrapper">
+
+    </div>
+</section>
+
 {{outlet}}

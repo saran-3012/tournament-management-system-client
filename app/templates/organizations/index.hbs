@@ -1,0 +1,8 @@
+<section class="container section bg-pale-white">
+    <div class="organization-card-wrapper">
+        {{#each model as |organization|}}
+            {{organization-card class='bg-white' organization=organization changeOrganizationStatus=(action 'changeOrganizationStatus') }}
+        {{/each}}
+    </div>
+</section>
+{{outlet}}

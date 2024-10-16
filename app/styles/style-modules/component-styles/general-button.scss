@@ -6,8 +6,6 @@
     outline: none;
     border-width: 1px;
     border-style: solid;
-    font-weight: 500;
-    text-transform: uppercase;
     cursor: pointer;
     transition: all 150ms;
 
@@ -38,4 +36,21 @@
     &.cr-not-allowed{
         cursor: not-allowed;
     }
+}
+
+.button-icon{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.button-svg{
+    @include flex(center, center);
+
+    width: 1.25rem;
+    width: 1.25rem;
+}
+
+.button-name{
+    font-weight: 500;
+    text-transform: uppercase;
 }

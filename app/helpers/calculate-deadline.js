@@ -1,8 +1,12 @@
 import Ember from 'ember';
 
-export function calculateDeadline([endMilliseconds]) {
-  const differenceInMillis = endMilliseconds - new Date().getTime();
-  if(differenceInMillis < 0){
+export function calculateDeadline([startMilliseconds, endMilliseconds]) {
+  const currentTime = new Date().getTime();
+  if(currentTime < startMilliseconds){
+    return 'Not Started';
+  }
+  const differenceInMillis = endMilliseconds - currentTime;
+  if(differenceInMillis <= 0){
     return 'Closed';
   }
   const leftDays = new Date(differenceInMillis).getDay();

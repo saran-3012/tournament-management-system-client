@@ -1,9 +1,9 @@
 <section class="container section auth">
-    {{#form-model class="w-80" formHeader='Register' onSubmit=(action 'handleSubmit') }}
+    {{#form-model class="register-form" formHeader='Register' onSubmit=(action 'handleSubmit') }}
         <div class="auth-wrapper">
             <div class="auth-box">
                 <div class="auth-innerbox">
-                    {{text-input inputName='userName' inputId='register-username' inputPlaceholder='User Name' errorMessage=validationErrors.userName }}
+                    {{text-input inputName='userName' inputId='register-username' inputPlaceholder='Full Name' errorMessage=validationErrors.userName }}
                     {{text-input inputName='dateOfBirth' inputId='register-dateofbirth' inputPlaceholder='Date Of Birth (dd/mm/yyyy)' errorMessage=validationErrors.dateOfBirth }}
                     {{text-input inputName='phoneNumber' inputId='register-phonenumber' inputPlaceholder='Phone Number' errorMessage=validationErrors.phoneNumber }}
                     {{text-input inputName='email' inputId='register-email' inputPlaceholder='Email' errorMessage=validationErrors.email }}

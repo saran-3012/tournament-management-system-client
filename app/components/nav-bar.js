@@ -16,6 +16,9 @@ export default Ember.Component.extend({
         let userInfo = this.get('authenticationService').userInfo;
         return userInfo.role || 0;
     }),
+    userInfo: Ember.computed('authenticationService.userInfo', function() {
+        return this.get('authenticationService').userInfo;
+    }),
     actions: {
         logout(){
             this.get('authenticationService').logout();

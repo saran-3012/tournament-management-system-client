@@ -6,19 +6,25 @@
         {{#link-to 'dashboard' class='navbar-link'}}
             {{general-button class='nav-button bg-transparent no-border ft-grey' buttonName='Dashboard'}}
         {{/link-to}}
-        {{#if (eq userRole 0)}}
+        {{#unless (eq userInfo.role 2)}}
+            {{#link-to 'tournaments' class='navbar-link'}}
+                 {{general-button class='nav-button bg-transparent no-border ft-grey' buttonName='Tournaments'}}
+            {{/link-to}}
+        {{/unless}}
+        {{#if (eq userInfo.role 0)}}
 
         {{/if}}
-        {{#if (eq userRole 1)}}
-            {{#link-to 'tournaments' class='navbar-link'}}
+        {{#if (eq userInfo.role 1)}} 
+            {{#link-to 'organizations.organization' userInfo.organizationId class='navbar-link'}}
+                {{general-button class='nav-button bg-transparent no-border ft-grey' buttonName='Organization'}}
             {{/link-to}}
         {{/if}}
-        {{#if (eq userRole 2)}}
+        {{#if (eq userInfo.role 2)}}
             {{#link-to 'organizations' class='navbar-link'}}
                 {{general-button class='nav-button bg-transparent no-border ft-grey' buttonName='Organizations'}}
             {{/link-to}}
         {{/if}}
-        {{general-button class='bg-white br-grey ft-grey curved' buttonName=userName }}
+        {{general-button class='bg-white br-grey ft-grey curved' buttonName=(truncate-name userInfo.userName) }}
         {{general-button class='bg-red br-red ft-white' buttonName='Logout' onClick=(action 'logout')}}
     {{else}}
         {{#link-to 'register' class='navbar-link'}}

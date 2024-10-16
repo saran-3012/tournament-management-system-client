@@ -93,7 +93,7 @@ export default Ember.Controller.extend({
         ],
         email: [
             { required: true, message: "Email is required!" },
-            // { pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, message: "Entered email is not valid" }
+            { pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i, message: "Entered email is not valid" }
         ],
         password: [
             { required: true, message: "Password is required!" },

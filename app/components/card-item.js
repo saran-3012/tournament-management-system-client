@@ -4,5 +4,6 @@ export default Ember.Component.extend({
     tagName: 'div',
     classNames: ['card-item'],
     itemIconClass: '',
-    itemName: ''
+    itemName: '',
+    itemNameClass: ''
 });

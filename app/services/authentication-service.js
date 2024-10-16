@@ -54,10 +54,10 @@ export default Ember.Service.extend({
             },
             cache: false
         })
-        .done(function(data, textStatus, jqXHR) {
+        .then((data, textStatus, jqXHR) => {
             thisRef._setUserInfo(data.data, true);
         })
-        .fail(function(jqXHR, textStatus, errorThrown){
+        .catch((jqXHR, textStatus, errorThrown) => {
             console.log(jqXHR, textStatus, errorThrown)
         });
     },
@@ -89,10 +89,10 @@ export default Ember.Service.extend({
             },
             cache: false
         })
-        .done(function(data, textStatus, jqXHR){
+        .then((data, textStatus, jqXHR) => {
             thisRef._setUserInfo(data.data, true);
         })
-        .fail(function(jqXHR, textStatus, errorThrown) {
+        .catch((jqXHR, textStatus, errorThrown) => {
             console.log(jqXHR, textStatus, errorThrown)
         });
     },
@@ -117,11 +117,11 @@ export default Ember.Service.extend({
             },
             cache: false
         })
-        .done(function(data, textStatus, jqXHR){
+        .then((data, textStatus, jqXHR) => {
             thisRef._setUserInfo(data.data, true);
             callBack();
         })
-        .fail(function(jqXHR, textStatus, errorThrown) {
+        .catch((jqXHR, textStatus, errorThrown) => {
             console.log(jqXHR, textStatus, errorThrown)
         });
 
@@ -145,11 +145,11 @@ export default Ember.Service.extend({
             },
             cache: false
         })
-        .done(function(data, textStatus, jqXHR) {
+        .then((data, textStatus, jqXHR) => {
             thisRef._setUserInfo(null, false);
             sessionStorage.clear();
         })
-        .fail(function(jqXHR, textStatus, errorThrown) {
+        .catch((jqXHR, textStatus, errorThrown) => {
             console.log(jqXHR, textStatus, errorThrown)
         })
     }
