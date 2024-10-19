@@ -1,0 +1,40 @@
+.home{
+    @include flex(center, space-between);
+
+    padding: 3rem 7.5rem;
+    flex-wrap: wrap
+}
+
+.home-details-container{
+    @include flex(flex-start, center, column);
+
+    gap: 1rem;
+    width: 40%;
+    min-width: 320px;
+    flex-grow: 1;
+    color: $dark-grey;
+}
+
+.home-details-title{
+    font-size: 3.5rem;
+    font-size: clamp(2.75rem, 4vw, 3.5rem);
+    font-weight: 500;
+    line-height: 4rem;
+}
+
+.home-details-box{
+    @include flex(center, flex-start);
+
+    gap: 1rem;
+    width: 100%;
+    flex-wrap: wrap
+}
+
+.home-image-container{
+    @include background('images/favicon.svg');
+
+    width: 40%;
+    min-width: 320px;
+    flex-grow: 1;
+    aspect-ratio: 1;
+}

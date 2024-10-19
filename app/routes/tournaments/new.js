@@ -8,8 +8,7 @@ export default Ember.Route.extend({
         const userInfo = this.get('authenticationService').userInfo;
         return userInfo || {};
     }),
-    beforeModel(transition){
-        this.get('loaderService').setIsLoading(true);
+    beforeModel(){
 
         if(!this.get('authenticationService').isLoggedIn){
             this.transitionTo('login');

@@ -3,10 +3,23 @@
     <div class="tournament-card-status">{{tournament-status tournament.tournamentStatus}}</div>
 </div>
 <div class="tournament-card-details">
-    <h2 class="tournament-card-title">{{tournament.tournamentName}}</h2>
+    <div class="tournament-card-title-box">
+        <h2 class="tournament-card-title">{{tournament.tournamentName}}</h2>
+        {{#if (or (eq userInfo.role 1) (eq userInfo.role 2))}}
+            <div class="tournament-card-menu-box">
+                {{general-button class='no-border bg-transparent soft-corner' buttonIcon='images/dots-menu-icon.svg'}}
+                {{#if isMenuOpen}}
+                    <div class="tournament-card-menu">
+                        <p></p>
+                        <p></p>
+                    </div>
+                {{/if}}
+            </div>
+        {{/if}}
+    </div>
     <div class="tournament-card-box">
         {{card-item itemIconClass='cube-icon' itemName=tournament.sportName}}
-        {{card-item class='align-end' itemIconClass='people-icon' itemName=(sport-type tournament.sportType)}}
+        {{card-item class='align-end' itemIconClass=(if (eq tournament.sportType 0) 'individual-icon' 'people-icon') itemName=(sport-type tournament.sportType)}}
     </div>
     <div class="tournament-card-box">
         <div class="tournament-card-innerbox">

@@ -7,7 +7,7 @@
     border-width: 1px;
     border-style: solid;
     cursor: pointer;
-    transition: all 150ms;
+    transition: all 200ms;
 
     &.no-border{
         border: none;
@@ -29,12 +29,16 @@
         width: 100%;
     }
 
-    &.reverse{
+    &.rrev{
         flex-direction: row-reverse;
     }
 
     &.cr-not-allowed{
         cursor: not-allowed;
+    }
+
+    &.no-padding{
+        padding: 0;
     }
 }
 

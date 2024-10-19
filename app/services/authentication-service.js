@@ -2,11 +2,12 @@ import Ember from 'ember';
 import $ from 'jquery';
 import HashSet from '../utils/hash-set';
 import sanitizeInput from '../utils/sanitize-input';
+import dateTimeToMills from '../utils/date-time-to-mills';
 
 export default Ember.Service.extend({
     envService:  Ember.inject.service(),
     userInfo: JSON.parse(sessionStorage.getItem('userInfo')),
-    isLoggedIn: sessionStorage.getItem('isLoggedIn') == 'true',
+    isLoggedIn: sessionStorage.getItem('isLoggedIn') === 'true',
 
     _setUserInfo(userInfo, isLoggedIn){
         this.set("userInfo", userInfo);
@@ -29,7 +30,7 @@ export default Ember.Service.extend({
         }
 
         userData['userName'] = sanitizeInput(formData.get('userName'), vulnerableCharacters);
-        userData['dateOfBirth']= new Date(formData.get('dateOfBirth')).getTime();
+        userData['dateOfBirth'] =  dateTimeToMills(formData.get('dateOfBirth'));
         
         for(const key of ['phoneNumber', 'email', 'password']){
             userData[key] = formData.get(key);

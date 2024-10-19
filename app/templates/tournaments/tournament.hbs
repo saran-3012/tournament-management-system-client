@@ -8,22 +8,45 @@
         </div>
         <div class="tournament-detail-container">
             <div class="tournament-detail-box bg-white">
-                <strong>tn {{tournament.tournamentName}}</strong>
-                <p>tv {{tournament.tournamentVenue}}</p>
-                <p>td {{tournament.tournamentDate}}</p>
-                <p>rsd {{millis-to-date-time tournament.registrationStartDate}}</p>
-                <p>red {{millis-to-date-time tournament.registrationEndDate}}</p>
+                <div class="tournament-detail-header-box">
+                    <div class="tournament-detail-header-icon"></div>
+                    <h2 class="tournament-detail-header">{{tournament.tournamentName}}</h2>
+                </div>
+                {{icon-label-item iconUrl='images/location-icon.svg' itemLabelClass='ft-night-black' itemLabel='Venue:' itemValueClass='ft-dark-grey wt-300' itemValue=tournament.tournamentVenue }}
+                {{icon-label-item iconUrl='images/calander-icon.svg' itemLabelClass='ft-night-black' itemLabel='Date:' itemValueClass='ft-dark-grey wt-300' itemValue=tournament.tournamentDate }}
+                {{icon-label-item iconUrl='images/rocket-icon.svg' itemLabelClass='ft-night-black' itemLabel='Open:' itemValueClass='ft-dark-grey wt-300' itemValue=(millis-to-date-time tournament.registrationStartDate) }}
+                {{icon-label-item iconUrl='images/stop-watch-icon.svg' itemLabelClass='ft-night-black' itemLabel='Close:' itemValueClass='ft-dark-grey wt-300' itemValue=(millis-to-date-time tournament.registrationEndDate) }}
             </div>
             <div class="tournament-registration-box bg-white">
-                {{#link-to 'tournaments.tournament.register' class='no-decoration'}}
-                    {{general-button buttonName='Register'}}
-                {{/link-to}}
-                <p>sn {{tournament.sportName}}</p>
-                <p>pl {{tournament.maxParticipation}}</p>
-                <p>rc {{tournament.registeredCount}}</p>
-                <p>st {{sport-type tournament.sportType tournament.teamSize}}</p>
-                <p>ts {{tournament-status tournament.tournamentStatus}}</p>
-                <p>{{calculate-deadline tournament.registrationStartDate tournament.registrationEndDate}}</p>
+                <div class="tournament-registration-button-box">
+                    {{#unless userParticipation.userRegistered}}
+                        {{#if (instance-lt tournament.registrationStartDate)}}
+                            {{general-button class='br-light-grey bg-pale-white ft-light-grey' buttonName='Comming soon' disabled=true}}
+                        {{else if (instance-gt tournament.registrationEndDate)}}
+                            {{general-button class='br-light-grey bg-pale-white ft-light-grey' buttonName='Closed' disabled=true}}
+                        {{else}}
+                            {{general-button class='br-blue bg-blue ft-white' buttonName='Register' onClick=(action 'setTournamentFormType' 1)}}
+                        {{/if}}
+                    {{else if (and (instance-gt tournament.registrationStartDate) (instance-lt tournament.registrationEndDate))}}
+                        {{#if (and (eq tournament.sportType 1) (eq userParticipation.teamLeaderId userInfo.userId))}}
+                            {{general-button class='br-green bg-green ft-white' buttonName='Update Details' onClick=(action 'setTournamentFormType' 2)}}
+                        {{/if}}
+                        {{general-button class='br-red bg-white ft-red' buttonName='Unregister' onClick=(action 'setTournamentFormType' 3)}}
+                    {{else}}
+                        {{general-button class='br-orange bg-white ft-orange' buttonName='Registered'}}
+                    {{/unless}}
+                </div>
+                <div class="tournament-registration-details-box">
+                    {{icon-label-item iconLabelItemBoxClass='col ai-start jc-center' iconBackground=true iconUrl='images/cube-icon.svg' itemLabelClass='ft-xs ft-grey wt-300' itemLabel='Sport' itemValueClass='ft-dark-grey' itemValue=tournament.sportName}}
+                    {{#if (eq tournament.sportType 0)}}
+                        {{icon-label-item iconLabelItemBoxClass='col ai-start jc-center' iconBackground=true iconUrl='images/individual-icon.svg' itemValueClass='ft-dark-grey' itemValue='Individual'}}
+                    {{else}}
+                        {{icon-label-item iconLabelItemBoxClass='col ai-start jc-center' iconBackground=true iconUrl='images/people-icon.svg' itemLabelClass='ft-xs ft-grey wt-300' itemLabel='Team' itemValueClass='ft-dark-grey' itemValue=(concat tournament.teamSize ' members') }}
+                    {{/if}} 
+                    {{icon-label-item iconLabelItemBoxClass='col ai-start jc-center' iconBackground=true iconUrl='images/exclamation-triangle-icon.svg' itemLabelClass='ft-xs ft-grey wt-300' itemLabel='Participation Limit' itemValueClass='ft-dark-grey' itemValue=tournament.maxParticipation}}
+                    {{icon-label-item iconLabelItemBoxClass='col ai-start jc-center' iconBackground=true iconUrl='images/bw-person-icon.svg' itemLabelClass='ft-xs ft-grey wt-300' itemLabel='Registered' itemValueClass='ft-dark-grey' itemValue=tournament.registeredCount}}        
+                    {{icon-label-item iconLabelItemBoxClass='col ai-start jc-center' iconBackground=true iconUrl='images/clock-icon.svg' itemLabelClass='ft-xs ft-grey wt-300' itemLabel='Deadline' itemValueClass='ft-dark-grey' itemValue=(calculate-deadline tournament.registrationStartDate tournament.registrationEndDate)}}
+                </div>
             </div>
         </div>
     </div>
@@ -33,3 +56,11 @@
 </section>
 
 {{outlet}}
+
+{{#if (eq tournamentFormType 1) }}
+    {{tournament-form tournament=tournament tournamentFormType=tournamentFormType teams=(if (eq tournament.sportType 1) teams null) closeTournamentForm=(action 'setTournamentFormType' 0) onConfirmation=(action 'handleTournamentRegistration') }}
+{{else if (eq tournamentFormType 2)}}
+    {{tournament-form tournament=tournament tournamentFormType=tournamentFormType userParticipation=userParticipation closeTournamentForm=(action 'setTournamentFormType' 0) onConfirmation=(action 'handleUpdateTournamentRegistration') }}
+{{else if (eq tournamentFormType 3)}}
+    {{tournament-form tournament=tournament tournamentFormType=tournamentFormType userParticipation=userParticipation closeTournamentForm=(action 'setTournamentFormType' 0) onConfirmation=(action 'handleTournamentUnregistration') }}
+{{/if}}

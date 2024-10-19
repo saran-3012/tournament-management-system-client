@@ -18,6 +18,13 @@ input:disabled{
     cursor: not-allowed;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: color 0s 999999999s, background-color 0s 999999999s;
+}
+
 @import './style-modules/variables.scss';
 @import './style-modules/utilities.scss';
 @import './style-modules/routes.scss';

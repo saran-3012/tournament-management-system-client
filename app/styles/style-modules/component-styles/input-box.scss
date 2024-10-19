@@ -11,10 +11,20 @@
     background-color: $pale-white;
     padding: 0.75rem;
     border-radius: 0.25rem;
+
+    &:has(input:focus){
+        border-color: $blue;
+    }
+
+    &.br-red{
+        border-color: $red !important;
+    }
 }
 
 .input-label{
     color: $grey;
+
+
 }
 
 .text-input{
@@ -27,3 +37,4 @@
     color: $red;
     font-size: 0.75rem;
 }
+

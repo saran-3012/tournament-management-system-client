@@ -10,7 +10,7 @@ export default Ember.Component.extend({
     click(event){
         const handleClick = this.get('onClick');
         if(handleClick){
-            handleClick();
+            handleClick(event);
         }
     }
 });

@@ -181,7 +181,7 @@ export default Ember.Controller.extend({
 
             const formData = new FormData(event.target);
             const [validationErrors, hasErrors] = formValidator(formData, this.get('validationConfig'));
-            formData.set('email', formData.get('email').toLocaleLowerCase());
+            formData.set('email', formData.get('email').toLowerCase());
             if(hasErrors){
                 this.setErrors(validationErrors);
                 return;

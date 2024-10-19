@@ -44,6 +44,23 @@
     padding: 0.75rem
 }
 
+.tournament-card-title-box{
+    @include flex(center, space-between);
+    width: 100%;
+
+    .button{
+        padding: 0.25rem;
+
+        &:hover{
+            &.no-border{
+                &.bg-transparent{
+                    background-color: $pale-white
+                }
+            }
+        }
+    }
+}
+
 .tournament-card-title{
     @extend %elipsis;
     font-size: 1.25rem;

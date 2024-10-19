@@ -9,11 +9,11 @@ export default Ember.Component.extend({
     }),
     isLoggedIn: Ember.computed.readOnly('authenticationService.isLoggedIn'),
     userName: Ember.computed('authenticationService.userInfo', function() {
-        let userInfo = this.get('authenticationService').userInfo;
+        const userInfo = this.get('authenticationService').userInfo;
         return userInfo.userName.split(' ')[0] || 'User';
     }),
     userRole: Ember.computed('authenticationService.userInfo', function() {
-        let userInfo = this.get('authenticationService').userInfo;
+        const userInfo = this.get('authenticationService').userInfo;
         return userInfo.role || 0;
     }),
     userInfo: Ember.computed('authenticationService.userInfo', function() {

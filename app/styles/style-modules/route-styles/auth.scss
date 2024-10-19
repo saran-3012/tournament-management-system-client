@@ -1,8 +1,3 @@
-.auth{
-    @include flex(center, center);
-    @include background('images/auth-background.svg');
-}
-
 .auth-wrapper{
     @include flex(center, center);
     width: 100%;

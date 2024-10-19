@@ -53,20 +53,50 @@
     @include flex(flex-start, space-between);
 
     flex-wrap: wrap;
-    width: 100%;
+    width: 90%;
     gap: 1rem;
     padding-left: 3rem;
     padding-right: 3rem; 
+    padding-bottom: 2rem;
 }
 
 .tournament-detail-box{
     @include flex(flex-start, flex-start, column);
 
+    gap: 0.75rem;
     padding: 2rem;
     flex-grow: 3;
     min-width: 40rem;
     border-radius: 1rem;
+    box-shadow: 1px 1px 4px $light-grey;
 }
+
+.tournament-detail-header-box{
+    @include flex(center, flex-start);
+
+    width: 100%;
+    gap: 0.75rem;
+    padding-bottom: 1rem;
+}
+
+.tournament-detail-header-icon{
+    @include background('images/trophy-icon.svg');
+
+    background-size: calc(100% - 1rem);
+    width: 5rem;
+    height: 5rem;
+    border-radius: 1rem;
+    border: 1px solid $pale-white;
+    box-shadow: 1px 1px 4px $pale-white, -1px -1px 4px $pale-white;
+}
+
+.tournament-detail-header{
+    font-weight: 500;
+    font-size: 2rem;
+    color: $dark-grey;
+}
+
+
 
 .tournament-registration-box{
     @include flex(flex-start, flex-start, column);
@@ -75,6 +105,28 @@
     flex-grow: 1;
     min-width: 20rem;
     border-radius: 1rem;
+    gap: 1rem;
+    box-shadow: 1px 1px 4px $light-grey;
+}
+
+.tournament-registration-button-box{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1rem;
+
+    .button{
+        &.grow{
+            width: 100%;
+        }
+    }
+}
+
+.tournament-registration-details-box{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1rem;
 }
 
 

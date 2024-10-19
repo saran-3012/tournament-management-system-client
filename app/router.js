@@ -11,9 +11,7 @@ Router.map(function () {
   this.route('register');
   this.route('dashboard');
   this.route('tournaments', function() {
-    this.route('tournament', { path : ':tournament_id' }, function() {
-      this.route('register');
-    });
+    this.route('tournament', { path : ':tournament_id' }, function() {});
     this.route('new');
   });
   this.route('organizations', function() {

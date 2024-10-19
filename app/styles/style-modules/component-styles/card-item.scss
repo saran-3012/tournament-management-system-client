@@ -9,8 +9,8 @@
 }
 
 .card-item-icon{
-    height: 1rem;
-    width: 1rem;
+    height: 1.25rem;
+    width: 1.25rem;
     min-width: 1rem;
     min-height: 1rem;
     flex-shrink: 0;
@@ -46,6 +46,10 @@
 
     &.mail-icon{
         @include background('images/mail-icon.svg')
+    }
+
+    &.individual-icon{
+        @include background('images/individual-icon.svg');
     }
 }
 

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import $ from 'jquery';
 import tournamentImageFallback from '../../utils/tournament-image-fallback';
 import millisToDate from '../../utils/millis-to-date';
 
@@ -11,7 +12,7 @@ export default Ember.Route.extend({
         const userInfo = this.get('authenticationService').userInfo;
         return userInfo || {};
     }),
-    beforeModel(transition){
+    beforeModel(){
         this.get('loaderService').setIsLoading(true);
 
         if(!this.get('authenticationService').isLoggedIn){
@@ -32,7 +33,7 @@ export default Ember.Route.extend({
         const orgId = +userInfo.organizationId;
         const tournamentId = +params.tournament_id;
         const config = this.get('envService');
-        const apiURL = `${config.getEnv('BASE_API_URL')}/api/v1/orgs/${orgId}/tournaments/${tournamentId}/contestants?include_count=true&include_tournament=true`;
+        const apiURL = `${config.getEnv('BASE_API_URL')}/api/v1/orgs/${orgId}/tournaments/${tournamentId}/contestants?include_count=true&include_tournament=true&include_user=true`;
         
         return $.ajax({
             method: 'GET',
@@ -57,19 +58,19 @@ export default Ember.Route.extend({
         .always(() => {
             this.get('loaderService').setIsLoading(false);
         });
-
-      
-    },
-    afterModel(model){
-        console.log(model);
     },
     setupController(controller, model){
         const tournament = model.tournament;
-        tournament['registeredCount'] = model.count;
+        tournament['registeredCount'] = '' + model.count;
         tournament.tournamentPoster = tournamentImageFallback(tournament.sportName);
         tournament.tournamentVenue = tournament.tournamentVenue || 'Not Specified';
         tournament.tournamentDate = millisToDate(tournament.tournamentDate);
         controller.set('tournament', tournament);
         controller.set((!model.tournament.sportType)? 'participants' : 'teams', model.contestants);
+        const userParticipation = model.userParticipation;
+        if((userParticipation.teamId !== undefined && userParticipation.teamId !== null) || (userParticipation.participantId !== undefined && userParticipation.participantId !== null)){
+            userParticipation.userRegistered = true;
+        }
+        controller.set("userParticipation", userParticipation);
     }
 });

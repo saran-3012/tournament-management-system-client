@@ -4,12 +4,20 @@
     color: $black;
 }
 
+.ft-night-black{
+    color: $night-black;
+}
+
 .ft-white{
     color: $white
 }
 
 .ft-blue{
     color: $blue;
+}
+
+.ft-orange{
+    color: $orange;
 }
 
 .ft-grey{
@@ -45,8 +53,16 @@
 
 // Font sizes
 
+.ft-xs{
+    font-size: 0.75rem;
+}
+
 .ft-sm{
     font-size: 0.875rem;
+}
+
+.ft-base{
+    font-size: 1rem;
 }
 
 .ft-lg{
@@ -67,6 +83,10 @@
 
 .ft-4xl{
     font-size: 1.75rem;
+}
+
+.ft-5xl{
+    font-size: 2rem;
 }
 
 // Font weights

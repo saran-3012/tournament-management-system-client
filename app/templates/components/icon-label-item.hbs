@@ -1,0 +1,13 @@
+<div class="icon-label-item-icon {{if iconBackground 'bg' ''}}">
+    <img src={{prepend-root iconUrl}} alt="icon">
+</div>
+<div class="icon-label-item-box {{iconLabelItemBoxClass}}">
+    {{#if itemLabel}}
+        <span class={{itemLabelClass}}>{{itemLabel}}</span>
+    {{/if}}
+    {{#if itemValue}}
+        <span class={{itemValueClass}}>{{itemValue}}</span>
+    {{/if}}
+    {{yield}}
+</div>
+

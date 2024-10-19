@@ -55,11 +55,22 @@ export default Ember.Route.extend({
             },
             dataType: 'json'
         })
-        .then((response) => {
+        .then((response, textStatus, jqXHR) => {
+            if(jqXHR.status === 401 || jqXHR.status === 403){
+                this.transitionTo('access-denied');
+            }
             console.log(response.data)
             return response.data;
         })
         .catch((err) => {
+            if(err.status === 401 || err.status === 403){
+                this.transitionTo('access-denied');
+            }
+            const authStatus = err.getResponseHeader('X-Auth-Status');
+            if(authStatus === '1'){
+                this.get('authenticationService').logout();
+                this.transitionToRoute('index');
+            }
             console.log("error", err);
         })
         .always(() => {

@@ -1,0 +1,50 @@
+.message-queue{
+    @include flex(flex-start, flex-start, column);
+
+    padding: 0.5rem 0.5rem 0 0;
+    position: fixed;
+    z-index: 100;
+    gap: 1rem;
+    top: $navbar-height;
+    right: 0;
+}
+
+.message-box{
+    @include flex(center, flex-start);
+
+    position: relative;
+    gap: 0.5rem;
+    padding: 2rem;
+    width: 30rem;
+    background-color: $white;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
+    border-radius: 0.5rem;
+    animation: fade-in 0.3s ease 1;
+    overflow: hidden;
+}
+
+.message-box-icon{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.message-box-text{
+    text-wrap: wrap;
+}
+
+.message-box-loader{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0.5rem;
+    background-color: $pale-white;
+}
+
+
+@keyframes fade-in {
+    0%{
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}

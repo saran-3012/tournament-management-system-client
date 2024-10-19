@@ -1,0 +1,15 @@
+<div class="message-box" {{action "pauseTimer" on="mouseEnter"}} {{action "resumeTimer" on="mouseLeave"}}>
+    <div class="message-box-icon ft-{{messageColor}}">
+        {{#if (eq messageInfo.level 0)}}
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve"><g><path d="M12 0C5.383 0 0 5.383 0 12s5.383 12 12 12 12-5.383 12-12S18.617 0 12 0zm0 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm2.25 14h-4.5a1 1 0 1 1 0-2H11v-6h-.75a1 1 0 1 1 0-2H12a1 1 0 0 1 1 1v7h1.25a1 1 0 1 1 0 2z" fill="currentColor" opacity="1" data-original="#000000"></path></g></svg>
+        {{else if (eq messageInfo.level 1)}}
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 408.576 408.576" style="enable-background:new 0 0 512 512" xml:space="preserve"><g><path d="M204.288 0C91.648 0 0 91.648 0 204.288s91.648 204.288 204.288 204.288 204.288-91.648 204.288-204.288S316.928 0 204.288 0zm114.176 150.528-130.56 129.536c-7.68 7.68-19.968 8.192-28.16.512L90.624 217.6c-8.192-7.68-8.704-20.48-1.536-28.672 7.68-8.192 20.48-8.704 28.672-1.024l54.784 50.176L289.28 121.344c8.192-8.192 20.992-8.192 29.184 0s8.192 20.992 0 29.184z" fill="currentColor" opacity="1" data-original="#000000"></path></g></svg>
+        {{else if (eq messageInfo.level 2)}}
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve"><g><path d="M507.494 426.066 282.864 53.537a31.372 31.372 0 0 0-53.73 0L4.506 426.066a31.37 31.37 0 0 0 26.864 47.569h449.259a31.372 31.372 0 0 0 26.865-47.569zM256.167 167.227c12.901 0 23.817 7.278 23.817 20.178 0 39.363-4.631 95.929-4.631 135.292 0 10.255-11.247 14.554-19.186 14.554-10.584 0-19.516-4.3-19.516-14.554 0-39.363-4.63-95.929-4.63-135.292 0-12.9 10.584-20.178 24.146-20.178zm.331 243.791c-14.554 0-25.471-11.908-25.471-25.47 0-13.893 10.916-25.47 25.471-25.47 13.562 0 25.14 11.577 25.14 25.47 0 13.562-11.578 25.47-25.14 25.47z" fill="currentColor" opacity="1" data-original="#000000"></path></g></svg> 
+        {{else if (eq messageInfo.level 3)}}
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve"><g><path d="M256 0C114.837 0 0 114.837 0 256s114.837 256 256 256 256-114.837 256-256S397.163 0 256 0zm0 409.6c-14.137 0-25.6-11.463-25.6-25.6s11.463-25.6 25.6-25.6 25.6 11.463 25.6 25.6-11.463 25.6-25.6 25.6zm25.6-122.312c0 14.137-11.463 25.6-25.6 25.6s-25.6-11.463-25.6-25.6V99.563c0-14.137 11.463-25.6 25.6-25.6s25.6 11.463 25.6 25.6z" fill="currentColor" opacity="1" data-original="#000000"></path></g></svg>
+        {{/if}}
+    </div>
+    <p class="message-box-text">{{messageInfo.message}}</p>
+    <div class="message-box-loader"></div>
+</div>

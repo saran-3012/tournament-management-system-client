@@ -1,3 +1,8 @@
+.form-bg{
+    @include flex(center, center);
+    @include background('images/auth-background.svg');
+}
+
 .form-model{
     @include flex(center, center, column);
  
@@ -7,7 +12,7 @@
     gap: 1.5rem;
     background-color: $white;
     border-radius: 0.25rem;
-    
+
 }
 
 .form-header-box{

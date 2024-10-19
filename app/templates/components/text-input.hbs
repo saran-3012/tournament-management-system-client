@@ -2,7 +2,7 @@
     <label class="input-label" for={{inputId}}>
         {{labelName}} 
         {{#if isRequired}} 
-            <span class="input-required">*</span>
+            <span class="input-required ft-red">*</span>
         {{/if}}
     </label>
     <input id={{inputId}} name={{inputName}} class="text-input" placeholder={{inputPlaceholder}} {{action 'handleInputChange' on='input'}} />

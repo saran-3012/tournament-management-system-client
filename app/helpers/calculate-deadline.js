@@ -9,7 +9,7 @@ export function calculateDeadline([startMilliseconds, endMilliseconds]) {
   if(differenceInMillis <= 0){
     return 'Closed';
   }
-  const leftDays = new Date(differenceInMillis).getDay();
+  const leftDays = Math.floor(differenceInMillis / (1000 * 60 * 60 * 24));
   return `${leftDays} day${(leftDays == 1)? '' : 's'} left`;
 }
 
