@@ -1,11 +1,13 @@
 <div class="input-box {{unless errorMessage 'br-light-grey' 'br-red'}}">
-    <label class="input-label" for={{inputId}}>
-        {{labelName}} 
-        {{#if isRequired}} 
-            <span class="input-required ft-red">*</span>
-        {{/if}}
-    </label>
-    <input id={{inputId}} name={{inputName}} class="text-input" placeholder={{inputPlaceholder}} {{action 'handleInputChange' on='input'}} />
+    {{#if labelName}}
+        <label class="input-label" for={{inputId}}>
+            {{labelName}} 
+            {{#if isRequired}} 
+                <span class="input-required ft-red">*</span>
+            {{/if}}
+        </label>
+    {{/if}}
+    <input id={{inputId}} name={{inputName}} value={{defaultValue}} class="input-field" placeholder={{inputPlaceholder}} {{action 'handleInputChange' on='input'}} />
 </div>
 {{#if errorMessage}}
     <p class="input-error">{{errorMessage}}</p>

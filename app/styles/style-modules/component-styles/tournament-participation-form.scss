@@ -1,4 +1,4 @@
-.tournament-form-container{
+.tournament-participation-form-container{
     @include flex(center, center);
 
     position: fixed;
@@ -7,9 +7,10 @@
     width: 100svw;
     height: 100svh;
     background-color: rgba(0, 0, 0, 0.15);
+    z-index: 100;
 }
 
-.tournament-form-wrapper{
+.tournament-participation-form-wrapper{
     @include flex(flex-start, center, column);
 
     gap: 0.75rem;
@@ -20,7 +21,7 @@
     max-width: 500px;
 }
 
-.tournament-team-buttons{
+.tournament-participation-team-buttons{
     @include flex(center);
 
     gap: 1rem;
@@ -28,7 +29,7 @@
 
 }
 
-.tournament-form-info{
+.tournament-participation-form-info{
     @include flex(center);
 
     color: $grey;
@@ -46,7 +47,7 @@
     }
 }
 
-.tournament-form{
+.tournament-participation-form{
     @include flex(flex-start, flex-start, column);
 
     gap: 0.75rem;
@@ -57,7 +58,7 @@
     }
 }
 
-.tournament-form-buttons{
+.tournament-participation-form-buttons{
     @include flex(center, flex-start);
 
     width: 100%;

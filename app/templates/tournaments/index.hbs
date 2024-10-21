@@ -1,7 +1,7 @@
 <section class="container section bg-pale-white flex column">
-    {{tournament-navbar}}
+    {{tournament-navbar searchTournaments=(action 'searchTournaments') }}
     <div class="tournament-card-wrapper">
-        {{#each model as |tournament|}}
+        {{#each tournaments as |tournament|}}
             {{tournament-card class='bg-white' tournament=tournament}}
         {{/each}}
     </div>

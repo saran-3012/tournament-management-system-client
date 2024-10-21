@@ -6,4 +6,5 @@ export default {
   tabletennis : 'images/tournament-posters/table-tennis-tournament.png',
   running : 'images/tournament-posters/running-tournament.png',
   coding: 'images/tournament-posters/binary-screen.png',
+  chess: 'images/tournament-posters/chess-tournament.png',
 };

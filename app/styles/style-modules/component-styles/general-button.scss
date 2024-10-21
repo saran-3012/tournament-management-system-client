@@ -9,6 +9,22 @@
     cursor: pointer;
     transition: all 200ms;
 
+    &.pd-sq-sm{
+        padding: 0.25rem;
+    }
+
+    &.pd-sq{
+        padding: 0.5rem;
+    }
+
+    &.pd-lg{
+        padding: 0.8rem 1.125rem;
+    }
+
+    &.pd-xl{
+        padding: 1rem 1.5rem;
+    }
+
     &.no-border{
         border: none;
     }
@@ -40,12 +56,29 @@
     &.no-padding{
         padding: 0;
     }
+
+    .button-icon{
+        width: 1.5rem;
+        height: 1.5rem;
+    }    
+
+    &.icon-sm{
+        .button-icon{
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+    }
+
+    &.icon-xs{
+        .button-icon{
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+
+
 }
 
-.button-icon{
-    width: 1.5rem;
-    height: 1.5rem;
-}
 
 .button-svg{
     @include flex(center, center);

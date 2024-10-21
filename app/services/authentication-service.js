@@ -3,6 +3,7 @@ import $ from 'jquery';
 import HashSet from '../utils/hash-set';
 import sanitizeInput from '../utils/sanitize-input';
 import dateTimeToMills from '../utils/date-time-to-mills';
+import rsaEncrypter from '../utils/rsa-encrypter';
 
 export default Ember.Service.extend({
     envService:  Ember.inject.service(),
@@ -18,6 +19,7 @@ export default Ember.Service.extend({
 
     register(formData){
         const thisRef = this;
+
         const orgData = {};
         const userData = {};
 
@@ -32,28 +34,36 @@ export default Ember.Service.extend({
         userData['userName'] = sanitizeInput(formData.get('userName'), vulnerableCharacters);
         userData['dateOfBirth'] =  dateTimeToMills(formData.get('dateOfBirth'));
         
-        for(const key of ['phoneNumber', 'email', 'password']){
+        for(const key of ['phoneNumber', 'email']){
             userData[key] = formData.get(key);
         }
 
-        const config = this.get('envService');
-        const apiURL = `${config.getEnv('BASE_API_URL')}/auth/register`;
+        const password = formData.get('password');
 
-        $.ajax({
-            method: "POST",
-            url: apiURL,
-            data: JSON.stringify({orgData, userData}),
-            dataType: "json",
-            contentType: "application/json",
-            accepts: {
-                json: "application/json"
-            },
-            processData: false,
-            headers: {
-                'Cache-Control': 'no-cache',  
-                'Pragma': 'no-cache',        
-            },
-            cache: false
+        rsaEncrypter(password)
+        .then((encryptedPassword) => {
+            
+            userData['password'] = encryptedPassword;
+
+            const config = this.get('envService');
+            const apiURL = `${config.getEnv('BASE_API_URL')}/auth/register`;
+
+            return $.ajax({
+                method: "POST",
+                url: apiURL,
+                data: JSON.stringify({orgData, userData}),
+                dataType: "json",
+                contentType: "application/json",
+                accepts: {
+                    json: "application/json"
+                },
+                processData: false,
+                headers: {
+                    'Cache-Control': 'no-cache',  
+                    'Pragma': 'no-cache',        
+                },
+                cache: false
+            })
         })
         .then((data, textStatus, jqXHR) => {
             thisRef._setUserInfo(data.data, true);
@@ -64,31 +74,36 @@ export default Ember.Service.extend({
     },
 
     login(email, password){
-        const config = this.get('envService');
-        const apiURL = `${config.getEnv('BASE_API_URL')}/auth/login`;
 
         const thisRef = this;
-        $.ajax({
-            method: "POST",
-            url: apiURL,
-            data: JSON.stringify(
-                {
-                    email, 
-                    password
-                }
-            ),
-            dataType: "json",
-            contentType: "application/json",
-            accepts: {
-                json: "application/json"
-            },
-            processData: false,
-            
-            headers: {
-                'Cache-Control': 'no-cache',  
-                'Pragma': 'no-cache',        
-            },
-            cache: false
+
+        rsaEncrypter(password)
+        .then((encryptedPassword) => {
+            const config = this.get('envService');
+            const apiURL = `${config.getEnv('BASE_API_URL')}/auth/login`;
+
+            return $.ajax({
+                method: "POST",
+                url: apiURL,
+                data: JSON.stringify(
+                    {
+                        email, 
+                        password : encryptedPassword
+                    }
+                ),
+                dataType: "json",
+                contentType: "application/json",
+                accepts: {
+                    json: "application/json"
+                },
+                processData: false,
+                
+                headers: {
+                    'Cache-Control': 'no-cache',  
+                    'Pragma': 'no-cache',        
+                },
+                cache: false
+            })
         })
         .then((data, textStatus, jqXHR) => {
             thisRef._setUserInfo(data.data, true);
@@ -96,6 +111,7 @@ export default Ember.Service.extend({
         .catch((jqXHR, textStatus, errorThrown) => {
             console.log(jqXHR, textStatus, errorThrown)
         });
+       
     },
 
     checkin(callBack){

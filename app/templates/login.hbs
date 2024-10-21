@@ -1,7 +1,7 @@
 <section class="container section form-bg">
     {{#form-model class='login-form' formHeader='Login' onSubmit=(action 'handleSubmit') }}
-        {{text-input inputName='email' inputId='login-email' inputPlaceholder='Email' errorMessage=validationErrors.email }}
-        {{text-input inputName='password' inputId='login-password' inputPlaceholder='Password' errorMessage=validationErrors.password }}
+        {{text-input inputName='email' inputId='login-email' labelName='Email' errorMessage=validationErrors.email }}
+        {{password-input inputName='password' inputId='login-password' labelName='Password' errorMessage=validationErrors.password }}
         <p class="auth-switch">
             Don't have an account? {{#link-to 'register' }}Register{{/link-to}}
         </p> 

@@ -1,4 +1,4 @@
-{{search-bar}}
+{{search-bar minWait=500 searchHandler=searchTournaments}}
 {{#if (eq userRole 1)}}
     {{#link-to 'tournaments.new' class='no-decoration'}}
         {{#general-button class='br-green bg-green ft-white soft-corner' buttonName='Create' isSVG=true}}

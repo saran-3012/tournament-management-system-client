@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import controllerCleanup from '../../mixins/controller-cleanup';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(controllerCleanup, {
     envService:  Ember.inject.service(),
     authenticationService: Ember.inject.service(),
     loaderService: Ember.inject.service(),
@@ -25,6 +26,11 @@ export default Ember.Route.extend({
         if(userInfo.role !== 1 && userInfo.role !== 2){
             this.transitionTo('index');
             return;
+        }
+    },
+    actions: {
+        willTransition(transition){
+            this.controllerCleanup();
         }
     }
 });

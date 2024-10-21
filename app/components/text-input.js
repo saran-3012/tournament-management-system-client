@@ -9,6 +9,7 @@ export default Ember.Component.extend({
     lableName: null,
     isRequired: false,
     inputPlaceholder: '',
+    defaultValue: '',
     errorMessage: null,
     actions: {
         handleInputChange(){

@@ -14,7 +14,8 @@ function convertPemToBinary(pem) {
 
 function encryptData(pem, data) {
   const binaryDer = convertPemToBinary(pem);
-  window.crypto.subtle.importKey(
+
+  return window.crypto.subtle.importKey(
     "spki",
     binaryDer,
     {
@@ -24,27 +25,25 @@ function encryptData(pem, data) {
     true,
     ["encrypt"]
   )
-    .then(publicKey => {
-      const encoder = new TextEncoder();
-      const encodedData = encoder.encode(data);
-      return window.crypto.subtle.encrypt(
-        {
-          name: "RSA-OAEP",
-        },
-        publicKey,
-        encodedData
-      );
-    })
-    .then(encryptedData => {
-      console.log("Encrypted Data:", new Uint8Array(encryptedData));
-      // Convert to Base64 for easier handling if needed
-      const base64Encrypted = btoa(String.fromCharCode(...new Uint8Array(encryptedData)));
-      console.log("Base64 Encrypted Data:", base64Encrypted);
-    })
-    .catch(error => {
-      console.error("Encryption error:", error);
-      throw new Error('Something went wrong');
-    });
+  .then(publicKey => {
+    const encoder = new TextEncoder();
+    const encodedData = encoder.encode(data);
+    return window.crypto.subtle.encrypt(
+      {
+        name: "RSA-OAEP",
+      },
+      publicKey,
+      encodedData
+    );
+  })
+  .then(encryptedData => {
+    const base64Encrypted = btoa(String.fromCharCode(...new Uint8Array(encryptedData)));
+    return base64Encrypted;
+  })
+  .catch(error => {
+    console.error("Encryption error:", error);
+    throw new Error('Something went wrong');
+  });
 }
 
 export default function rsaEncrypter(data) {

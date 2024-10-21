@@ -9,6 +9,22 @@ export default Ember.Component.extend({
         return this.get('authenticationService').userInfo;
     }),
     isMenuOpen: false,
+
+    toggleMenu(event, thisRef){
+        const clickEventListener = (event) => {
+            if(thisRef.get('isMenuOpen')){
+                document.removeEventListener('click', clickEventListener);
+                thisRef.set('isMenuOpen', false);
+            }
+            else{
+                setTimeout(() => { 
+                    document.addEventListener('click', clickEventListener)
+                }, 0);
+                thisRef.set('isMenuOpen', true);
+            }
+        };
+        clickEventListener(event);
+    },
     init(){
         this._super(...arguments);
         const tournament = this.get('tournament') || {};
@@ -17,15 +33,11 @@ export default Ember.Component.extend({
         this.set('tournament', tournament);
     },
     actions: {
-        // setIsMenuOpen(value){
-        //     const userInfo = this.get('authenticationService').userInfo;
-        //     if(userInfo.role !== 1 && userInfo.role !== 2){
-        //         return;
-        //     }
-        //     this.set('isMenuOpen', value);
-        // },
         handleMenuVisibility(event){
-
+            this.get('toggleMenu')(event, this)
+        },
+        hello(){
+            console.log("hello")
         }
     }
 });

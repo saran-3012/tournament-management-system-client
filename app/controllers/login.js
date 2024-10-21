@@ -31,7 +31,7 @@ export default Ember.Controller.extend({
             }
             this.get('authenticationService').login(formData.get('email').toLowerCase(), formData.get('password'));
 
-            this.transitionToRoute('index');
+            this.transitionToRoute('dashboard');
         }
     }
 });

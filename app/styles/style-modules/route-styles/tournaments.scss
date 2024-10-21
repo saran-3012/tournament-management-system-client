@@ -129,11 +129,42 @@
     gap: 1rem;
 }
 
-
-
-
-
-
 .contestants-wrapper{
 
+
+}
+
+
+
+// New, Edit tournament
+
+.edit-tournament{
+    position: fixed;
+    top: $navbar-height;
+    left: 0;
+    background-color: $white;
+}
+
+.tournament-form-model{
+    // not yet used
+}
+
+.tournament-form-wrapper{
+    @include flex(center, center, column);
+    width: 100%;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.tournament-form-box{
+    @include flex(center, space-between, column);
+    gap: 1.65rem;
+    width: calc(50% - 0.5rem);
+    min-width: 500px;
+}
+
+.tournament-form-inner-box{
+    @include flex(center, center, column);
+    gap: 1rem;
+    width: 100%;
 }

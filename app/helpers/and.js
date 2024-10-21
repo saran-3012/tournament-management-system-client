@@ -3,7 +3,7 @@ import Ember from 'ember';
 export function and(params) {
   for(const logic of params){
     if(!logic){
-      return false;
+      return logic;
     }
   }
   return true;

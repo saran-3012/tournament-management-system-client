@@ -11,7 +11,9 @@ Router.map(function () {
   this.route('register');
   this.route('dashboard');
   this.route('tournaments', function() {
-    this.route('tournament', { path : ':tournament_id' }, function() {});
+    this.route('tournament', { path : ':tournament_id' }, function() {
+      this.route('edit');
+    });
     this.route('new');
   });
   this.route('organizations', function() {
@@ -20,6 +22,12 @@ Router.map(function () {
     });
   });
   this.route('access-denied');
+
+
+
+
+
+  this.route('not-found', {path: '/*'});
 });
 
 export default Router;

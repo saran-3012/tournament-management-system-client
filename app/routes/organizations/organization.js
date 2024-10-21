@@ -9,28 +9,28 @@ export default Ember.Route.extend({
         return userInfo || {};
     }),
     beforeModel(transition){
-        this.get('loaderService').setIsLoading(true);
-
+        
         if(!this.get('authenticationService').isLoggedIn){
             this.transitionTo('login');
             return;
         }
-
+        
         const userInfo = this.get('userInfo');
         if(userInfo.role === null || userInfo.role === undefined || userInfo.organizationId === null || userInfo.organizationId === undefined){
             this.get('authenticationService').logout();
             this.transitionTo('login');
             return;
         }
-
+        
         const params = transition.params['organizations.organization'];
         const organizationId = params["organization_id"];
-
+        
         if(+userInfo.role !== 2 && +userInfo.organizationId !== +organizationId){
             this.transitionTo('access-denied');
             return;
         }
-
+        
+        this.get('loaderService').setIsLoading(true);
     },
     model(params){
         const organizationId = params["organization_id"];
@@ -57,10 +57,16 @@ export default Ember.Route.extend({
             return res.data;
         })
         .catch((err) => {
-            if(err.status === 401){
-                this.transitionTo('access-denied');
+            const authStatus = err.getResponseHeader('Tms-Auth-Status');
+            if(authStatus === '1'){
+                this.get('authenticationService').logout();
+                this.transitionToRoute('index');
+                return;
             }
-            console.log(err);
+            if(err.status === 401 || err.status === 403){
+                this.transitionTo('access-denied');
+                return;
+            }
             throw err;
         });
 
@@ -82,8 +88,15 @@ export default Ember.Route.extend({
             return res.data;
         })
         .catch((err) => {
-            if(err.status === 401){
+            const authStatus = err.getResponseHeader('X-Auth-Status');
+            if(authStatus === '1'){
+                this.get('authenticationService').logout();
+                this.transitionToRoute('index');
+                return;
+            }
+            if(err.status === 401 || err.status === 403){
                 this.transitionTo('access-denied');
+                return;
             }
             throw err;
         });

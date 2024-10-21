@@ -12,8 +12,8 @@
                     <div class="tournament-detail-header-icon"></div>
                     <h2 class="tournament-detail-header">{{tournament.tournamentName}}</h2>
                 </div>
-                {{icon-label-item iconUrl='images/location-icon.svg' itemLabelClass='ft-night-black' itemLabel='Venue:' itemValueClass='ft-dark-grey wt-300' itemValue=tournament.tournamentVenue }}
-                {{icon-label-item iconUrl='images/calander-icon.svg' itemLabelClass='ft-night-black' itemLabel='Date:' itemValueClass='ft-dark-grey wt-300' itemValue=tournament.tournamentDate }}
+                {{icon-label-item iconUrl='images/location-icon.svg' itemLabelClass='ft-night-black' itemLabel='Venue:' itemValueClass='ft-dark-grey wt-300' itemValue=(or tournament.tournamentVenue 'Not Specified') }}
+                {{icon-label-item iconUrl='images/calander-icon.svg' itemLabelClass='ft-night-black' itemLabel='Date:' itemValueClass='ft-dark-grey wt-300' itemValue=(millis-to-date tournament.tournamentDate 'Not Specified') }}
                 {{icon-label-item iconUrl='images/rocket-icon.svg' itemLabelClass='ft-night-black' itemLabel='Open:' itemValueClass='ft-dark-grey wt-300' itemValue=(millis-to-date-time tournament.registrationStartDate) }}
                 {{icon-label-item iconUrl='images/stop-watch-icon.svg' itemLabelClass='ft-night-black' itemLabel='Close:' itemValueClass='ft-dark-grey wt-300' itemValue=(millis-to-date-time tournament.registrationEndDate) }}
             </div>
@@ -55,12 +55,13 @@
     </div>
 </section>
 
-{{outlet}}
 
 {{#if (eq tournamentFormType 1) }}
-    {{tournament-form tournament=tournament tournamentFormType=tournamentFormType teams=(if (eq tournament.sportType 1) teams null) closeTournamentForm=(action 'setTournamentFormType' 0) onConfirmation=(action 'handleTournamentRegistration') }}
+    {{tournament-participation-form tournament=tournament tournamentFormType=tournamentFormType teams=(if (eq tournament.sportType 1) teams null) closeTournamentForm=(action 'setTournamentFormType' 0) onConfirmation=(action 'handleTournamentRegistration') }}
 {{else if (eq tournamentFormType 2)}}
-    {{tournament-form tournament=tournament tournamentFormType=tournamentFormType userParticipation=userParticipation closeTournamentForm=(action 'setTournamentFormType' 0) onConfirmation=(action 'handleUpdateTournamentRegistration') }}
+    {{tournament-participation-form tournament=tournament tournamentFormType=tournamentFormType userParticipation=userParticipation closeTournamentForm=(action 'setTournamentFormType' 0) onConfirmation=(action 'handleUpdateTournamentRegistration') }}
 {{else if (eq tournamentFormType 3)}}
-    {{tournament-form tournament=tournament tournamentFormType=tournamentFormType userParticipation=userParticipation closeTournamentForm=(action 'setTournamentFormType' 0) onConfirmation=(action 'handleTournamentUnregistration') }}
+    {{tournament-participation-form tournament=tournament tournamentFormType=tournamentFormType userParticipation=userParticipation closeTournamentForm=(action 'setTournamentFormType' 0) onConfirmation=(action 'handleTournamentUnregistration') }}
 {{/if}}
+
+{{outlet}}

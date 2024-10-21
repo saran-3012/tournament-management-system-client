@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     tagName: 'section',
-    classNames: ['tournament-form-container'],
+    classNames: ['tournament-participation-form-container'],
     teamRegistrationType: 0,
     submit(event){
         const teamRegistrationType = this.get('teamRegistrationType');

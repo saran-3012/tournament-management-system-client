@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend( {
     envService:  Ember.inject.service(),
     authenticationService: Ember.inject.service(),
     loaderService: Ember.inject.service(),
@@ -9,30 +9,31 @@ export default Ember.Route.extend({
         return userInfo || {};
     }),
     beforeModel(){
-        this.get('loaderService').setIsLoading(true);
-
+        
         if(!this.get('authenticationService').isLoggedIn){
             this.transitionTo('login');
             return;
         }
-
+        
         const userInfo = this.get('userInfo');
         if(userInfo.role === null || userInfo.role === undefined || userInfo.organizationId === null || userInfo.organizationId === undefined){
             this.get('authenticationService').logout();
             this.transitionTo('login');
             return;
         }
-
+        
         if(+this.get('userInfo').role === 2){
             this.transitionTo('index');
             return;
         }
-
+        
         if(+this.get('userInfo').role !== 0 && +this.get('userInfo').role !== 1){
             this.get('authenticationService').logout();
             this.transitionTo('login');
             return;
         }
+
+        this.get('loaderService').setIsLoading(true);
     },
     model(){
 
@@ -59,17 +60,18 @@ export default Ember.Route.extend({
             if(jqXHR.status === 401 || jqXHR.status === 403){
                 this.transitionTo('access-denied');
             }
-            console.log(response.data)
             return response.data;
         })
         .catch((err) => {
-            if(err.status === 401 || err.status === 403){
-                this.transitionTo('access-denied');
-            }
-            const authStatus = err.getResponseHeader('X-Auth-Status');
+            const authStatus = err.getResponseHeader('Tms-Auth-Status');
             if(authStatus === '1'){
                 this.get('authenticationService').logout();
                 this.transitionToRoute('index');
+                return;
+            }
+            if(err.status === 401 || err.status === 403){
+                this.transitionTo('access-denied');
+                return;
             }
             console.log("error", err);
         })
@@ -77,6 +79,9 @@ export default Ember.Route.extend({
             this.get('loaderService').setIsLoading(false);
         });
 
+    },
+    setupController(controller, model){
+        controller.set('tournaments', model);
     },
     actions: {
         error(){

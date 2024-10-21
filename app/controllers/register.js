@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import formValidator from '../utils/form-validator';
+import getMonthDaysCount from '../utils/get-month-days-count';
 
 export default Ember.Controller.extend({
     authenticationService : Ember.inject.service(),
@@ -16,36 +17,6 @@ export default Ember.Controller.extend({
                     if(!date){
                         return false;
                     }
-                    const isLeapYear = year => {
-                        if (year/400){
-                            return true;
-                        }
-                        else if(year/100){
-                            return false;
-                        }
-                        else if(year/4){
-                            return true;
-                        }
-                        return false;
-                        
-                    };
-
-                    const getDaysCount = (month, year) => {
-                        switch(month){
-                            case 1:
-                            case 3:
-                            case 5:
-                            case 7:
-                            case 8:
-                            case 10:
-                            case 12:
-                                return 31;
-                            case 2:
-                                return 28 + isLeapYear(year);
-                            default:
-                                return 30;
-                        }
-                    };
 
                     const [day, month, year] = date.split("/").map(Number);
                     
@@ -53,7 +24,7 @@ export default Ember.Controller.extend({
                         return false;
                     }
 
-                    if(!day || day < 1 || day > getDaysCount(month, year)){
+                    if(!day || day < 1 || day > getMonthDaysCount(month, year)){
                         return false;
                     }
 
@@ -182,7 +153,13 @@ export default Ember.Controller.extend({
             const formData = new FormData(event.target);
             const [validationErrors, hasErrors] = formValidator(formData, this.get('validationConfig'));
             formData.set('email', formData.get('email').toLowerCase());
-            if(hasErrors){
+            const password = formData.get('password');
+            const confirmPassword = formData.get('confirmPassword');
+            const isPasswordMatches = (password === confirmPassword);
+            if(!isPasswordMatches){
+                validationErrors['confirmPassword'] = "Confirmation password not matching";
+            }
+            if(hasErrors || !isPasswordMatches){
                 this.setErrors(validationErrors);
                 return;
             }

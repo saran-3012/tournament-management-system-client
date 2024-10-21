@@ -20,4 +20,8 @@ export default function HashSet(...values) {
   this.toArray = function () {
     return Object.keys(_obj);
   };
+
+  this.toString = function () {
+    return Object.keys(_obj).join(', ');
+  }
 }

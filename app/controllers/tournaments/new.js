@@ -1,6 +1,8 @@
 import Ember from 'ember';
-import tournament from './tournament';
 import dateTimeToMills from '../../utils/date-time-to-mills';
+import HashSet from '../../utils/hash-set';
+import checkDateValid from '../../utils/check-date-valid';
+import formValidator from '../../utils/form-validator';
 
 export default Ember.Controller.extend({
     messageQueueService: Ember.inject.service(),
@@ -11,77 +13,143 @@ export default Ember.Controller.extend({
         const userInfo = this.get('authenticationService').userInfo;
         return userInfo || {};
     }),
-    // validationConfig: {
-    //     tournamentName: [
-    //         { required: true, message: "Tournament name is required!" },
-    //         { minLength: 3, message: "Tournament name must be atleast 3 characters long" },
-    //         { maxLength: 50, message: "Tournament name must be less than 50 characters" }
-    //     ],
-    //     tournamentdate : [
-    //         { 
-    //             validator(date){
-    //                 if(!date){
-    //                     return true;
-    //                 }
-    //                 const isLeapYear = year => {
-    //                     if (year/400){
-    //                         return true;
-    //                     }
-    //                     else if(year/100){
-    //                         return false;
-    //                     }
-    //                     else if(year/4){
-    //                         return true;
-    //                     }
-    //                     return false;
-                        
-    //                 };
+    validationConfig: {
+        tournamentName: [
+            { required: true, message: "Tournament name is required!" },
+            { minLength: 3, message: "Tournament name must be atleast 3 characters long" },
+            { maxLength: 50, message: "Tournament name must be less than 50 characters" },
+            {
+                validator(venue){
+                    const vulnerableCharacters = new HashSet('<', '>');
 
-    //                 const getDaysCount = (month, year) => {
-    //                     switch(month){
-    //                         case 1:
-    //                         case 3:
-    //                         case 5:
-    //                         case 7:
-    //                         case 8:
-    //                         case 10:
-    //                         case 12:
-    //                             return 31;
-    //                         case 2:
-    //                             return 28 + isLeapYear(year);
-    //                         default:
-    //                             return 30;
-    //                     }
-    //                 };
+                    for(const ch of venue){
+                        if(vulnerableCharacters.contains(ch)){
+                            this.message = `${vulnerableCharacters.toString()} are not allowed`;
+                            return false;
+                        }
+                    }
 
-    //                 const [day, month, year] = date.split("/").map(Number);
-                    
-    //                 if(!month || month < 1 || month > 12){
-    //                     return false;
-    //                 }
+                    return true;
+                },
+                message: 'These characters are not allowed'
+            }
+        ],
+        tournamentdate : [
+            { 
+                validator(date){
+                    if(!date){
+                        return true;
+                    }
 
-    //                 if(!day || day < 1 || day > getDaysCount(month, year)){
-    //                     return false;
-    //                 }
+                    return checkDateValid(date);
+                }, 
+                message: "Provided date is not valid format"
+            }
+        ],
+        tournamentVenue: [
+            {
+                validator(venue){
+                    const vulnerableCharacters = new HashSet('<', '>');
 
-    //                 if(!year || year > new Date().getFullYear()){
-    //                     return false;
-    //                 }
+                    for(const ch of venue){
+                        if(vulnerableCharacters.contains(ch)){
+                            this.message = `${vulnerableCharacters.toString()} are not allowed`;
+                            return false;
+                        }
+                    }
 
-    //                 return true;
-    //             }, 
-    //             message: "Provided date is not valid format"
-    //         }
-    //     ],
-        
-    // },
-    // validationErrors: {},
-    // setErrors(validationErrors){
-    //     this.set('validationErrors', validationErrors);
-    // },
-    // cleanUp(){
-    //     this.setErrors({});
-    // },
+                    return true;
+                },
+                message: 'Invalid venue'
+            }
+        ],
+        maxParticipation: [
+            {
+                validator(count){
+                    if(isNaN(count)){
+                        this.message = "Limit should be number"
+                        return false;
+                    }
+                    count = +count;
+                    return count > 0;
+                },
+                message: "Limit should be atleast 1"
+            }
+        ],
+        registrationStartDate: [
+            { required: true, message: "Opening date is required!" },
+            { 
+                validator(date){
+                    if(!date){
+                        return false;
+                    }
+
+                    return checkDateValid(date);
+                }, 
+                message: "Provided date is not valid format (dd/mm/yyyy)"
+            }
+        ],
+        registrationEndDate: [
+            { required: true, message: "Closing date is required!" },
+            { 
+                validator(date){
+                    if(!date){
+                        return false;
+                    }
+                    return checkDateValid(date);
+                }, 
+                message: "Provided date is not valid format (dd/mm/yyyy)"
+            }
+        ],
+        sportName: [
+            {required: true, message: "Sport name is required"},
+            {
+                validator(venue){
+                    const vulnerableCharacters = new HashSet('<', '>');
+
+                    for(const ch of venue){
+                        if(vulnerableCharacters.contains(ch)){
+                            this.message = `${vulnerableCharacters.toString()} are not allowed`;
+                            return false;
+                        }
+                    }
+
+                    return true;
+                },
+                message: 'Invalid sport'
+            }
+        ],
+        sportType: [
+            {required: true, message: "Sport type is required"},
+            {
+                validator(type){
+                    return (+type === 0 || +type === 1);
+                },
+                message: 'Sport type can be only individual or team'
+            }
+        ],
+        teamSize: [
+            {required: true, message : "Team size is required"},
+            {
+                validator(size){
+                    if(isNaN(size)){
+                        this.message = "Team size should be number";
+                        return false;
+                    }
+                    size = +size;
+                    return size > 0;
+                },
+                message: 'Team size should be atleast 1'
+            }
+        ]
+    },
+    validationErrors: {},
+    setErrors(validationErrors){
+        this.set('validationErrors', validationErrors);
+    },
+    cleanUp(){
+        this.setErrors({});
+    },
     createTournament(formData){
 
         const tournamentData = {};
@@ -124,7 +192,7 @@ export default Ember.Controller.extend({
         })
         .catch((err) => {
             console.log(err);
-            const authStatus = err.getResponseHeader('X-Auth-Status');
+            const authStatus = err.getResponseHeader('Tms-Auth-Status');
             if(authStatus === '1'){
                 this.get('authenticationService').logout();
                 this.transitionToRoute('index');
@@ -132,20 +200,18 @@ export default Ember.Controller.extend({
         });
     },
     actions: {
-        handleSubmit(event){
+        createNewTournament(event){
             event.preventDefault();
 
             const formData = new FormData(event.target);
-            // const [validationErrors, hasErrors] = formValidator(formData, this.get('validationConfig'));
-            // formData.set('email', formData.get('email').toLowerCase());
-            // if(hasErrors){
-            //     this.setErrors(validationErrors);
-            //     return;
-            // }
+            const [validationErrors, hasErrors] = formValidator(formData, this.get('validationConfig'));
+            if(hasErrors){
+                this.setErrors(validationErrors);
+                return;
+            }
             this.createTournament(formData);
 
             this.transitionToRoute('tournaments');
         }
     }
 });
-

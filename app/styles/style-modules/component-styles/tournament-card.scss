@@ -49,8 +49,6 @@
     width: 100%;
 
     .button{
-        padding: 0.25rem;
-
         &:hover{
             &.no-border{
                 &.bg-transparent{
@@ -66,6 +64,37 @@
     font-size: 1.25rem;
     font-weight: 500;
     color: $dark-grey;
+}
+
+.tournament-card-menu-box{
+    position: relative;
+}
+
+.tournament-card-menu{
+    @include flex(flex-start, flex-start, column);
+
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+    width: 8rem;
+    gap: 0.1rem;
+    overflow: hidden;
+    border-radius: 0.125rem;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+
+    a{
+        width: 100%;
+    }
+    
+    .button{
+        &:hover{
+            &.no-border{
+                &.bg-white{
+                    background-color: $pale-white
+                }
+            }
+        }
+    }
 }
 
 .tournament-card-box{

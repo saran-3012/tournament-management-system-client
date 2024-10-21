@@ -7,11 +7,13 @@
         <h2 class="tournament-card-title">{{tournament.tournamentName}}</h2>
         {{#if (or (eq userInfo.role 1) (eq userInfo.role 2))}}
             <div class="tournament-card-menu-box">
-                {{general-button class='no-border bg-transparent soft-corner' buttonIcon='images/dots-menu-icon.svg'}}
+                {{general-button class='pd-sq-sm no-border bg-transparent soft-corner' buttonIcon='images/dots-menu-icon.svg' onClick=(action 'handleMenuVisibility') }}
                 {{#if isMenuOpen}}
-                    <div class="tournament-card-menu">
-                        <p></p>
-                        <p></p>
+                    <div class="tournament-card-menu bg-pale-white">
+                        {{#link-to 'tournaments.tournament.edit' tournament.tournamentId class='no-decoration'}}
+                            {{general-button class='full-width bg-white no-border' buttonName='Edit'}}
+                        {{/link-to}}
+                        {{general-button class='full-width bg-white no-border' buttonName='Cancel'}}
                     </div>
                 {{/if}}
             </div>
