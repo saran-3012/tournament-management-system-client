@@ -1,32 +1,34 @@
-<div class="tournament-card-image-box">
+{{#link-to 'tournaments.tournament' tournament.tournamentId class='no-decoration tournament-card-image-box'}}
     <img class="tournament-card-image" src={{prepend-root tournament.tournamentPoster}} alt="Tournament Poster">
     <div class="tournament-card-status">{{tournament-status tournament.tournamentStatus}}</div>
-</div>
+{{/link-to}}
 <div class="tournament-card-details">
     <div class="tournament-card-title-box">
-        <h2 class="tournament-card-title">{{tournament.tournamentName}}</h2>
+        {{#link-to 'tournaments.tournament' tournament.tournamentId class='no-decoration tournament-card-title'}}
+            {{tournament.tournamentName}}
+        {{/link-to}}
         {{#if (or (eq userInfo.role 1) (eq userInfo.role 2))}}
             <div class="tournament-card-menu-box">
-                {{general-button class='pd-sq-sm no-border bg-transparent soft-corner' buttonIcon='images/dots-menu-icon.svg' onClick=(action 'handleMenuVisibility') }}
+                {{general-button class='pd-sq-sm no-border bg-transparent soft-corner' buttonIcon='images/dots-menu-icon.svg' onClick=(action 'handleMenuVisibility') title='Menu'}}
                 {{#if isMenuOpen}}
                     <div class="tournament-card-menu bg-pale-white">
                         {{#link-to 'tournaments.tournament.edit' tournament.tournamentId class='no-decoration'}}
                             {{general-button class='full-width bg-white no-border' buttonName='Edit'}}
                         {{/link-to}}
-                        {{general-button class='full-width bg-white no-border' buttonName='Cancel'}}
+                        {{general-button class='full-width bg-white no-border' buttonName='Cancel' onClick=(action 'selectAndOpenPopup') }}
                     </div>
                 {{/if}}
             </div>
         {{/if}}
     </div>
     <div class="tournament-card-box">
-        {{card-item itemIconClass='cube-icon' itemName=tournament.sportName}}
-        {{card-item class='align-end' itemIconClass=(if (eq tournament.sportType 0) 'individual-icon' 'people-icon') itemName=(sport-type tournament.sportType)}}
+        {{card-item itemIconClass='cube-icon' itemName=tournament.sportName title='Sport'}}
+        {{card-item class='align-end' itemIconClass=(if (eq tournament.sportType 0) 'individual-icon' 'people-icon') itemName=(sport-type tournament.sportType) title='Participation Type'}}
     </div>
     <div class="tournament-card-box">
         <div class="tournament-card-innerbox">
-            {{card-item itemIconClass='calander-icon' itemName=(get-date tournament.tournamentDate)}}
-            {{card-item itemIconClass='clock-icon' itemName=(calculate-deadline tournament.registrationStartDate tournament.registrationEndDate)}}
+            {{card-item itemIconClass='calander-icon' itemName=(get-date tournament.tournamentDate) title='Tournament Date'}}
+            {{card-item itemIconClass='clock-icon' itemName=(calculate-deadline tournament.registrationStartDate tournament.registrationEndDate) title='Deadline'}}
         </div>
         {{#link-to 'tournaments.tournament' tournament.tournamentId class='no-decoration'}}
             {{general-button class='br-blue bg-white ft-blue curved' buttonName='Details'}}

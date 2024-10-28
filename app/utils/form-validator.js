@@ -23,7 +23,6 @@ export default function formValidator(formData, validationConfig) {
         return hasErrors = true;
       }
       if (condition.validator && typeof condition.validator === 'function' && !condition.validator(value)){
-        console.log(condition.validator, condition.validator(value))
         validationErrors[key] = condition.message;
         return hasErrors = true;
       }

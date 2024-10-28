@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
-export function testLogger([value]) {
-  console.log("Logger", value);
+export function testLogger(values) {
+  console.log("Logger", ...values);
   return 'Logger';
 }
 

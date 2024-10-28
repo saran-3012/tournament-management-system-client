@@ -1,10 +1,27 @@
 <section class="container section bg-pale-white flex column">
     {{tournament-navbar searchTournaments=(action 'searchTournaments') }}
     <div class="tournament-card-wrapper">
-        {{#each tournaments as |tournament|}}
-            {{tournament-card class='bg-white' tournament=tournament}}
-        {{/each}}
+        {{#unless (is-empty tournaments)}}
+            {{#each tournaments as |tournament|}}
+                {{tournament-card class='bg-white' tournament=tournament openCancelPopup=(action 'setIsCancelPopupOpen' true) setSelectedTournament=(action 'setSelectedTournament') }}
+            {{/each}}
+        {{else}}
+            <p>No tournament available</p>
+        {{/unless}}
     </div>
 </section>
+
+{{#if isCancelPopupOpen }}
+    {{#popup-box class='cancel-tournament-popup-box' closePopup=(action 'setIsCancelPopupOpen' false)}}
+        <h2 class="ft-night-black ft-3xl wt-400">Cancel Tournament</h2>
+        <div class="cancel-tournament-popup-details">
+            <p class="ft-grey ft-sm">Are you sure? want to cancel {{#link-to 'tournaments.tournament' selectedTournament.tournamentId class='no-decoration ft-blue'}}{{selectedTournament.tournamentName}}{{/link-to}}</p>
+            <div class="cancel-tournament-popup-buttons">
+                {{general-button class='br-blue bg-blue ft-white soft-corner' buttonName='Go back' onClick=(action 'setIsCancelPopupOpen' false) }}
+                {{general-button class='br-red bg-red ft-white soft-corner' buttonName='Cancel' onClick=(action 'cancelTournament')}}
+            </div>
+        </div>
+    {{/popup-box}}
+{{/if}}
 
 {{outlet}}

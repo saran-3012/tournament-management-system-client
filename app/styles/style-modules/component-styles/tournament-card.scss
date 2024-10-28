@@ -64,6 +64,11 @@
     font-size: 1.25rem;
     font-weight: 500;
     color: $dark-grey;
+    transition: all 200ms;
+
+    &:hover{
+        color: $blue;
+    }
 }
 
 .tournament-card-menu-box{
@@ -100,6 +105,18 @@
 .tournament-card-box{
     @include flex(flex-end, space-between);
     width: 100%;
+    .button{
+        &:hover{
+            &.br-blue{
+                &.bg-white{
+                    background-color: $blue;
+                }
+                &.ft-blue{
+                    color: $white;
+                }
+            }
+        }
+    }
 }
 
 .tournament-card-innerbox{
@@ -107,15 +124,3 @@
     gap: 1rem;
 }
 
-.button{
-    &:hover{
-        &.br-blue{
-            &.bg-white{
-                background-color: $blue;
-            }
-            &.ft-blue{
-                color: $white;
-            }
-        }
-    }
-}

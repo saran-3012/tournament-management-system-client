@@ -117,5 +117,11 @@ export default Ember.Route.extend({
                 .finally(() => {
                     this.get('loaderService').setIsLoading(false);
                 });
+    },
+    setupController(controller, model){
+        this.get('loaderService').setIsLoading(false);
+        controller.set('organization', model.organization);
+        controller.set('users', model.users);
+        controller.set('admin', model.admin);
     }
 });

@@ -1,5 +1,5 @@
-{{search-bar minWait=500 searchHandler=searchTournaments}}
-{{#if (eq userRole 1)}}
+{{search-bar minWait=200 searchHandler=searchTournaments searchBarId='tournament-search-bar' class='bg-white max-width-lg'}}
+{{#if (or (eq userInfo.role 1) (eq userInfo.role 2))}}
     {{#link-to 'tournaments.new' class='no-decoration'}}
         {{#general-button class='br-green bg-green ft-white soft-corner' buttonName='Create' isSVG=true}}
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor">

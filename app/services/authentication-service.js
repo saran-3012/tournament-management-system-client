@@ -9,6 +9,7 @@ export default Ember.Service.extend({
     envService:  Ember.inject.service(),
     userInfo: JSON.parse(sessionStorage.getItem('userInfo')),
     isLoggedIn: sessionStorage.getItem('isLoggedIn') === 'true',
+    messageQueueService: Ember.inject.service(),
 
     _setUserInfo(userInfo, isLoggedIn){
         this.set("userInfo", userInfo);
@@ -23,7 +24,7 @@ export default Ember.Service.extend({
         const orgData = {};
         const userData = {};
 
-        const vulnerableCharacters = new HashSet("<", ">", "&", "'", "\"", "/", "\\", "=", "(", ")", ":", "%", "{", "}", ";");
+        const vulnerableCharacters = new HashSet("<", ">");
 
         orgData['startedYear'] = +formData.get('startedYear');
 
@@ -70,11 +71,15 @@ export default Ember.Service.extend({
         })
         .catch((jqXHR, textStatus, errorThrown) => {
             console.log(jqXHR, textStatus, errorThrown)
+            this.get('messageQueueService').addPopupMessage({
+                message: jqXHR.responseJson.message,
+                level: 3
+            })
         });
     },
 
-    login(email, password){
-
+    login(email, password, callBack){
+        const messageQueueService = this.get('messageQueueService');
         const thisRef = this;
 
         rsaEncrypter(password)
@@ -107,9 +112,14 @@ export default Ember.Service.extend({
         })
         .then((data, textStatus, jqXHR) => {
             thisRef._setUserInfo(data.data, true);
+            callBack();
         })
         .catch((jqXHR, textStatus, errorThrown) => {
             console.log(jqXHR, textStatus, errorThrown)
+            messageQueueService.addPopupMessage({
+                message: "Invalid user credentials",
+                level: 3
+            })
         });
        
     },
@@ -140,6 +150,11 @@ export default Ember.Service.extend({
         })
         .catch((jqXHR, textStatus, errorThrown) => {
             console.log(jqXHR, textStatus, errorThrown)
+            
+            this.get('messageQueueService').addPopupMessage({
+                message: jqXHR.responseJson.message,
+                level: 0
+            });
         });
 
     },
@@ -168,6 +183,10 @@ export default Ember.Service.extend({
         })
         .catch((jqXHR, textStatus, errorThrown) => {
             console.log(jqXHR, textStatus, errorThrown)
+            messageQueueService.addPopupMessage({
+                message: jqXHR.responseJson.message,
+                level: 3
+            })
         })
     }
 });

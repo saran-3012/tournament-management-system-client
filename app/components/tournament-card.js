@@ -36,8 +36,9 @@ export default Ember.Component.extend({
         handleMenuVisibility(event){
             this.get('toggleMenu')(event, this)
         },
-        hello(){
-            console.log("hello")
+        selectAndOpenPopup(){
+            this.get('setSelectedTournament')(this.get('tournament'));
+            this.get('openCancelPopup')();
         }
     }
 });

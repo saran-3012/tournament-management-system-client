@@ -10,15 +10,16 @@ Router.map(function () {
   this.route('login');
   this.route('register');
   this.route('dashboard');
-  this.route('tournaments', function() {
-    this.route('tournament', { path : ':tournament_id' }, function() {
+  this.route('profile');
+  this.route('tournaments', function () {
+    this.route('tournament', { path: ':tournament_id' }, function () {
       this.route('edit');
     });
     this.route('new');
   });
-  this.route('organizations', function() {
-    this.route('organization', {
-      path: ':organization_id'
+  this.route('organizations', function () {
+    this.route('organization', { path: ':organization_id'}, function () {
+      this.route('user', { path: 'users/:user_id'});
     });
   });
   this.route('access-denied');
@@ -27,7 +28,7 @@ Router.map(function () {
 
 
 
-  this.route('not-found', {path: '/*'});
+  this.route('not-found', { path: '/*' });
 });
 
 export default Router;

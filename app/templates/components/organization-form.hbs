@@ -1,0 +1,37 @@
+<section class="container edit-organization">
+    {{#form-model class="edit-organization-form" formHeader='Update Organization' onSubmit=(action 'handleSubmit') }}
+        <div class="organization-form-wrapper">
+            <div class="organization-form-box">
+                <div class="organization-form-innerbox">
+                    {{text-input inputName='organizationName' inputId='edit-organizationname' labelName='Organization Name' defaultValue=organization.organizationName isRequired=true errorMessage=validationErrors.organizationName }}
+                    {{text-input inputName='organizationAddress' inputId='edit-organizationaddress' labelName='Organization Address' defaultValue=organization.organizationAddress isRequired=true errorMessage=validationErrors.organizationAddress }}
+                    {{text-input inputName='startedYear' inputId='edit-startedyear' labelName='Started Year' isRequired=true defaultValue=organization.startedYear errorMessage=validationErrors.startedYear }}
+
+                    {{!-- Experimental, to be added later --}}
+                    {{#if 0}} 
+                    <div class="edit-adminbox">
+                        <select name="adminId" id="edit-adminid">
+                            <option value={{admin.userId}} selected='true' disabled='true' hidden='true'>{{admin.userName}}</option>
+                                {{#if changeAdminSelected}}
+                                    {{#each users as |user|}}
+                                        <option value={{user.userId}}>{{user.userName}}</option>
+                                    {{/each}}
+                                {{/if}}
+                        </select>
+                        {{general-button class='br-blue bg-blue ft-white' buttonName=(if changeAdminSelected 'Confirm' 'Change Admin')}}
+                    </div>
+                    {{/if}}
+
+
+                </div>
+                <div class="organization-form-button-box">
+                    {{general-button buttonName='Cancel' class='br-light-grey bg-pale-white ft-night-black full-width' onClick=(action closeOrganizationForm) }}
+                    {{general-button type='submit' buttonName='Save' class='br-blue bg-blue ft-white full-width'}}
+                </div>
+            </div>
+        </div>
+    {{/form-model}}
+</section>
+
+
+{{yield}}

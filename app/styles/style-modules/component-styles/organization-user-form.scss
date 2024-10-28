@@ -1,0 +1,44 @@
+.organization-user-form-container{
+    @include flex(center, center);
+    
+    position: fixed;
+    z-index: 110;
+    top: 0;
+    left: 0;
+    min-height: 100svh;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.organization-user-form-model{
+
+}
+
+.organization-user-form-wrapper{
+    @include flex(center, center, column);
+
+    width: 100%;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.organization-user-form-box{
+    @include flex(center, space-between, column);
+
+    gap: 1.65rem;
+    width: calc(50% - 0.5rem);
+    min-width: 500px;
+}
+
+.organization-user-form-innerbox{
+    @include flex(center, flex-start, column);
+
+    gap: 1rem;
+    width: 100%;
+}
+
+.organization-user-form-buttons{
+    @include flex(center, space-between);
+
+    width: 100%;
+    gap: 1rem;
+}

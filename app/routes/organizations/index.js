@@ -67,5 +67,8 @@ export default Ember.Route.extend({
             console.log("error occured!")
             return true;
         }
+    },
+    setupController(controller, model){
+        controller.set('organizations', model);
     }
 });

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import limitCalls from '../utils/limit-calls';
+import delayCalls from '../utils/delay-calls';
 
 export default Ember.Component.extend({
     tagName: 'div',
@@ -8,12 +8,12 @@ export default Ember.Component.extend({
     searchField: '',
     init() {
         this._super(...arguments);
-        this.set('limitedSearchCall', limitCalls(
+        this.set('delayedSearchCall', delayCalls(
             this.get('minWait'),
             this.get('searchHandler')
         ));
     },
     searchData: Ember.observer('searchField', function () {
-        this.get('limitedSearchCall')(this.get('searchField'));
+        this.get('delayedSearchCall')(this.get('searchField'));
     })
 });

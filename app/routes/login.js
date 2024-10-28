@@ -7,7 +7,7 @@ export default Ember.Route.extend(ControllerCleanup, {
     beforeModel(){
         const self = this;
         this.get('authenticationService').checkin(function(){
-            self.transitionTo('index');
+            self.transitionTo('dashboard');
         });
     },
     actions: {

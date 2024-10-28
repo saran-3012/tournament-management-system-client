@@ -12,6 +12,10 @@
     background-repeat: $repeat;
 }
 
+@mixin border($color: $black, $width: 1px, $style: solid){
+    border: $width $style $color;
+}
+
 %elipsis{
     overflow-x: hidden;
     text-overflow: ellipsis;

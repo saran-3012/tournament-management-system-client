@@ -1,3 +1,16 @@
+.button-svg{
+    @include flex(center, center);
+
+    width: 1.25rem;
+    width: 1.25rem;
+}
+
+.button-name{
+    font-weight: 500;
+    text-transform: uppercase;
+    text-wrap: nowrap;
+}
+
 .button{
     @include flex(center, center);
 
@@ -15,6 +28,10 @@
 
     &.pd-sq{
         padding: 0.5rem;
+    }
+
+    &.pd-sm{
+        padding: 0.25 0.5rem;
     }
 
     &.pd-lg{
@@ -39,6 +56,10 @@
 
     &.curved{
         border-radius: 2rem;
+    }
+
+    &.circle{
+        border-radius: 100%;
     }
 
     &.full-width{
@@ -76,18 +97,10 @@
         }
     }
 
-
+    &:disabled{
+        cursor: not-allowed;
+    }
 }
 
 
-.button-svg{
-    @include flex(center, center);
 
-    width: 1.25rem;
-    width: 1.25rem;
-}
-
-.button-name{
-    font-weight: 500;
-    text-transform: uppercase;
-}

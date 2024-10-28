@@ -1,0 +1,9 @@
+{{#if (or (eq userInfo.role 1) (eq userInfo.role 2))}}
+    {{#general-button class='br-green bg-green ft-white soft-corner' buttonName='New Member' isSVG=true onClick=(action openAddUserForm)}}
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+    {{/general-button}}
+{{/if}}
+{{search-bar minWait=300 searchHandler=searchOrganizationUsers searchBarId='organization-user-search-bar' class='bg-pale-white max-width-lg'}}
+{{yield}}

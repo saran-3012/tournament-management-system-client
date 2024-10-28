@@ -2,8 +2,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
     gap: 2rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding: 2rem 1rem;
     width: 100%;
     flex-wrap: wrap;
 } 
@@ -50,23 +49,29 @@
 }
 
 .tournament-detail-container{
+    @include flex(flex-start, flex-start, column);
+
+
+    width: 90%;
+    gap: 2rem;
+    padding-left: 3rem;
+    padding-right: 3rem; 
+}
+
+.tournament-detail-wrapper{
     @include flex(flex-start, space-between);
 
     flex-wrap: wrap;
-    width: 90%;
+    width: 100%;
     gap: 1rem;
-    padding-left: 3rem;
-    padding-right: 3rem; 
-    padding-bottom: 2rem;
 }
 
 .tournament-detail-box{
     @include flex(flex-start, flex-start, column);
 
-    gap: 0.75rem;
+    gap: 1rem;
     padding: 2rem;
     flex-grow: 3;
-    min-width: 40rem;
     border-radius: 1rem;
     box-shadow: 1px 1px 4px $light-grey;
 }
@@ -83,6 +88,7 @@
     @include background('images/trophy-icon.svg');
 
     background-size: calc(100% - 1rem);
+    flex-shrink: 0;
     width: 5rem;
     height: 5rem;
     border-radius: 1rem;
@@ -96,6 +102,19 @@
     color: $dark-grey;
 }
 
+.tournament-detail-tags-box{
+    @include flex(center);
+
+    gap: 1rem;
+    padding-top: 0.61rem;
+}
+
+.tournament-detail-tag{
+    border: 1px solid $light-grey;
+    border-radius: 2rem;
+    color: $night-black;
+    padding: 0.5rem;
+}
 
 
 .tournament-registration-box{
@@ -103,7 +122,6 @@
 
     padding: 2rem;
     flex-grow: 1;
-    min-width: 20rem;
     border-radius: 1rem;
     gap: 1rem;
     box-shadow: 1px 1px 4px $light-grey;
@@ -126,12 +144,79 @@
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    place-items: stretch;
     gap: 1rem;
 }
 
-.contestants-wrapper{
+// Tournament event details
+
+.event-details-wrapper{
+    @include flex(center, flex-start, column);
+
+    width: 100%;
+    gap: 1rem;
+    position: sticky;
+    top: $navbar-height;
+}
+
+.event-navbar{
+    @include flex(center, space-between);
+
+    width: 100%;
+    background-color: $white;
+    padding: 1rem 2rem;
+    border-radius: 0.75rem;
+    gap: 1rem;
+    box-shadow: 1px 1px 4px $light-grey;
+    position: sticky;
+    top: $navbar-height;
 
 
+    .button{
+        &:hover{
+            &.br-transparent{
+                &.bg-transparent{
+                    border-color: $light-grey;
+                }
+            }
+        }
+    }
+}
+
+.event-navbar-buttons{
+    @include flex(center);
+
+    gap: 1rem;
+}
+
+.event-navbar-options{
+    @include flex(center);
+
+    gap: 1rem;
+}
+
+.contestansts-wrapper{
+    @include flex(center, flex-start, column);
+
+    gap: 0.5rem;
+    width: 100%;
+    padding: 2rem;
+    background-color: $white;
+    box-shadow: 1px 1px 4px $light-grey;
+    border-radius: 1rem;
+}
+
+
+
+.schedules-wrapper{
+    @include flex(center, flex-start, column);
+
+    gap: 0.5rem;
+    width: 100%;
+    padding: 2rem;
+    background-color: $white;
+    box-shadow: 1px 1px 4px $light-grey;
+    border-radius: 1rem;
 }
 
 
@@ -167,4 +252,21 @@
     @include flex(center, center, column);
     gap: 1rem;
     width: 100%;
+}
+
+// Cancel tournament popup box
+
+
+.cancel-tournament-popup-details{
+    @include flex(flex-start, flex-start, column);
+
+    width: 100%;
+    gap: 0.5rem;
+}
+
+.cancel-tournament-popup-buttons{
+    @include flex(center);
+
+    width: 100%;
+    gap: 1rem;
 }

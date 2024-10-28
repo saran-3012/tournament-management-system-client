@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
     tagName: 'div',
     classNames: ['input'],
-    bindAttributes: ['disabled'],
+    attributeBindings: ['disabled'],
     inputName: null,
     inputId: null,
     lableName: null,

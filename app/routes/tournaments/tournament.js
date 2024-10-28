@@ -1,10 +1,11 @@
 import Ember from 'ember';
 import $ from 'jquery';
 import tournamentImageFallback from '../../utils/tournament-image-fallback';
-import millisToDate from '../../utils/millis-to-date';
+import controllerCleanup from '../../mixins/controller-cleanup';
 
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(controllerCleanup, {
+    messageQueueService: Ember.inject.service(),
     envService:  Ember.inject.service(),
     authenticationService: Ember.inject.service(),
     loaderService: Ember.inject.service(),
@@ -30,10 +31,13 @@ export default Ember.Route.extend({
         this.get('loaderService').setIsLoading(true);
     },
     model(params){
+        const messageQueueService = this.get('messageQueueService');
+
         const userInfo = this.get('userInfo');
         const orgId = +userInfo.organizationId;
         const tournamentId = +params.tournament_id;
         const config = this.get('envService');
+        
         const apiURL = `${config.getEnv('BASE_API_URL')}/api/v1/orgs/${orgId}/tournaments/${tournamentId}/contestants?include_count=true&include_tournament=true&include_user=true`;
         
         return $.ajax({
@@ -54,14 +58,24 @@ export default Ember.Route.extend({
         .catch((err) => {
             const authStatus = err.getResponseHeader('Tms-Auth-Status');
             if(authStatus === '1'){
+                messageQueueService.addPopupMessage({
+                    message: "Session expired, login again",
+                    level: 0
+                });
                 this.get('authenticationService').logout();
                 this.transitionToRoute('index');
                 return;
             }
             if(err.status === 401 || err.status === 403){
+                messageQueueService.addPopupMessage({
+                    message: "Not allowed to perform this operation",
+                    level: 3
+                });
                 this.transitionTo('access-denied');
                 return;
             }
+
+
             console.log(err);
         })
         .always(() => {
@@ -69,19 +83,23 @@ export default Ember.Route.extend({
         });
     },
     setupController(controller, model){
+        if(!model) return;
         const tournament = model.tournament;
         tournament['registeredCount'] = '' + model.count;
         tournament.tournamentPoster = tournamentImageFallback(tournament.sportName);
-        // tournament.tournamentVenue = tournament.tournamentVenue || 'Not Specified';
-        // tournament.tournamentDate = millisToDate(tournament.tournamentDate);
         controller.set('tournament', tournament);
-        controller.set((!model.tournament.sportType)? 'participants' : 'teams', model.contestants);
+        const participationType = (+tournament.sportType === 0)? 'participants' : 'teams';
+        controller.set(participationType , model[participationType]);
         const userParticipation = model.userParticipation;
         if((userParticipation.teamId !== undefined && userParticipation.teamId !== null) || (userParticipation.participantId !== undefined && userParticipation.participantId !== null)){
             userParticipation.userRegistered = true;
         }
         controller.set("userParticipation", userParticipation);
-
         this.get('dataPersistanceService').setData(tournament);
+    },
+    actions: {
+        willTransition(transition){
+            this.controllerCleanup();
+        },
     }
 });

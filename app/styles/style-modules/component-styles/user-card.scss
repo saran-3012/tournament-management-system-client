@@ -3,12 +3,12 @@
 
     gap: 0.5rem;
     min-width: 16rem;
-    box-shadow: 1px 1px 4px rgba(160, 160, 162, 0.4);
+    box-shadow: 1px 1px 4px rgba(160, 160, 162, 0.2);
     border-radius: 0.5rem;
     padding: 1rem;
-    transition: all 150ms;
+    transition: all 200ms;
     &:hover{
-        box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.35);
+        box-shadow: 3px 3px 12px rgba(160, 160, 162, 0.2);
     }
 }
 

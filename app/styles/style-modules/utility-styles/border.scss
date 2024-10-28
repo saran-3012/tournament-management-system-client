@@ -1,23 +1,28 @@
 .br-blue{
-    border-color: $blue;
+    @include border($blue);
 }
 
 .br-red{
-    border-color: $red;
+     @include border($red);
 }
 
 .br-grey{
+     @include border($grey);
     border-color: $grey;
 }
 
 .br-light-grey{
-    border-color: $light-grey;
+     @include border($light-grey);
 }
 
 .br-green{
-    border-color: $green;
+     @include border($green);
 }
 
 .br-orange{
-    border-color: $orange;
+     @include border($orange);
+}
+
+.br-transparent{
+     @include border(transparent);
 }

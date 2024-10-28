@@ -39,6 +39,37 @@ export default Ember.Controller.extend({
             .catch((err) => {
                 console.log("error" , err);
             });
+        },
+        searchOrganizations(searchValue){
+            const userInfo = this.get('userInfo');
+            
+            if(+userInfo.role !== 2){
+                this.transitionTo('index');
+                return;
+            }
+
+            const config = this.get('envService');
+            const apiURL = `${config.getEnv('BASE_API_URL')}/api/v1/orgs?filter_orgname=${searchValue}`;
+
+            $.ajax({
+                method: "GET",
+                url: apiURL,
+                accepts: {
+                    'json' : 'application/json' 
+                },
+                dataType: 'json'
+            })
+            .then((response, textStatus, xqXHR) => {
+                this.set('organizations', response.data);
+            })
+            .catch((err) => {
+                this.get('messageQueueService').addPopupMessage(
+                    {
+                        message: err.message,
+                        level: 4
+                    }
+                )
+            })
         }
     }
 });

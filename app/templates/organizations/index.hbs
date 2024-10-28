@@ -1,8 +1,13 @@
-<section class="container section bg-pale-white">
+<section class="container section bg-pale-white organizations">
+    {{organization-navbar searchOrganizations=(action 'searchOrganizations') }}
     <div class="organization-card-wrapper">
-        {{#each model as |organization|}}
-            {{organization-card class='bg-white' organization=organization changeOrganizationStatus=(action 'changeOrganizationStatus') }}
-        {{/each}}
+        {{#unless (is-empty organizations)}}
+            {{#each organizations as |organization|}}
+                {{organization-card class='bg-white' organization=organization changeOrganizationStatus=(action 'changeOrganizationStatus') }}
+            {{/each}}
+        {{else}}
+            <p>No organizations found</p>
+        {{/unless}}
     </div>
 </section>
 {{outlet}}

@@ -6,7 +6,7 @@ export default Ember.Component.extend({
     type: 'button',
     buttonIcon : null,
     buttonName: null,
-    attributeBindings: ['type', 'disabled'],
+    attributeBindings: ['type', 'disabled', 'title'],
     click(event){
         const handleClick = this.get('onClick');
         if(handleClick){

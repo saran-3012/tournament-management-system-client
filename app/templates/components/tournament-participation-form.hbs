@@ -20,14 +20,12 @@
             {{#if (eq tournament.sportType 1)}}
                 {{#if (eq teamRegistrationType 0)}}
                     {{text-input inputName='teamName' inputId='create-teamname' labelName='Team Name' isRequired=true errorMessage=validationErrors.teamName}}
-                {{/if}}
-                {{#if (eq teamRegistrationType 1)}}
-                    <select name="teamId" id="join-teamlist" >
-                        <option value="" selected='true' disabled='true' hidden='true'> Choose here</option>
+                {{else if (eq teamRegistrationType 1)}}
+                    {{#select-input inputName="teamId" inputId="join-teamlist" labelName='Select Team' defaultValue=(object 'value' '' 'selected' true 'disabled' true 'hidden' true 'displayName' 'Select Team') isRequired=true errorMessage=validationErrors.teamId}}
                         {{#each teams as |team|}}
                             <option value={{team.teamId}}>{{team.teamName}}</option>
                         {{/each}}
-                    </select>
+                    {{/select-input}}
                 {{/if}}
             {{/if}}
         {{else if (eq tournamentFormType 2)}}

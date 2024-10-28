@@ -1,0 +1,169 @@
+// Team participation
+
+.team-card{
+    @include flex(center, space-between, column);
+    @include border($light-grey);
+
+    background-color: $pale-white;
+    border-radius: 0.5rem;
+    width: 100%;
+    gap: 0.1rem;
+    overflow: hidden;
+}
+
+.team-card-info-box{
+    @include flex(center, space-between);
+
+    background-color: $white;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    width: 100%;
+}
+
+.team-card-info{
+    @include flex(center);
+
+    gap: 0.5rem;
+}
+
+.team-card-buttons{
+    @include flex(center);
+
+    gap: 0.5rem;
+
+    .button{
+        &:hover{
+            &.br-transparent{
+                &.bg-transparent{
+                    @include border($light-grey);
+                    background-color: $pale-white
+                }
+            }
+        }
+    }
+}
+
+.team-members-box{
+    @include flex(center, flex-start, column);
+
+    background-color: $pale-white;
+    gap: 0.1rem;
+    width: 100%;
+}
+
+.team-member-info-box{
+    @include flex(center, space-between);
+
+    background-color: $white;
+    padding: 0.5rem 2rem;
+    width: 100%;
+}
+
+.team-member-info{
+    @include flex(center, space-between);
+
+    gap: 0.5rem;
+}
+
+.team-leader-tag{
+    padding: 0.1rem 0.25rem;
+    border-radius: 1rem;
+}
+
+.team-member-buttons{
+    @include flex(center);
+
+    gap: 0.5rem;
+}
+
+
+.team-card{
+
+    &.my-participation{
+        @include border($blue);
+        position: relative;
+
+        .team-card-info-box{
+            background-color: $blue;
+
+            .team-card-info{
+                .ft-night-black{
+                    color: white;
+                }
+            }
+    
+            .team-card-buttons{
+                .br-red{
+                    &.bg-red{
+                        background-color: $white;
+                    }  
+                    &.ft-white{
+                        color: $red;
+                    }
+                }
+                .br-green{
+                    &.bg-green{
+                        background-color: $white;
+                    }  
+                    &.ft-white{
+                        color: $green;
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+// Individual participation
+
+.participant-card{
+    @include flex(center, space-between);
+    @include border($light-grey);
+
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    width: 100%;
+
+    &.my-participation{
+        @include border($blue);
+        background-color: $blue;
+        position: relative;
+
+        .participant-card-info{
+            .ft-night-black{
+                color: white;
+            }
+        }
+
+        .participant-card-buttons{
+            .br-red{
+                &.bg-red{
+                    background-color: $white;
+                }  
+                &.ft-white{
+                    color: $red;
+                }
+            }
+            .br-green{
+                &.bg-green{
+                    background-color: $white;
+                }  
+                &.ft-white{
+                    color: $green;
+                }
+            }
+        }
+    }
+
+
+}
+
+
+.pincard{
+    position: absolute;
+    top: 0.25rem;
+    left: 0.25rem;
+    width: 0.75rem;
+    height: 0.75rem;
+}

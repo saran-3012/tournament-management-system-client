@@ -205,7 +205,11 @@ export default Ember.Controller.extend({
 
             const formData = new FormData(event.target);
             const [validationErrors, hasErrors] = formValidator(formData, this.get('validationConfig'));
-            if(hasErrors){
+            const validEndDate = dateTimeToMills(formData.get('registrationStartDate')) < dateTimeToMills(formData.get('registrationEndDate'));
+            if(!validEndDate){
+                validationErrors.registrationEndDate = 'Closing date should be after the opening date';
+            }
+            if(hasErrors || !validEndDate){
                 this.setErrors(validationErrors);
                 return;
             }

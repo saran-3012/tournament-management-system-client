@@ -2,17 +2,26 @@ import Ember from 'ember';
 import $ from 'jquery';
 
 export default Ember.Controller.extend({
+    // Sercices
     envService:  Ember.inject.service(),
     authenticationService: Ember.inject.service(),
     loaderService: Ember.inject.service(),
     messageQueueService: Ember.inject.service(),
+
+    // User info
     userInfo: Ember.computed('authenticationService.userInfo', function() {
         const userInfo = this.get('authenticationService').userInfo;
         return userInfo || {};
     }),
+
+    // State config
     contestantsPage: 0,
+    schedulesPage: 0,
     limitPerPage: 20,
     tournamentFormType: 0,
+    eventPageType: 'Contestants',
+
+    // API Calls
     fetchRegisteredContestants(includeLimit=true){
         const messageQueueService = this.get('messageQueueService');
 
@@ -95,7 +104,7 @@ export default Ember.Controller.extend({
             console.log(err);
             messageQueueService.addPopupMessage(
                 {
-                    message: err.message,
+                    message: err.responseJSON.message,
                     level: 3
                 }
             )
@@ -210,7 +219,7 @@ export default Ember.Controller.extend({
         })
         .then((data, textStatus, jqXHR) => {
             console.log(data, textStatus, jqXHR);
-            thisRef.get('target').router.getHandler('tournaments.tournament').refresh()
+            thisRef.get('target').router.getHandler('tournaments.tournament').refresh();
             messageQueueService.addPopupMessage(
                 {
                     message: "Details updated successfully",
@@ -228,13 +237,24 @@ export default Ember.Controller.extend({
             )
         });
     },
+
+    // Actions
     actions: {
+        refreshModel(){
+            this.get('target').router.getHandler('tournaments.tournament').refresh();
+        },
+        setEventPageType(value){
+            if(this.get('eventPageType') === value) return;
+            this.set('eventPageType', value);
+        },
         setTournamentFormType(value){
-            if(value === 0){
-                this.fetchRegisteredContestants();
-            }
-            else{
-                this.fetchRegisteredContestants(false);
+            if(+this.get('tournament').sportType === 1){
+                if(+this.get('tournamentFormType') === 1 && value === 0){
+                    this.fetchRegisteredContestants();
+                }
+                else if(value === 1){
+                    this.fetchRegisteredContestants(false);
+                }
             }
             this.set('tournamentFormType', value);
         },
@@ -260,19 +280,63 @@ export default Ember.Controller.extend({
             this.set('contestantsPage', currPage - 1);
             this.get('fetchRegisteredContestants')();
         },
-        handleTournamentRegistration({event, teamRegistrationType}){
-            event.preventDefault();
-            const formData = new FormData(event.target);
+        handleTournamentRegistration({teamRegistrationType, formData}){
+
             this.get('registerTournament')(this, formData, teamRegistrationType);
         },
-        handleTournamentUnregistration({event, teamRegistrationType}){
-            event.preventDefault();
+        handleTournamentUnregistration({teamRegistrationType}){
+
             this.get('unregisterTournament')(this, teamRegistrationType);
         },
-        handleUpdateTournamentRegistration({event, teamRegistrationType}){
-            event.preventDefault();
-            const formData = new FormData(event.target);
+        handleUpdateTournamentRegistration({teamRegistrationType, formData}){
+            
             this.get('updateDetails')(this, formData, teamRegistrationType);
-        }
+        },
+        searchContestants(searchValue){
+
+            const orgId = this.get('userInfo').organizationId;
+            const tournament = this.get('tournament');
+
+            let participationType = null;
+            let filterParticipationType = null; 
+
+            if(+tournament.sportType === 0){
+                participationType = 'participants';
+                filterParticipationType = 'filter_participantname';
+            }
+            else if(+tournament.sportType === 1){
+                participationType = 'teams';
+                filterParticipationType = 'filter_teamname';
+            }
+
+            if(orgId === null || orgId === undefined){
+                this.get('authenticationService').logout();
+                this.transitionTo('login');
+                return;
+            }
+
+            const config = this.get('envService');
+            const apiURL = `${config.getEnv('BASE_API_URL')}/api/v1/orgs/${orgId}/tournaments/${tournament.tournamentId}/${participationType}?${filterParticipationType}=${searchValue}&exclude_limit=true`;
+
+            $.ajax({
+                method: "GET",
+                url: apiURL,
+                accepts: {
+                    'json' : 'application/json' 
+                },
+                dataType: 'json'
+            })
+            .then((response, textStatus, xqXHR) => {
+                this.set(participationType, response.data);
+            })
+            .catch((err) => {
+                this.get('messageQueueService').addPopupMessage(
+                    {
+                        message: err.message,
+                        level: 4
+                    }
+                )
+            });
+        },
     }
 });

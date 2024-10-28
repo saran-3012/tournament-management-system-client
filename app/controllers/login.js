@@ -2,11 +2,12 @@ import Ember from 'ember';
 import formValidator from '../utils/form-validator';
 
 export default Ember.Controller.extend({
+
     authenticationService : Ember.inject.service(),
     validationConfig: {
         email: [
             { required: true, message: "Email is required!" },
-            { pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i, message: "Entered email is not valid" }
+            { pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i, message: "Entered valid email" }
         ],
         password: [
             { required: true, message: "Password is required!" }
@@ -29,9 +30,10 @@ export default Ember.Controller.extend({
                 this.setErrors(validationErrors);
                 return;
             }
-            this.get('authenticationService').login(formData.get('email').toLowerCase(), formData.get('password'));
+            const thisRef = this;
+            this.get('authenticationService').login(formData.get('email').toLowerCase(), formData.get('password'), function(){ thisRef.transitionToRoute('dashboard') });
 
-            this.transitionToRoute('dashboard');
+            
         }
     }
 });

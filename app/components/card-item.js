@@ -5,5 +5,6 @@ export default Ember.Component.extend({
     classNames: ['card-item'],
     itemIconClass: '',
     itemName: '',
-    itemNameClass: ''
+    itemNameClass: '',
+    attributeBindings: ['title']
 });

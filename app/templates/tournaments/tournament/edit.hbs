@@ -7,8 +7,8 @@
                     {{text-input inputName='maxParticipation' inputId='create-maxparticipation' labelName='Participation Limit' isRequired=true defaultValue=(if tournament.maxParticipation tournament.maxParticipation '') errorMessage=validationErrors.maxParticipation}}
                     {{text-input inputName='tournamentDate' inputId='create-tournamentdate' labelName='Start Date' defaultValue=(millis-to-date tournament.tournamentDate '') errorMessage=validationErrors.tournamentDate}}
                     {{text-input inputName='tournamentVenue' inputId='create-tournamentvenue' labelName='Venue' defaultValue=tournament.tournamentVenue errorMessage=validationErrors.tournamentVenue}}
-                    {{text-input inputName='registrationStartDate' inputId='create-registrationstartdate' labelName='Registration Opening (dd/mm/yyyy HH:MM)' isRequired=true defaultValue=(millis-to-date tournament.registrationStartDate) errorMessage=validationErrors.registrationStartDate}}
-                    {{text-input inputName='registrationEndDate' inputId='create-registrationenddate' labelName='Registration Closing (dd/mm/yyyy HH:MM)' isRequired=true defaultValue=(millis-to-date tournament.registrationEndDate) errorMessage=validationErrors.registrationEndDate}}
+                    {{text-input inputName='registrationStartDate' inputId='create-registrationstartdate' labelName='Registration Opening (dd/mm/yyyy)' isRequired=true defaultValue=(millis-to-date tournament.registrationStartDate) errorMessage=validationErrors.registrationStartDate}}
+                    {{text-input inputName='registrationEndDate' inputId='create-registrationenddate' labelName='Registration Closing (dd/mm/yyyy)' isRequired=true defaultValue=(millis-to-date tournament.registrationEndDate) errorMessage=validationErrors.registrationEndDate}}
                 </div>
                 <div class="tournament-form-inner-box">
                     {{text-input inputName='sportName' inputId='create-sportname' labelName='Sport Name' isRequired=true defaultValue=tournament.sportName errorMessage=validationErrors.sportName}}

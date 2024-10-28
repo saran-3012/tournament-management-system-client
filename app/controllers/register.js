@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import formValidator from '../utils/form-validator';
 import getMonthDaysCount from '../utils/get-month-days-count';
+import HashSet from '../utils/hash-set';
+import checkCharactersPresent from '../utils/check-characters-present';
 
 export default Ember.Controller.extend({
     authenticationService : Ember.inject.service(),
@@ -119,15 +121,44 @@ export default Ember.Controller.extend({
         ],
         organizationName: [
             { required: true, message: "Organization name is required!" },
-            { maxLength: 50, message: "Organization Name must be less than 50 characters" }
+            { maxLength: 50, message: "Organization Name must be less than 50 characters" },
+            {
+                validator(orgName){
+                    const vulnerableCharacters = new HashSet('<', '>');
+
+                    if(checkCharactersPresent(orgName, vulnerableCharacters)){
+                        this.message = `${vulnerableCharacters.toString()} are not allowed`;
+                        return false;
+                    }
+                    
+                    return true;
+                },
+                message: 'Invalid organization name'
+            }
         ],
         organizationAddress: [
             { required: true, message: "Organization address is required!" },
+            {
+                validator(orgName){
+                    const vulnerableCharacters = new HashSet('<', '>');
+
+                    if(checkCharactersPresent(orgName, vulnerableCharacters)){
+                        this.message = `${vulnerableCharacters.toString()} are not allowed`;
+                        return false;
+                    }
+                    
+                    return true;
+                },
+                message: 'Invalid organization address'
+            }
         ],
         startedYear: [
             { required: true, message: "Started year is required!" },
             {
                 validator(year){
+                    if(isNaN(year)){
+                        return false;
+                    }
                     year = +year;
                     if(!year || year > new Date().getFullYear()){
                         return false;
@@ -165,7 +196,7 @@ export default Ember.Controller.extend({
             }
             this.get('authenticationService').register(formData);
 
-            this.transitionToRoute('index');
+            this.transitionToRoute('login');
         }
     }
 });

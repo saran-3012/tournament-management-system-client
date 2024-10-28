@@ -1,0 +1,21 @@
+<section class="container organization-user-form-container">
+    {{#form-model class="organization-user-form-model" formHeader='Add Member' onSubmit=(action 'handleOrganizationUserFormSubmit') }}
+        <div class="organization-user-form-wrapper">
+            <div class="organization-user-form-box">
+                <div class="organization-user-form-innerbox">
+                    {{text-input inputName='userName' inputId='register-username' labelName='Full Name' isRequired=true errorMessage=validationErrors.userName }}
+                    {{text-input inputName='dateOfBirth' inputId='register-dateofbirth' labelName='Date Of Birth (dd/mm/yyyy)' isRequired=true errorMessage=validationErrors.dateOfBirth }}
+                    {{text-input inputName='phoneNumber' inputId='register-phonenumber' labelName='Phone Number' isRequired=true errorMessage=validationErrors.phoneNumber }}
+                    {{text-input inputName='email' inputId='register-email' labelName='Email' isRequired=true errorMessage=validationErrors.email }}
+                    {{password-input inputName='password' inputId='register-password' labelName='Password' isRequired=true errorMessage=validationErrors.password}}
+                    {{password-input inputName='confirmPassword' inputId='register-confirmpassword' labelName='Confirm Password' isRequired=true errorMessage=validationErrors.confirmPassword}}
+                </div>
+                <div class="organization-user-form-buttons">
+                    {{general-button buttonName='Cancel' class='br-light-grey bg-pale-white ft-night-black soft-corner full-width' onClick=(action closeOrganizationUserForm) }}
+                    {{general-button type='submit' buttonName='Save' class='br-blue bg-blue ft-white soft-corner full-width'}}
+                </div>
+            </div>
+        </div>
+    {{/form-model}}
+</section>
+{{yield}}

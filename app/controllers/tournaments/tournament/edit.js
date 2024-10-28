@@ -177,9 +177,9 @@ export default Ember.Controller.extend({
         const config = this.get('envService');
         const apiURL = `${config.getEnv('BASE_API_URL')}/api/v1/orgs/${orgId}/tournaments/${tournamentId}`;
 
-        // if(+tournament.registeredCount > 0 ){
-
-        // }
+        if(+tournament.registeredCount > 0 || +tournament.teamSize > sportData.teamSize){
+                // 
+        }
         
         $.ajax({
             method: 'PUT',

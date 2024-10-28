@@ -1,22 +1,44 @@
 <section class="container section organization bg-pale-white">
     <div class="org-wrapper bg-white">
-        <div class="org-details-box">
-            {{card-item itemIconClass='no-icon' itemNameClass='ft-3xl wt-600 txt-wrap capitalize' itemName=model.organization.organizationName}}
-            {{card-item itemIconClass='location-icon' itemNameClass='txt-wrap' itemName=model.organization.organizationAddress}}
-            {{card-item itemIconClass='calander-icon' itemName=model.organization.startedYear}}
-            {{card-item itemIconClass='badge-icon' itemNameClass='uppercase ft-sm' itemName=(organization-status model.organization.organizationStatus)}}
-            <p class="txt-wrap ft-sm ft-light-grey">Created at {{millis-to-date-time model.organization.organizationCreatedAt}}</p>
-        </div>
-        <div class="org-admin-details-box">
-            <span>{{admin.userId}}</span>
-            {{card-item itemIconClass='admin-icon' itemNameClass='elipsis' itemName=model.admin.userName}}
-            {{card-item itemIconClass='mail-icon' itemNameClass='elipsis' itemName=model.admin.email}}
+        {{card-item itemIconClass='no-icon' itemNameClass='ft-3xl wt-600 txt-wrap capitalize' itemName=organization.organizationName}}
+        <div class="org-details-wrapper">
+            <div class="org-details-box">
+                {{card-item itemIconClass='location-icon' itemNameClass='txt-wrap' itemName=organization.organizationAddress}}
+                {{card-item itemIconClass='calander-icon' itemName=organization.startedYear}}
+                {{card-item itemIconClass='badge-icon' itemNameClass='uppercase ft-sm' itemName=(organization-status organization.organizationStatus)}}
+                <p class="txt-wrap ft-sm ft-light-grey">Created at {{millis-to-date-time organization.organizationCreatedAt}}</p>
+            </div>
+            <div class="org-admin-details-box">
+                <div class="org-admin-details-inner-box">
+                    {{card-item itemIconClass='admin-icon' itemNameClass='elipsis' itemName=admin.userName}}
+                    {{card-item itemIconClass='mail-icon' itemNameClass='elipsis' itemName=admin.email}}
+                </div>  
+                <div class="org-admin-details-button-box">
+                    {{#if (or (eq userInfo.role 1) (eq userInfo.role 2))}}
+                        {{general-button class='br-blue bg-blue ft-white' buttonName='Edit Organization' onClick=(action 'setIsOrganizationFormOpen' true)}}
+                    {{/if}}
+                </div>
+            </div>
         </div>
     </div>
+    {{organization-user-navbar searchOrganizationUsers=(action 'searchOrganizationUsers') openAddUserForm=(action 'setOrganizationUserFormType' 1)}}
     <div class="org-users-wrapper">
-        {{#each model.users as |user|}}
-            {{user-card class='bg-white' user=user}}
-        {{/each}} 
+        {{#unless (is-empty users)}}
+            {{#each users as |user|}}
+                {{user-card class='bg-white' user=user}}
+            {{/each}} 
+        {{else}}
+            <p>No users found</p>
+        {{/unless}}
     </div>
 </section>
+
+{{#if isOrganizationFormOpen}}
+    {{organization-form organization=organization admin=admin handleOrganizationUpdate=(action 'updateOrganizationDetails') closeOrganizationForm=(action 'setIsOrganizationFormOpen' false) refreshModel=(action 'refreshModel')}}
+{{else if (eq organizationUserFormType 1)}}
+    {{organization-user-form organizationUserFormType=organizationUserFormType organization=organization closeOrganizationUserForm=(action 'setOrganizationUserFormType' 0) refreshModel=(action 'refreshModel')}}
+{{else if (eq organizationUserFormType 2)}}
+    {{organization-user-form organizationUserFormType=organizationUserFormType organization=organization user=selectedUser closeOrganizationUserForm=(action 'setOrganizationUserFormType' 0) refreshModel=(action 'refreshModel')}}
+{{/if}}
+
 {{outlet}}

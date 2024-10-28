@@ -5,7 +5,7 @@ module.exports = function(environment) {
   let ENV = {
     modulePrefix: 'tournament-management-system',
     environment,
-    rootURL: '/tms/app/',
+    rootURL: '/tms/app',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
