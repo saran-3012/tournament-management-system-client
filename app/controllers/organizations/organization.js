@@ -12,6 +12,26 @@ export default Ember.Controller.extend({
     isOrganizationFormOpen: false,
     organizationUserFormType: 0,
     selectedUser: {},
+
+    totalPages: Ember.computed('limit', 'organizationUsersCount', function() {
+        const limit = this.get('limit');
+        const organizationUsersCount = this.get('organizationUsersCount');
+        return Math.ceil(organizationUsersCount / limit);
+    }),
+
+    // clean up
+    cleanUp(){
+        this.set('filterValue', '');
+        this.set('searchValue', '');
+        this.set('sortValue', '');
+        this.set('orderValue', '');
+        this.set('currentPage', 0);
+
+        this.set('organizationUsersCount', undefined);
+        this.set('users', []);
+
+    },
+
     actions: {
         refreshModel(){
             this.get('target').router.getHandler('organizations.organization').refresh();
@@ -25,42 +45,40 @@ export default Ember.Controller.extend({
         setSelectedUser(user){
             this.set('selectedUser', user);
         },
-        searchOrganizationUsers(searchValue){
+        searchOrganizationUsers(searchConfig){
+
             const userInfo = this.get('userInfo');
             
-            let orgId = null;
+            const orgId = (+userInfo.role === 2)? this.get('organization').organizationId : userInfo.organizationId;
 
-            orgId = (+userInfo.role === 2)? this.get('organization').organizationId : userInfo.organizationId;
-
-
-            if((orgId === null || orgId === undefined) && +userInfo.role !== 2){
-                this.get('authenticationService').logout();
-                this.transitionTo('login');
-                return;
+            if(orgId === null || orgId === undefined){
+                if(+userInfo.role === 2){
+                    this.transitionTo('organizations');
+                    return;
+                }
+                else{
+                    this.get('authenticationService').logout();
+                    this.transitionTo('login');
+                    return;
+                }
             }
 
-            const config = this.get('envService');
-            const apiURL = `${config.getEnv('BASE_API_URL')}/api/v1/orgs/${orgId}/users?filter_username=${searchValue}`;
+            const searchValue = this.get('searchValue');
+            const filterValue = this.get('filterValue');
+            const sortValue = this.get('sortValue');
+            const orderValue = this.get('orderValue');
+            const page = (searchConfig.hasOwnProperty('currentPage'))? this.get('currentPage') : undefined;
 
-            $.ajax({
-                method: "GET",
-                url: apiURL,
-                accepts: {
-                    'json' : 'application/json' 
-                },
-                dataType: 'json'
-            })
-            .then((response, textStatus, xqXHR) => {
-                this.set('users', response.data);
-            })
-            .catch((err) => {
-                this.get('messageQueueService').addPopupMessage(
-                    {
-                        message: err.message,
-                        level: 4
-                    }
-                )
-            })
+            const queryParams = {
+                search : searchValue || undefined,
+                filter : filterValue || undefined,
+                sort : sortValue || undefined,
+                order : orderValue || undefined,
+                page: page? +page + 1 : undefined
+            };
+
+            this.transitionToRoute({ queryParams });
+
         },
         updateOrganizationDetails(formData){
             const organization = this.get('organization');

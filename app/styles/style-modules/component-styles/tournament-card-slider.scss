@@ -1,0 +1,38 @@
+.tournament-card-slider{
+    @include flex(center, center);
+
+    gap: 1rem;
+
+    &.align-left{
+        justify-content: flex-start;
+    }
+
+    &.align-right{
+        justify-content: flex-end;
+    }
+
+    &.full-width{
+        width: 100%;
+        
+        .tournament-card-slider-wrapper{
+            flex-grow: 1;
+        }
+    }
+}
+
+.tournament-card-slider-wrapper{
+    @include flex(center, space-between);
+
+    padding: 1rem;
+    gap: 1rem;
+    min-width: 18rem;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    scroll-padding: 1rem;
+    position: relative;
+
+    .tournament-card{
+        scroll-snap-align: start;
+    }
+}

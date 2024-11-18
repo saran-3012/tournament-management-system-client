@@ -9,6 +9,7 @@ export default Ember.Route.extend(controllerCleanup, {
         const userInfo = this.get('authenticationService').userInfo;
         return userInfo || {};
     }),
+
     beforeModel(){
 
         if(!this.get('authenticationService').isLoggedIn){

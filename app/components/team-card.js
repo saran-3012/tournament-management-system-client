@@ -79,7 +79,7 @@ export default Ember.Component.extend({
                 contentType: "application/json",
             })
             .then((response, textStatus, jqXHR) => {
-                this.get('refreshModel')();
+                this.get('fetchTeamMembers')(this);
                 messageQueueService.addPopupMessage({
                     message: 'Member removed successfully',
                     level: 1
@@ -103,7 +103,7 @@ export default Ember.Component.extend({
             })
         },
         changeTeamStatus(newStatus){
-            
+            newStatus = +newStatus;
             const messageQueueService = this.get('messageQueueService');
             const userInfo = this.get('userInfo');
             const team = this.get('team');
@@ -137,8 +137,9 @@ export default Ember.Component.extend({
             })
             .then((response, textStatus, jqXHR) => {
                 this.get('refreshModel')();
+                const displayMessage = (newStatus === 0)? 'Team disqualification revoked' : (newStatus === 1)? 'Team is disqualified' : 'Team status changed';
                 messageQueueService.addPopupMessage({
-                    message: 'Team status changed succussdully',
+                    message: displayMessage,
                     level: 1
                 });
             })

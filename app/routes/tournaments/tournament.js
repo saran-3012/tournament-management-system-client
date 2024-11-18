@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import $ from 'jquery';
 import tournamentImageFallback from '../../utils/tournament-image-fallback';
 import controllerCleanup from '../../mixins/controller-cleanup';
 
@@ -95,7 +94,7 @@ export default Ember.Route.extend(controllerCleanup, {
             userParticipation.userRegistered = true;
         }
         controller.set("userParticipation", userParticipation);
-        this.get('dataPersistanceService').setData(tournament);
+        this.get('dataPersistanceService').setData(`tournament:${tournament.tournamentId}`,tournament);
     },
     actions: {
         willTransition(transition){

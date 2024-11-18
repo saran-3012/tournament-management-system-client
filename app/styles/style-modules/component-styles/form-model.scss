@@ -3,6 +3,11 @@
     @include background('images/auth-background.svg');
 }
 
+.overlay-form{
+    @include flex(center, center);
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
 .form-model{
     @include flex(center, center, column);
  

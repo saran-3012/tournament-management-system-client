@@ -39,3 +39,35 @@
         }
     }
 }
+
+.navbar-profile-menu-container{
+    position: relative;
+}
+
+.navbar-profile-menu{
+    @include flex(flex-start, flex-start, column);
+
+    position: absolute;
+    top: 3rem;
+    right: 0;
+    width: 8rem;
+    gap: 0.1rem;
+    overflow: hidden;
+    border-radius: 0.125rem;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+    background-color: $pale-white;
+
+    a{
+        width: 100%;
+    }
+    
+    .button{
+        &:hover{
+            &.no-border{
+                &.bg-white{
+                    background-color: $pale-white
+                }
+            }
+        }
+    }
+}

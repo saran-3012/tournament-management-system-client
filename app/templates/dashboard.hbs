@@ -1,3 +1,111 @@
-<h1>Dash board</h1>
+<section class="section dashboard bg-pale-white">
+    {{#if (or (eq userInfo.role 0) (eq userInfo.role 1))}}
+        {{#unless (is-empty registeredActiveTournaments)}}
+            <div class="dashboard-tournaments-box">
+                <div class="dashboard-tournaments-header">
+                    <h2 class="ft-before-blue ft-night-black wt-500 ft-xl">Registered tournaments</h2>
+                    {{#link-to 'tournaments' (query-params filter='registered') }}
+                        View all
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                        </svg>
+                    {{/link-to}}
+                </div>
+                {{tournament-card-slider class='align-left full-width' tournaments=registeredActiveTournaments automaticScroll=true autoFit=true}}
+            </div>
+        {{/unless}}
+        
+        {{#unless (is-empty upcomingSchedules)}}
+            <div class="dashboard-schedules-box">
+                <div class="dashboard-tournaments-header">
+                    <h2 class="ft-before-blue ft-night-black wt-500 ft-xl">Upcoming Schedules</h2>
+                </div>
+                <div class="dashboard-schedules-wrapper">
+                    {{#each upcomingSchedules as |schedule|}}
+                        {{tournament-schedule-card schedule=schedule hideControls=true linkTournament=true}}
+                    {{/each}}
+                </div>
+            </div>
+        {{/unless}}
 
+        {{#unless (is-empty featuredTournaments)}}
+            <div class="dashboard-tournaments-box">
+                <div class="dashboard-tournaments-header">
+                    <h2 class="ft-before-blue ft-night-black wt-500 ft-xl">Featured tournaments</h2>
+                    {{#link-to 'tournaments' (query-params page=undefined)}}
+                        View all
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                        </svg>
+                    {{/link-to}}
+                </div>
+                {{tournament-card-slider class='align-left full-width' tournaments=featuredTournaments automaticScroll=true autoFit=true}}
+            </div>
+        {{/unless}}
+
+        {{!-- Have to fetch new tournaments --}}
+
+    {{else if (eq userInfo.role 2)}}
+        <div class="dashboard-organizations-box">
+            <div class="dashboard-organizations-header">
+                <h2 class="ft-before-blue ft-night-black wt-500 ft-xl ">Unapproved Organizations</h2>
+                {{#link-to 'organizations.index' (query-params filter='unapprovedorganizations' page=undefined) }}
+                    View all
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                    </svg>
+                {{/link-to}}
+            </div>
+            <div class="dashboard-organization-card-wrapper">
+                {{#unless (is-empty unapprovedOrganizations)}}
+                    {{#each unapprovedOrganizations as |organization|}}
+                        {{organization-card class='bg-white' organization=organization changeOrganizationStatus=(action 'changeOrganizationStatus') }}
+                    {{/each}}
+                {{else}}
+                    <p>All organization has access</p>
+                {{/unless}}
+            </div>
+        </div>
+        <div class="dashboard-organizations-box">
+            <div class="dashboard-organizations-header">
+                <h2 class="ft-before-blue ft-night-black wt-500 ft-xl ">Approved Organizations</h2>
+                {{#link-to 'organizations.index' (query-params filter='approvedorganizations' page=undefined) }}
+                    View all
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                    </svg>
+                {{/link-to}}
+            </div>
+            <div class="dashboard-organization-card-wrapper">
+                {{#unless (is-empty approvedOrganizations)}}
+                    {{#each approvedOrganizations as |organization|}}
+                        {{organization-card class='bg-white' organization=organization changeOrganizationStatus=(action 'changeOrganizationStatus') }}
+                    {{/each}}
+                {{else}}
+                    <p>No organization has access</p>
+                {{/unless}}
+            </div>
+        </div>
+        <div class="dashboard-organizations-box">
+            <div class="dashboard-organizations-header">
+                <h2 class="ft-before-blue ft-night-black wt-500 ft-xl ">Banned Organizations</h2>
+                {{#link-to 'organizations.index' (query-params filter='bannedorganizations' page=undefined) }}
+                    View all
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                    </svg>
+                {{/link-to}}
+            </div>
+            <div class="dashboard-organization-card-wrapper">
+                {{#unless (is-empty bannedOrganizations)}}
+                    {{#each bannedOrganizations as |organization|}}
+                        {{organization-card class='bg-white' organization=organization changeOrganizationStatus=(action 'changeOrganizationStatus') }}
+                    {{/each}}
+                {{else}}
+                    <p>No organization are blocked</p>
+                {{/unless}}
+            </div>
+        </div>
+    {{/if}}
+</section>
 {{outlet}}

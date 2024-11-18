@@ -2,6 +2,7 @@ export default function ControllableTimeout(handler, timeout, ...args) {
   let remainingTime = timeout;
   let startTime;
   let timeOut;
+  let isFinished = false;
 
   this.pause = function(){
     clearTimeout(timeOut);
@@ -10,15 +11,22 @@ export default function ControllableTimeout(handler, timeout, ...args) {
 
   this.resume = function(){
     startTime = Date.now();
-    timeOut = setTimeout(handler, remainingTime, ...args);
+    timeOut = setTimeout(() => {
+      handler(...args);
+      isFinished = true;
+    }, remainingTime, ...args);
   }
 
   this.clear = function(){
     clearTimeout(timeOut);
-    handler(...args);
+    isFinished = true;
   }
 
   this.start = function(){
     this.resume();
+  }
+
+  this.isFinished = function(){
+    return this.isFinished;
   }
 };

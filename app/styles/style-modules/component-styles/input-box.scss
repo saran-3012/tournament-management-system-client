@@ -1,55 +1,86 @@
-.input{
+.input {
     @include flex(normal, center, column);
     width: 100%;
-}
 
-.input-box{
-    @include flex(center, flex-start);
 
-    width: 100%;
-    position: relative;
-    border-width: 1.5px;
-    border-style: solid;
-    background-color: $pale-white;
-    padding: 0.75rem;
-    border-radius: 0.25rem;
+    .input-box {
+        @include flex(center, flex-start);
 
-    .input-label{
-        font-size: 0.875rem;
-        color: $grey;
-        position: absolute;
-        transition: all 250ms;
-        transform-origin: left;
+        width: 100%;
+        position: relative;
+        border-width: 1.5px;
+        border-style: solid;
+        background-color: $white;
+        padding: 0.75rem;
+        border-radius: 0.25rem;
+
+        
+
+        .input-label {
+            font-size: 0.875rem;
+            color: $grey;
+            position: absolute;
+            transition: all 250ms;
+            transform-origin: left;
+        }
+
+        &:has(input:focus) {
+            border-color: $blue;
+
+            .input-label {
+                background-color: $white;
+                transform: translateY(-110%) scale(0.9);
+            }
+        }
+
+        &:has(.input-field:not(:placeholder-shown)) {
+
+            .input-label {
+                background-color: $white;
+                transform: translateY(-110%) scale(0.9);
+            }
+        }
+
+        &.bg-white{
+            background-color: $white;
+
+            .input-label{
+                background-color: $white;
+            }
+        }
+
+        &.br-red {
+            border-color: $red !important;
+        }
+
     }
 
-    &:has(input:focus){
-        border-color: $blue;
-
-        .input-label{
-            text-shadow: 1px 1px 2px $white, 1px -1px 2px $white, -1px 1px 2px $white, -1px -1px 2px $white;
-            transform: translateY(-110%) scale(0.9);
+    &.bg-pale-white{
+        .input-box{
+            background-color: $pale-white;
         }
     }
 
-    &:has(.input-field:not(:placeholder-shown)){
-
-        .input-label{
-            text-shadow: 1px 1px 2px $white, 1px -1px 2px $white, -1px 1px 2px $white, -1px -1px 2px $white;
-            transform: translateY(-110%) scale(0.9);
+    &.pd-sm {
+        .input-box{
+            padding: 0.5rem;
         }
     }
 
-    &.br-red{
-        border-color: $red !important;
+    &.pd-xs {
+        .input-box{
+            padding: 0.375rem 0.25rem;
+        }
     }
 }
+
 
 option:disabled {
     color: $grey;
 }
 
 
-.input-field{
+.input-field {
     background-color: transparent;
     border: none;
     outline: none;
@@ -57,8 +88,7 @@ option:disabled {
 }
 
 
-.input-error{
+.input-error {
     color: $red;
     font-size: 0.75rem;
 }
-

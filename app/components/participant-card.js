@@ -53,8 +53,9 @@ export default Ember.Component.extend({
             })
             .then((response, textStatus, jqXHR) => {
                 this.get('refreshModel')();
+                const displayMessage = (newStatus === 0)? 'Participant disqualification revoked' : (newStatus === 1)? 'Participant is disqualified' : 'Participant status changed';
                 messageQueueService.addPopupMessage({
-                    message: 'Participant status changed succussfully',
+                    message: displayMessage,
                     level: 1
                 });
             })

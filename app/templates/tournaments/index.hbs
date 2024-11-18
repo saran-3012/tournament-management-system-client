@@ -1,12 +1,12 @@
-<section class="container section bg-pale-white flex column">
-    {{tournament-navbar searchTournaments=(action 'searchTournaments') }}
+<section class="container section bg-pale-white flex fd-column">
+    {{tournament-navbar searchTournaments=(action 'searchTournaments') searchValue=searchValue filterValue=filterValue sortValue=sortValue orderValue=orderValue currentPage=currentPage totalPages=totalPages}}
     <div class="tournament-card-wrapper">
         {{#unless (is-empty tournaments)}}
             {{#each tournaments as |tournament|}}
-                {{tournament-card class='bg-white' tournament=tournament openCancelPopup=(action 'setIsCancelPopupOpen' true) setSelectedTournament=(action 'setSelectedTournament') }}
+                {{tournament-card class='shadow' tournament=tournament openCancelPopup=(action 'setIsCancelPopupOpen' true) setSelectedTournament=(action 'setSelectedTournament') showMenu=true}}
             {{/each}}
         {{else}}
-            <p>No tournament available</p>
+            <p class="txt-center">No tournament available</p>
         {{/unless}}
     </div>
 </section>
@@ -17,8 +17,8 @@
         <div class="cancel-tournament-popup-details">
             <p class="ft-grey ft-sm">Are you sure? want to cancel {{#link-to 'tournaments.tournament' selectedTournament.tournamentId class='no-decoration ft-blue'}}{{selectedTournament.tournamentName}}{{/link-to}}</p>
             <div class="cancel-tournament-popup-buttons">
-                {{general-button class='br-blue bg-blue ft-white soft-corner' buttonName='Go back' onClick=(action 'setIsCancelPopupOpen' false) }}
-                {{general-button class='br-red bg-red ft-white soft-corner' buttonName='Cancel' onClick=(action 'cancelTournament')}}
+                {{general-button class='br-light-grey bg-pale-white ft-grey soft-corner' buttonName='Cancel' onClick=(action 'setIsCancelPopupOpen' false) }}
+                {{general-button class='br-red bg-red ft-white soft-corner' buttonName='Confirm' onClick=(action 'cancelTournament')}}
             </div>
         </div>
     {{/popup-box}}

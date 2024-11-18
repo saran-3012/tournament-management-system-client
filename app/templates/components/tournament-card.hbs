@@ -7,11 +7,11 @@
         {{#link-to 'tournaments.tournament' tournament.tournamentId class='no-decoration tournament-card-title'}}
             {{tournament.tournamentName}}
         {{/link-to}}
-        {{#if (or (eq userInfo.role 1) (eq userInfo.role 2))}}
+        {{#if (and showMenu (or (eq userInfo.role 1) (eq userInfo.role 2)))}}
             <div class="tournament-card-menu-box">
                 {{general-button class='pd-sq-sm no-border bg-transparent soft-corner' buttonIcon='images/dots-menu-icon.svg' onClick=(action 'handleMenuVisibility') title='Menu'}}
                 {{#if isMenuOpen}}
-                    <div class="tournament-card-menu bg-pale-white">
+                    <div class="tournament-card-menu">
                         {{#link-to 'tournaments.tournament.edit' tournament.tournamentId class='no-decoration'}}
                             {{general-button class='full-width bg-white no-border' buttonName='Edit'}}
                         {{/link-to}}
@@ -22,11 +22,11 @@
         {{/if}}
     </div>
     <div class="tournament-card-box">
-        {{card-item itemIconClass='cube-icon' itemName=tournament.sportName title='Sport'}}
-        {{card-item class='align-end' itemIconClass=(if (eq tournament.sportType 0) 'individual-icon' 'people-icon') itemName=(sport-type tournament.sportType) title='Participation Type'}}
+        {{card-item class='mw-50p' itemIconClass='cube-icon' itemName=tournament.sportName title='Sport'}}
+        {{card-item class='align-end mw-50p' itemIconClass=(if (eq tournament.sportType 0) 'individual-icon' 'people-icon') itemName=(sport-type tournament.sportType) title='Participation Type'}}
     </div>
     <div class="tournament-card-box">
-        <div class="tournament-card-innerbox">
+        <div class="tournament-card-innerbox mw-50p">
             {{card-item itemIconClass='calander-icon' itemName=(get-date tournament.tournamentDate) title='Tournament Date'}}
             {{card-item itemIconClass='clock-icon' itemName=(calculate-deadline tournament.registrationStartDate tournament.registrationEndDate) title='Deadline'}}
         </div>

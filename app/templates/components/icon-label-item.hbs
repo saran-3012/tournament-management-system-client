@@ -1,6 +1,8 @@
-<div class="icon-label-item-icon {{if iconBackground 'bg' ''}}">
-    <img src={{prepend-root iconUrl}} alt="icon">
-</div>
+{{#if iconUrl}}
+    <div class="icon-label-item-icon {{if iconBackground 'bg' ''}} {{itemIconClass}}">
+        <img src={{prepend-root iconUrl}} alt="icon">
+    </div>
+{{/if}}
 <div class="icon-label-item-box {{iconLabelItemBoxClass}}">
     {{#if itemLabel}}
         <span class={{itemLabelClass}}>{{itemLabel}}</span>

@@ -6,10 +6,7 @@ import checkDateValid from '../../../utils/check-date-valid';
 import dateTimeToMills from '../../../utils/date-time-to-mills';
 
 export default Ember.Controller.extend({
-    dataPersistanceService: Ember.inject.service(),
-    tournament: Ember.computed('dataPersistanceService.data', function(){
-        return this.get('dataPersistanceService').data;
-    }),
+    
     messageQueueService: Ember.inject.service(),
     envService:  Ember.inject.service(),
     authenticationService: Ember.inject.service(),
@@ -18,6 +15,13 @@ export default Ember.Controller.extend({
         const userInfo = this.get('authenticationService').userInfo;
         return userInfo || {};
     }),
+
+    sportTypeOptions: [
+        { value: '', displayName: 'Select sport type', selected: true, disabled: true, hidden: true },
+        { value: '0', displayName: 'Individual' },
+        { value: '1', displayName: 'Team' }
+    ],
+
     validationConfig: {
         tournamentName: [
             { required: true, message: "Tournament name is required!" },
@@ -149,6 +153,7 @@ export default Ember.Controller.extend({
     cleanUp(){
         this.setErrors({});
     },
+
     updateTournament(formData){
 
         const tournament = this.get('tournament');

@@ -10,16 +10,30 @@
         {{/if}}
     </div>
     <div class="team-card-buttons">
-        {{#if (or (eq userInfo.role 1) (eq userInfo.role 2))}}
+        {{#if (and showContestantStatusControls (or (eq userInfo.role 1) (eq userInfo.role 2)))}}
             {{#if (eq team.teamStatus 0)}}
-                {{general-button class='br-red bg-red ft-white pd-sm ft-xs curved' buttonName='Disqualify' onClick=(action 'changeTeamStatus' 1)}}
+                {{#general-button class='br-transparent bg-transparent ft-red pd-sq-sm' isSVG=true onClick=(action 'changeTeamStatus' 1) title='Disqualify'}}
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" >
+                        <path d="M436.3 75.7C388 27.401 324.101 0 256 0 115.343 0 0 115.116 0 256c0 140.958 115.075 256 256 256 140.306 0 256-114.589 256-256 0-68.101-27.4-132.001-75.7-180.3zM256 451c-107.786 0-195-86.985-195-195 0-42.001 13.2-81.901 37.5-114.901l272.401 272.1C337.899 437.8 298.001 451 256 451zm157.2-80.101L141.099 98.5C174.101 74.2 213.999 61 256 61c107.789 0 195 86.985 195 195 0 41.999-13.2 81.899-37.8 114.899z" fill="currentColor" opacity="1" data-original="#000000" />
+                    </svg>
+                {{/general-button}}
             {{else if (eq team.teamStatus 1)}}
-                {{general-button class='br-green bg-green ft-white pd-sm ft-xs curved' buttonName='Permit' onClick=(action 'changeTeamStatus' 0)}}
+                {{#general-button class='br-transparent bg-transparent ft-grey pd-sq-sm' isSVG=true onClick=(action 'changeTeamStatus' 0) title='Permit'}}
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" >
+                        <path d="M436.3 75.7C388 27.401 324.101 0 256 0 115.343 0 0 115.116 0 256c0 140.958 115.075 256 256 256 140.306 0 256-114.589 256-256 0-68.101-27.4-132.001-75.7-180.3zM256 451c-107.786 0-195-86.985-195-195 0-42.001 13.2-81.901 37.5-114.901l272.401 272.1C337.899 437.8 298.001 451 256 451zm157.2-80.101L141.099 98.5C174.101 74.2 213.999 61 256 61c107.789 0 195 86.985 195 195 0 41.999-13.2 81.899-37.8 114.899z" fill="currentColor" opacity="1" data-original="#000000" />
+                    </svg>
+                {{/general-button}}
             {{else}}
                 {{general-button class='br-light-grey bg-pale-white ft-light-grey pd-sm ft-xs curved' buttonName=(if (eq team.teamStatus 3) 'Won' 'Lost') disabled=true}}
             {{/if}}
         {{/if}}
-        {{general-button class='br-transparent bg-transparent ft-grey circle icon-sm pd-sq-sm' buttonIcon=(if isMembersPanelOpen 'images/up-arrow.svg' 'images/down-arrow.svg') onClick=(action 'toggleMembersPanelOpen') title='Team Members'}}
+        {{#general-button class='br-transparent bg-transparent ft-grey circle icon-sm no-padding' onClick=(action 'toggleMembersPanelOpen') isSVG=true title='Team Members'}}
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" xml:space="preserve">
+                <g transform={{if isMembersPanelOpen 'matrix(1,0,0,-1,0,24)' ''}}>
+                    <path d="M12 2.25c-5.376 0-9.75 4.374-9.75 9.75s4.374 9.75 9.75 9.75 9.75-4.374 9.75-9.75S17.376 2.25 12 2.25zm4.53 9.28-3.646 3.646c-.243.244-.563.365-.884.365s-.641-.121-.884-.365L7.47 11.53a.75.75 0 1 1 1.061-1.061l3.47 3.47 3.47-3.47a.75.75 0 1 1 1.061 1.061z" fill="currentColor" opacity="1" data-original="#000000" />
+                </g>
+            </svg>
+        {{/general-button}}
     </div>
 </div>
 {{#if isMembersPanelOpen}}
@@ -33,8 +47,15 @@
                     {{/if}}
                 </div>
                 <div class="team-member-buttons">
-                    {{#if (and (eq userInfo.userId team.teamLeaderId) (n-eq member.userId team.teamLeaderId)) }}
-                        {{general-button buttonName='Remove' onClick=(action 'removeTeamMember' member.teamMemberId)}}
+                    {{#if (and showRemoveMember (eq userInfo.userId team.teamLeaderId) (n-eq member.userId team.teamLeaderId)) }}
+                        {{#general-button class='br-transparent bg-transparent ft-red pd-sq-sm' isSVG=true onClick=(action 'removeTeamMember' member.teamMemberId) title='Remove member'}}
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" xml:space="preserve">
+                                <g>
+                                    <path d="M12 1a11 11 0 1 0 11 11A11.013 11.013 0 0 0 12 1zm0 20a9 9 0 1 1 9-9 9.01 9.01 0 0 1-9 9z" fill="currentColor" opacity="1" data-original="#000000" />
+                                    <path d="M16 11H8a1 1 0 0 0 0 2h8a1 1 0 0 0 0-2z" fill="currentColor" opacity="1" data-original="#000000" />
+                                </g>
+                            </svg>
+                        {{/general-button}}
                     {{/if}}
                 </div>
             </div>

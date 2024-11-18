@@ -4,8 +4,11 @@ import formValidator from '../utils/form-validator';
 import HashSet from '../utils/hash-set';
 
 export default Ember.Component.extend({
+    // Component details
     tagName: 'section',
     classNames: ['tournament-participation-form-container'],
+
+    // State config
     teamRegistrationType: 0,
     validationConfig: {
         teamName: [
@@ -39,6 +42,8 @@ export default Ember.Component.extend({
     setErrors(validationErrors){
         this.set('validationErrors', validationErrors);
     },
+
+    // Calls and Actions
     submit(event){
         event.preventDefault();
 

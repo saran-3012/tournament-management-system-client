@@ -1,19 +1,19 @@
-<section class="section container form-bg edit-tournament">
+<section class="section container overlay-form edit-tournament">
     {{#form-model class="tournament-form-model" formHeader='Edit Tournament' onSubmit=(action 'editTournament') }}
         <div class="tournament-form-wrapper">
             <div class="tournament-form-box">
                 <div class="tournament-form-inner-box">
-                    {{text-input inputName='tournamentName' inputId='create-tournamentname' labelName='Tournament Name' isRequired=true defaultValue=tournament.tournamentName errorMessage=validationErrors.tournamentName}}
-                    {{text-input inputName='maxParticipation' inputId='create-maxparticipation' labelName='Participation Limit' isRequired=true defaultValue=(if tournament.maxParticipation tournament.maxParticipation '') errorMessage=validationErrors.maxParticipation}}
-                    {{text-input inputName='tournamentDate' inputId='create-tournamentdate' labelName='Start Date' defaultValue=(millis-to-date tournament.tournamentDate '') errorMessage=validationErrors.tournamentDate}}
-                    {{text-input inputName='tournamentVenue' inputId='create-tournamentvenue' labelName='Venue' defaultValue=tournament.tournamentVenue errorMessage=validationErrors.tournamentVenue}}
-                    {{text-input inputName='registrationStartDate' inputId='create-registrationstartdate' labelName='Registration Opening (dd/mm/yyyy)' isRequired=true defaultValue=(millis-to-date tournament.registrationStartDate) errorMessage=validationErrors.registrationStartDate}}
-                    {{text-input inputName='registrationEndDate' inputId='create-registrationenddate' labelName='Registration Closing (dd/mm/yyyy)' isRequired=true defaultValue=(millis-to-date tournament.registrationEndDate) errorMessage=validationErrors.registrationEndDate}}
+                    {{text-input inputName='tournamentName' inputId='edit-tournamentname' labelName='Tournament Name' isRequired=true defaultValue=tournament.tournamentName errorMessage=validationErrors.tournamentName}}
+                    {{text-input inputName='maxParticipation' inputId='edit-maxparticipation' labelName='Participation Limit' isRequired=true defaultValue=(if tournament.maxParticipation tournament.maxParticipation '') errorMessage=validationErrors.maxParticipation}}
+                    {{text-input inputName='tournamentDate' inputId='edit-tournamentdate' labelName='Start Date' defaultValue=(millis-to-date tournament.tournamentDate '') errorMessage=validationErrors.tournamentDate}}
+                    {{text-input inputName='tournamentVenue' inputId='edit-tournamentvenue' labelName='Venue' defaultValue=tournament.tournamentVenue errorMessage=validationErrors.tournamentVenue}}
+                    {{text-input inputName='registrationStartDate' inputId='edit-registrationstartdate' labelName='Registration Opening (dd/mm/yyyy)' isRequired=true defaultValue=(millis-to-date tournament.registrationStartDate) errorMessage=validationErrors.registrationStartDate}}
+                    {{text-input inputName='registrationEndDate' inputId='edit-registrationenddate' labelName='Registration Closing (dd/mm/yyyy)' isRequired=true defaultValue=(millis-to-date tournament.registrationEndDate) errorMessage=validationErrors.registrationEndDate}}
                 </div>
                 <div class="tournament-form-inner-box">
-                    {{text-input inputName='sportName' inputId='create-sportname' labelName='Sport Name' isRequired=true defaultValue=tournament.sportName errorMessage=validationErrors.sportName}}
-                    {{text-input inputName='sportType' inputId='create-sporttype' labelName='Sport Type' isRequired=true defaultValue=tournament.sportType errorMessage=validationErrors.sportType}}
-                    {{text-input inputName='teamSize' inputId='create-teamsize' labelName='Team Size' isRequired=true defaultValue=tournament.teamSize errorMessage=validationErrors.teamSize}}
+                    {{text-input inputName='sportName' inputId='edit-sportname' labelName='Sport Name' isRequired=true defaultValue=tournament.sportName errorMessage=validationErrors.sportName}}
+                    {{select-input inputName='sportType' inputId='edit-sporttype' labelName='Sport Type' options=sportTypeOptions selectedValue=tournament.sportType isRequired=true errorMessage=validationErrors.sportType}}
+                    {{text-input inputName='teamSize' inputId='edit-teamsize' labelName='Team Size' isRequired=true defaultValue=tournament.teamSize errorMessage=validationErrors.teamSize}}
                 </div>
             </div>
             {{general-button class='br-blue bg-blue ft-white soft-corner' type='submit' buttonName='Save'}}

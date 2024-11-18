@@ -8,11 +8,14 @@
 
 .br-grey{
      @include border($grey);
-    border-color: $grey;
 }
 
 .br-light-grey{
      @include border($light-grey);
+}
+
+.br-pale-white{
+     @include border($pale-white);
 }
 
 .br-green{

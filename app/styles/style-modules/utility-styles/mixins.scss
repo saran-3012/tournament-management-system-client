@@ -16,6 +16,23 @@
     border: $width $style $color;
 }
 
+@mixin ft-before($color, $gap: 0.75rem, $width: 0.25rem) {
+    
+    @include flex(stretch);
+
+    gap: $gap;
+    padding-right: $gap;
+
+    &::before {
+        content: '';
+        display: block;      
+        min-height: 100%;       
+        width: $width;
+        background-color: $color;
+    }
+}
+
+
 %elipsis{
     overflow-x: hidden;
     text-overflow: ellipsis;

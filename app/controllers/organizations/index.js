@@ -8,12 +8,35 @@ export default Ember.Controller.extend({
         return userInfo || {};
     }),
     updateOrganization(updatedOrg){
-        this._super()
-        const orgs = this.get('model');
+ 
+        const orgs = this.get('organizations');
         const updatedOrgs = orgs.map((org) => (org.organizationId !== updatedOrg.organizationId)? org : Object.assign({}, org, updatedOrg));
-        this.set('model', updatedOrgs);
+        this.set('organizations', updatedOrgs);
     },
+
+    totalPages: Ember.computed('limit', 'organizationsCount', function() {
+        const limit = this.get('limit');
+        const organizationUsersCount = this.get('organizationsCount');
+        return Math.ceil(organizationUsersCount / limit);
+    }),
+
+     // clean up
+     cleanUp(){
+        this.set('filterValue', '');
+        this.set('searchValue', '');
+        this.set('sortValue', '');
+        this.set('orderValue', '');
+        this.set('currentPage', 0);
+
+        this.set('organizationsCount', undefined);
+        this.set('organizations', []);
+
+    },
+
     actions: {
+        refreshModel(){
+            this.get('target').router.getHandler('organizations.index').refresh();
+        },
         changeOrganizationStatus(orgId, newStatus){
             if(this.get('userInfo') == null || this.get('userInfo') == undefined || +this.get('userInfo').role !== 2 ){
                 return;
@@ -40,36 +63,24 @@ export default Ember.Controller.extend({
                 console.log("error" , err);
             });
         },
-        searchOrganizations(searchValue){
-            const userInfo = this.get('userInfo');
-            
-            if(+userInfo.role !== 2){
-                this.transitionTo('index');
-                return;
-            }
+        searchOrganizations(searchConfig){
 
-            const config = this.get('envService');
-            const apiURL = `${config.getEnv('BASE_API_URL')}/api/v1/orgs?filter_orgname=${searchValue}`;
+            const searchValue = this.get('searchValue');
+            const filterValue = this.get('filterValue');
+            const sortValue = this.get('sortValue');
+            const orderValue = this.get('orderValue');
+            const page = (searchConfig.hasOwnProperty('currentPage'))? this.get('currentPage') : undefined;
 
-            $.ajax({
-                method: "GET",
-                url: apiURL,
-                accepts: {
-                    'json' : 'application/json' 
-                },
-                dataType: 'json'
-            })
-            .then((response, textStatus, xqXHR) => {
-                this.set('organizations', response.data);
-            })
-            .catch((err) => {
-                this.get('messageQueueService').addPopupMessage(
-                    {
-                        message: err.message,
-                        level: 4
-                    }
-                )
-            })
+            const queryParams = {
+                search : searchValue || undefined,
+                filter : filterValue || undefined,
+                sort : sortValue || undefined,
+                order : orderValue || undefined,
+                page: page? +page + 1 : undefined
+            };
+
+            this.transitionToRoute({ queryParams });
+
         }
     }
 });

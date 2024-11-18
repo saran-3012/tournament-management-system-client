@@ -12,6 +12,9 @@ export default Ember.Service.extend({
     messageQueueService: Ember.inject.service(),
 
     _setUserInfo(userInfo, isLoggedIn){
+        if(isLoggedIn){
+            userInfo.profileBackgroundUrl = `images/background-images/background-image-${userInfo.userId % 10}.png`
+        }
         this.set("userInfo", userInfo);
         this.set("isLoggedIn", isLoggedIn);
         sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
@@ -66,11 +69,10 @@ export default Ember.Service.extend({
                 cache: false
             })
         })
-        .then((data, textStatus, jqXHR) => {
-            thisRef._setUserInfo(data.data, true);
+        .then((response, textStatus, jqXHR) => {
+            thisRef._setUserInfo(response.data, true);
         })
         .catch((jqXHR, textStatus, errorThrown) => {
-            console.log(jqXHR, textStatus, errorThrown)
             this.get('messageQueueService').addPopupMessage({
                 message: jqXHR.responseJson.message,
                 level: 3
@@ -115,7 +117,6 @@ export default Ember.Service.extend({
             callBack();
         })
         .catch((jqXHR, textStatus, errorThrown) => {
-            console.log(jqXHR, textStatus, errorThrown)
             messageQueueService.addPopupMessage({
                 message: "Invalid user credentials",
                 level: 3
@@ -124,7 +125,7 @@ export default Ember.Service.extend({
        
     },
 
-    checkin(callBack){
+    checkin(callBack, showErrorMsg=true){
 
         const config = this.get('envService');
         const apiURL = `${config.getEnv('BASE_API_URL')}/auth/checkin`;
@@ -148,18 +149,27 @@ export default Ember.Service.extend({
             thisRef._setUserInfo(data.data, true);
             callBack();
         })
-        .catch((jqXHR, textStatus, errorThrown) => {
-            console.log(jqXHR, textStatus, errorThrown)
-            
-            this.get('messageQueueService').addPopupMessage({
-                message: jqXHR.responseJson.message,
-                level: 0
-            });
+        .catch((err, textStatus, errorThrown) => {
+
+            const authStatus = err.getResponseHeader('Tms-Auth-Status');
+
+            if(authStatus === '1'){
+                sessionStorage.clear();
+                thisRef._setUserInfo(null, false);
+                return;
+            }
+
+            if(showErrorMsg){
+                this.get('messageQueueService').addPopupMessage({
+                    message: err.responseJson.message,
+                    level: 0
+                });
+            }
         });
 
     },
 
-    logout(){
+    logout(callBack){
 
         const config = this.get('envService');
         const apiURL = `${config.getEnv('BASE_API_URL')}/auth/logout`;
@@ -178,8 +188,9 @@ export default Ember.Service.extend({
             cache: false
         })
         .then((data, textStatus, jqXHR) => {
-            thisRef._setUserInfo(null, false);
             sessionStorage.clear();
+            thisRef._setUserInfo(null, false);
+            callBack();
         })
         .catch((jqXHR, textStatus, errorThrown) => {
             console.log(jqXHR, textStatus, errorThrown)

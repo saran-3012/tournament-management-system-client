@@ -5,7 +5,7 @@ export default Ember.Component.extend({
     tagName: 'div',
     classNames: ['search-bar'],
     isFocused: false,
-    searchField: '',
+    searchValue: '',
     init() {
         this._super(...arguments);
         this.set('delayedSearchCall', delayCalls(
@@ -13,7 +13,14 @@ export default Ember.Component.extend({
             this.get('searchHandler')
         ));
     },
-    searchData: Ember.observer('searchField', function () {
-        this.get('delayedSearchCall')(this.get('searchField'));
-    })
+
+    input(event){
+        this.set('searchValue', event.target.value);
+
+        const delayedSearchCall = this.get('delayedSearchCall');
+        const searchValue = this.get('searchValue');
+        const objectKey = this.get('objectKey');
+
+        (objectKey)? delayedSearchCall({[objectKey]: searchValue}) : delayedSearchCall(searchValue);
+    }
 });

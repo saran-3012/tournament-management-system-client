@@ -7,12 +7,9 @@
             {{/if}}
         </label>
     {{/if}}
-    <select id={{inputId}} name={{inputName}} value={{defaultValue}} class="input-field" placeholder={{inputPlaceholder}} {{action 'handleInputChange' on='change'}} >
-        {{#if showDefaultValue}}
-            <option value={{defaultValue.value}} selected={{defaultValue.selected}} disabled={{defaultValue.disabled}} hidden={{defaultValue.hidden}}>{{defaultValue.displayName}}</option>
-        {{/if}}
+    <select id={{inputId}} name={{inputName}} value={{selectedValue}} class="input-field" >
         {{#each options as |option|}}
-            <option value={{option.value}}>{{option.displayName}}</option>
+            {{select-option option=option}}
         {{/each}}
         {{yield}}
     </select>
@@ -20,4 +17,3 @@
 {{#if errorMessage}}
     <p class="input-error">{{errorMessage}}</p>
 {{/if}}
-

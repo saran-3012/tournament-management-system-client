@@ -1,5 +1,24 @@
 <div class="user-card-image-box">
     <div class="user-card-profile-img"></div>
+    {{#unless hideMenu}}
+        <div class="user-card-menu-wrapper">
+            <div class="user-card-menu-box">
+                {{#general-button class='br-transparent bg-transparent ft-grey icon-lg pd-sq-sm circle' isSVG=true onClick=(action 'handleMenuVisibility')}}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                    </svg>
+                {{/general-button}}
+                {{#if isMenuOpen}}
+                    <div class="user-card-menu">
+                        {{#if (or (eq userInfo.role 1) (eq userInfo.role 2))}}
+                            {{general-button class='full-width bg-white no-border' buttonName='Edit' onClick=(action 'selectAndOpenEditForm')}}
+                        {{/if}}
+                        {{general-button class='full-width bg-white no-border' buttonName='Details' onClick=(action 'viewUserDetails')}}
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+    {{/unless}}
 </div>
 <div class="user-card-detail-box">
     <p class="user-card-item"><span class="ft-grey">{{user.userId}}</span> - <strong class="capitalize ft-lg wt-500">{{user.userName}}</strong></p>

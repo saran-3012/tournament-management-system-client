@@ -12,7 +12,7 @@
                 </div>
                 <div class="tournament-form-inner-box">
                     {{text-input inputName='sportName' inputId='create-sportname' labelName='Sport Name' isRequired=true errorMessage=validationErrors.sportName}}
-                    {{text-input inputName='sportType' inputId='create-sporttype' labelName='Sport Type' isRequired=true errorMessage=validationErrors.sportType}}
+                    {{select-input inputName='sportType' inputId='create-sporttype' labelName='Sport Type' options=sportTypeOptions isRequired=true errorMessage=validationErrors.sportType}}
                     {{text-input inputName='teamSize' inputId='create-teamsize' labelName='Team Size' isRequired=true errorMessage=validationErrors.teamSize}}
                 </div>
             </div>

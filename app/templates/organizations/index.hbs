@@ -1,5 +1,5 @@
 <section class="container section bg-pale-white organizations">
-    {{organization-navbar searchOrganizations=(action 'searchOrganizations') }}
+    {{organization-navbar searchOrganizations=(action 'searchOrganizations') searchValue=searchValue filterValue=filterValue sortValue=sortValue orderValue=orderValue currentPage=currentPage totalPages=totalPages}}
     <div class="organization-card-wrapper">
         {{#unless (is-empty organizations)}}
             {{#each organizations as |organization|}}

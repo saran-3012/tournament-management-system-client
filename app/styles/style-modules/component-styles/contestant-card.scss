@@ -31,16 +31,6 @@
 
     gap: 0.5rem;
 
-    .button{
-        &:hover{
-            &.br-transparent{
-                &.bg-transparent{
-                    @include border($light-grey);
-                    background-color: $pale-white
-                }
-            }
-        }
-    }
 }
 
 .team-members-box{
@@ -79,6 +69,22 @@
 
 .team-card{
 
+    .team-card-info-box{
+        .team-card-buttons{
+            .button{
+                &:hover{
+                    &.br-transparent{
+                        &.bg-transparent{
+                            &.ft-grey{
+                                color: $blue;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     &.my-participation{
         @include border($blue);
         position: relative;
@@ -93,26 +99,67 @@
             }
     
             .team-card-buttons{
-                .br-red{
-                    &.bg-red{
-                        background-color: $white;
-                    }  
-                    &.ft-white{
-                        color: $red;
+                .button{
+                    &.br-transparent{
+                        &.bg-transparent{
+                            &.ft-grey{
+                                color: $white;
+                            }
+                        }
                     }
-                }
-                .br-green{
-                    &.bg-green{
-                        background-color: $white;
-                    }  
-                    &.ft-white{
-                        color: $green;
+
+                    &:hover{
+                        &.br-transparent{
+                            &.bg-transparent{
+                                &.ft-grey{
+                                    color: $light-grey;
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
-
     }
+
+    &.winning-contestant{
+        @include border($green);
+        position: relative;
+
+        .team-card-info-box{
+            background-color: $green;
+
+            .team-card-info{
+                .ft-night-black{
+                    color: white;
+                }
+            }
+    
+            .team-card-buttons{
+                .button{
+                    &.br-transparent{
+                        &.bg-transparent{
+                            &.ft-grey{
+                                color: $white;
+                            }
+                        }
+                    }
+
+                    &:hover{
+                        &.br-transparent{
+                            &.bg-transparent{
+                                &.ft-grey{
+                                    color: $light-grey;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+   
 }
 
 // Individual participation
@@ -151,6 +198,36 @@
                 }  
                 &.ft-white{
                     color: $green;
+                }
+            }
+        }
+    }
+    &.winning-contestant{
+        @include border($green);
+        background-color: $green;
+        position: relative;
+
+        .participant-card-info{
+            .ft-night-black{
+                color: white;
+            }
+        }
+
+        .participant-card-buttons{
+            .br-red{
+                &.bg-red{
+                    background-color: $white;
+                }  
+                &.ft-white{
+                    color: $red;
+                }
+            }
+            .br-green{
+                &.bg-green{
+                    background-color: $white;
+                }  
+                &.ft-white{
+                    color: $blue;
                 }
             }
         }

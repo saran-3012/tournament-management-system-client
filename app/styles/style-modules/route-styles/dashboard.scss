@@ -1,0 +1,97 @@
+.dashboard{
+    @include flex(center, flex-start, column);
+
+    gap: 4rem;
+    padding: 4rem;
+}
+
+.dashboard-tournaments-box{
+    @include flex(flex-start, flex-start, column);
+
+    width: 100%;
+    gap: 1rem;
+
+    .dashboard-tournaments-header{
+        @include flex(center, space-between);
+
+        gap: 1rem;
+        width: 100%;
+
+        a{
+            @include flex(flex-start, flex-start);
+
+            width: fit-content;
+            text-wrap: nowrap;
+            text-decoration: none;
+            gap: 0.5rem;
+            color: $blue;
+
+            svg{
+                flex-shrink: 0;
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+
+            &:hover{
+                color: $dark-blue;
+            }
+        }
+    }
+}
+
+.dashboard-schedules-box{
+    @include flex(flex-start, flex-start, column);
+
+    width: 100%;
+    gap: 2rem;
+}
+
+.dashboard-schedules-wrapper{
+    @include flex(flex-start, flex-start, column);
+
+    width: 100%;
+}
+
+.dashboard-organizations-box{
+    @include flex(flex-start, flex-start, column);
+
+    width: 100%;
+    gap: 2rem;
+
+    .dashboard-organizations-header{
+        @include flex(center, space-between);
+
+        gap: 1rem;
+        width: 100%;
+
+        a{
+            @include flex(flex-start, flex-start);
+
+            width: fit-content;
+            text-wrap: nowrap;
+            text-decoration: none;
+            gap: 0.5rem;
+            color: $blue;
+
+            svg{
+                flex-shrink: 0;
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+
+            &:hover{
+                color: $dark-blue;
+            }
+        }
+    }
+}
+
+.dashboard-organization-card-wrapper{
+    @include flex(center, center, column);
+
+    gap: 1.5rem;
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+    border-radius: 0.5rem;
+}

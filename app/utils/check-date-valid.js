@@ -1,7 +1,7 @@
 import getMonthDaysCount from "./get-month-days-count";
 
 export default function checkDateValid(date) {
-  const [day, month, year] = date.split("/").map(Number);
+  const [day, month, year] = date.split(/[-\/:]/).map(Number);
   if (!year) {
     return false;
   }

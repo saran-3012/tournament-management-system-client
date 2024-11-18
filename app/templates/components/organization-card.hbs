@@ -3,21 +3,24 @@
 <div class="organization-card-box">
     <div class="organization-card-detail-box">
         {{card-item itemIconClass='calander-icon' itemName=organization.startedYear}}
-        {{card-item itemIconClass='admin-icon' itemNameClass='elipsis' itemName=organization.userName}}
+        {{card-item itemIconClass='admin-icon' itemNameClass='elipsis' itemName=(or organization.userName 'Not assigned')}}
         {{card-item itemIconClass='badge-icon' itemNameClass='uppercase ft-sm' itemName=(organization-status organization.organizationStatus) }}
     </div>
     <div class="organization-card-button-box">
         {{#link-to 'organizations.organization' organization.organizationId class='no-decoration'}}
             {{general-button class='bg-transparent no-border ft-blue soft-corner' buttonName='Details' }}
         {{/link-to}}
-        {{#if (eq organization.organizationStatus 0)}}
-            {{general-button class='bg-green br-green ft-white soft-corner' buttonName='Approve' onClick=(action changeOrganizationStatus organization.organizationId 1) }}
-        {{/if}}
 
-        {{#unless (eq organization.organizationStatus 2)}}
-            {{general-button class='br-red bg-white ft-red soft-corner' buttonName='Block' onClick=(action changeOrganizationStatus organization.organizationId 2) }}
-        {{else}}
-            {{general-button class='br-green bg-white ft-green soft-corner' buttonName='Unblock' onClick=(action changeOrganizationStatus organization.organizationId 0) }}
+        {{#unless (or (n-eq userInfo.role 2) (eq userInfo.organizationId organization.organizationId))}}
+            {{#if (eq organization.organizationStatus 0)}}
+                {{general-button class='bg-green br-green ft-white soft-corner' buttonName='Approve' onClick=(action 'approveOrganization') }}
+            {{/if}}
+
+            {{#unless (eq organization.organizationStatus 2)}}
+                {{general-button class='br-red bg-white ft-red soft-corner' buttonName='Block' onClick=(action 'blockOrganization') }}
+            {{else}}
+                {{general-button class='br-green bg-white ft-green soft-corner' buttonName='Unblock' onClick=(action 'unblockOrganization') }}
+            {{/unless}}
         {{/unless}}
     </div>
 </div>

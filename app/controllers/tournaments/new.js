@@ -13,6 +13,13 @@ export default Ember.Controller.extend({
         const userInfo = this.get('authenticationService').userInfo;
         return userInfo || {};
     }),
+
+    sportTypeOptions: [
+        { value: '', displayName: 'Select sport type', selected: true, disabled: true, hidden: true },
+        { value: '0', displayName: 'Individual' },
+        { value: '1', displayName: 'Team' }
+    ],
+
     validationConfig: {
         tournamentName: [
             { required: true, message: "Tournament name is required!" },
@@ -150,6 +157,7 @@ export default Ember.Controller.extend({
     cleanUp(){
         this.setErrors({});
     },
+
     createTournament(formData){
 
         const tournamentData = {};

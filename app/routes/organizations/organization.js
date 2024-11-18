@@ -1,13 +1,34 @@
 import Ember from 'ember';
+import controllerCleanup from '../../mixins/controller-cleanup';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(controllerCleanup, {
     envService:  Ember.inject.service(),
-    authenticationService: Ember.inject.service(),
     loaderService: Ember.inject.service(),
+    dataPersistanceService: Ember.inject.service(),
+    authenticationService: Ember.inject.service(),
     userInfo: Ember.computed('authenticationService.userInfo', function() {
         const userInfo = this.get('authenticationService').userInfo;
         return userInfo || {};
     }),
+
+    queryParams: {
+        page: {
+          refreshModel: true 
+        },
+        sort: {
+          refreshModel: true  
+        },
+        filter: {
+            refreshModel: true  
+        },
+        search: {
+            refreshModel: true 
+        },
+        order: {
+            refreshModel: true 
+        }
+    },
+
     beforeModel(transition){
         
         if(!this.get('authenticationService').isLoggedIn){
@@ -26,17 +47,35 @@ export default Ember.Route.extend({
         const organizationId = params["organization_id"];
         
         if(+userInfo.role !== 2 && +userInfo.organizationId !== +organizationId){
-            this.transitionTo('access-denied');
+            this.transitionTo('organizations.organization', +userInfo.organizationId);
             return;
         }
         
+        const { search, filter, sort, order, page } = transition.queryParams;
+
+        if(page && page <= 0){
+            this.transitionTo('tournaments.index', {
+                queryParams : {
+                    search, 
+                    filter, 
+                    sort, 
+                    order, 
+                    page: undefined
+                }
+            });
+            return;
+        }
+
         this.get('loaderService').setIsLoading(true);
     },
     model(params){
+
+        const dataPersistanceService = this.get('dataPersistanceService');
+
         const organizationId = params["organization_id"];
         const config = this.get('envService');
+
         const orgApiURL = `${config.getEnv('BASE_API_URL')}/api/v1/orgs/${organizationId}`;
-        const usersApiURL = `${config.getEnv('BASE_API_URL')}/api/v1/orgs/${organizationId}/users`;
         
         const organizationRequest = $.ajax({
             method: 'GET',
@@ -46,21 +85,14 @@ export default Ember.Route.extend({
             },
             dataType: 'json'
         })
-        .then((data, textStatus, jqXHR) => {
-            return {
-                status: jqXHR.status, 
-                data: data.data,       
-                message: data.message 
-            };
-        })
-        .then((res) => {
-            return res.data;
+        .then((response, textStatus, jqXHR) => {
+            return response.data;
         })
         .catch((err) => {
             const authStatus = err.getResponseHeader('Tms-Auth-Status');
             if(authStatus === '1'){
                 this.get('authenticationService').logout();
-                this.transitionToRoute('index');
+                this.transitionTo('index');
                 return;
             }
             if(err.status === 401 || err.status === 403){
@@ -70,6 +102,40 @@ export default Ember.Route.extend({
             throw err;
         });
 
+        let usersApiURL = `${config.getEnv('BASE_API_URL')}/api/v1/orgs/${organizationId}/users`;
+
+        const { search, filter, sort, order, page } = params;
+
+        const queryArray = [];
+
+        if(search){
+            queryArray.push(`filter_username=${search}`);
+        }
+
+        if(sort){
+            queryArray.push(`sort_${sort}=${order || 'asc'}`);
+        }
+
+        if(page){
+            queryArray.push(`page=${page - 1}`);
+        }
+
+        const usersCountKey = `organizationUsersCount[search:${search || ''},filter:${filter || ''}]`;
+
+        const usersCount = dataPersistanceService.getData(usersCountKey);
+
+        if(usersCount === null){
+            queryArray.push('include_userscount=true');
+        }
+
+        queryArray.push('limit=10');
+
+        const queryString = queryArray.join('&');
+
+        if(queryString){
+            usersApiURL += '?' + queryString;
+        }
+
         const usersRequest = $.ajax({
             method: 'GET',
             url: usersApiURL,
@@ -77,15 +143,16 @@ export default Ember.Route.extend({
                 'json' : 'application/json' 
             },
         })
-        .then((data, textStatus, jqXHR) => {
-            return {
-                status: jqXHR.status, 
-                data: data.data,       
-                message: data.message 
-            };
-        })
-        .then((res) => {
-            return res.data;
+        .then((response, textStatus, jqXHR) => {
+            if(jqXHR.status === 401 || jqXHR.status === 403){
+                this.transitionTo('access-denied');
+            }
+            const responseData = response.data;
+            if(usersCount === null){
+                const usersCountResponse = responseData['usersCount'];
+                dataPersistanceService.set(usersCountKey, usersCountResponse, 30 * 60 * 1000);
+            }
+            return responseData;
         })
         .catch((err) => {
             const authStatus = err.getResponseHeader('X-Auth-Status');
@@ -103,12 +170,13 @@ export default Ember.Route.extend({
 
         return  Promise.all([organizationRequest, usersRequest])
                 .then((response) => {
-                    const [organization, users] = response;
+                    const [organization, usersObject] = response;
+                    const {users} = usersObject;
                     const admin = users.find((user) => user.role === 1);
                     return {
                         organization,
-                        users,
-                        admin
+                        usersObject,
+                        admin,
                     };
                 })
                 .catch((err) => {
@@ -119,9 +187,28 @@ export default Ember.Route.extend({
                 });
     },
     setupController(controller, model){
-        this.get('loaderService').setIsLoading(false);
-        controller.set('organization', model.organization);
-        controller.set('users', model.users);
-        controller.set('admin', model.admin);
+
+        const params = this.paramsFor('organizations.organization');
+
+        controller.set('filterValue', params.filter || '');
+        controller.set('searchValue', params.search || '');
+        controller.set('sortValue', params.sort || '')
+        controller.set('orderValue', params.order || '')
+        controller.set('currentPage', +params.page-1 || 0)
+        controller.set('limit', 10);
+
+        const {organization, usersObject, admin} = model;
+        controller.set('organization', organization);
+        controller.set('users', usersObject.users);
+        controller.set('organizationUsersCount', usersObject.usersCount);
+        controller.set('admin', admin);
+    },
+    actions: {
+        willTransition(transition){
+            this.controllerCleanup();
+        },
+        error(){
+            this.get('loaderService').setIsLoading(false);
+        }
     }
 });

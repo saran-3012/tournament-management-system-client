@@ -1,0 +1,157 @@
+.tournament-schedule-form-container{
+    @include flex(center, center);
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100svw;
+    height: 100svh;
+    background-color: rgba(0, 0, 0, 0.15);
+    z-index: 100;
+}
+
+.tournament-schedule-form-wrapper{
+    @include flex(flex-start, center, column);
+
+    gap: 0.75rem;
+    padding: 2rem 1.5rem;
+    background-color: $white;
+    border-radius: 0.25rem;
+    width: 50%;
+    max-width: 500px;
+}
+
+.tournament-schedule-team-buttons{
+    @include flex(center);
+
+    gap: 1rem;
+    width: 100%;
+
+}
+
+.tournament-schedule-form-info{
+    @include flex(center);
+
+    color: $grey;
+    width: 100%;
+    font-size: 0.875rem;
+    gap: 0.25rem;
+    svg{
+        width: 1rem;
+        height: 1rem;
+    }
+
+    span{
+        text-decoration: none;
+        color: $blue;
+    }
+}
+
+.tournament-schedule-form{
+    @include flex(flex-start, flex-start, column);
+
+    gap: 0.75rem;
+    width: 100%;
+
+    input, select{
+        flex-grow: 1
+    }
+}
+
+.tournament-schedule-select-contestants-wrapper{
+    @include flex(flex-start, flex-start, column);
+
+    gap: 0.5rem;
+    width: 100%;
+    position: relative
+}
+
+.tournament-schedule-select-contestants-label{
+    position: absolute;
+    font-size: 0.875rem;
+    color: $grey;
+    left: 0.75rem;
+    transform: translateY(-50%);
+    text-shadow: 1px 1px 2px $white, 1px -1px 2px $white, -1px 1px 2px $white, -1px -1px 2px $white;
+}
+
+.tournament-schedule-select-contestants{
+    @include flex(flex-start, flex-start, column);
+    @include border($light-grey, 1.5px);
+
+    padding-top: 0.75rem;
+    gap: 0.1rem;
+    width: 100%;
+    max-height: 10rem;
+    overflow-y: scroll;
+    background-color: $pale-white;
+    border-radius: 0.25rem;
+}
+
+
+.schedule-contestant-card{
+    @include flex(center, space-between);
+    gap: 1rem;
+    
+    width: 100%;
+    background-color: $white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.schedule-contestant-card-info{
+    @include flex(flex-start, center, column);
+    
+}
+
+.schedule-contestant-card-extra{
+    @include flex(flex-start, center, column);
+    
+}
+
+.tournament-schedule-select-contestant-card{
+    width: 100%;
+
+    &:has(input:checked){
+        .schedule-contestant-card{
+            background-color: $green;
+        }
+        .ft-night-black{
+            color: $white;
+        }
+        .ft-grey{
+            color: $pale-white;
+        }
+    }
+}
+
+.tournament-schedule-form-buttons{
+    @include flex(center, flex-start);
+
+    width: 100%;
+    gap: 1rem;
+
+    .button{
+        &:hover{
+            &.br-blue{
+                &.bg-blue{
+                    background-color: $white;
+                }
+                &.ft-white{
+                    background-color: $blue;
+                }
+            }
+
+            &.br-orange{
+                &.bg-white{
+                    background-color: $orange
+                }
+                &.ft-orange{
+                    color: $white;
+                }
+            }
+            
+        }
+    }
+}

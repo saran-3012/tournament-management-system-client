@@ -1,11 +1,44 @@
-{{search-bar minWait=200 searchHandler=searchTournaments searchBarId='tournament-search-bar' class='bg-white max-width-lg'}}
-{{#if (or (eq userInfo.role 1) (eq userInfo.role 2))}}
-    {{#link-to 'tournaments.new' class='no-decoration'}}
-        {{#general-button class='br-green bg-green ft-white soft-corner' buttonName='Create' isSVG=true}}
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+<div class="tournament-navbar-box">
+    {{search-bar minWait=200 searchHandler=searchTournaments objectKey='searchValue' searchValue=searchValue searchBarId='tournament-search-bar' class='bg-white max-width-lg'}}
+    {{select-input class='pd-xs bg-white' inputName='filter' onChange=searchTournaments objectKey='filterValue' selectedValue=filterValue options=filterOptions }}
+    {{select-input class='pd-xs bg-white' inputName='sort' onChange=searchTournaments objectKey='sortValue' selectedValue=sortValue options=sortOptions }}
+    {{select-input class='pd-xs bg-white' inputName='order' onChange=searchTournaments objectKey='orderValue' selectedValue=orderValue options=orderOptions }}
+</div>
+<div class="tournament-navbar-box">
+    {{#if (gt currentPage 0)}}
+        {{#general-button class='br-light-grey bg-white ft-grey pd-sq circle' isSVG=true onClick=(action 'prevPage')}}
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
         {{/general-button}}
-    {{/link-to}}
-{{/if}}
+    {{else}}
+        {{#general-button class='br-light-grey bg-white ft-grey pd-sq circle' isSVG=true disabled=true}}
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+            </svg>
+        {{/general-button}}
+    {{/if}}
+    {{#if (lt currentPage (subtract totalPages 1))}}
+        {{#general-button class='br-light-grey bg-white ft-grey pd-sq circle' isSVG=true onClick=(action 'nextPage')}}
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" >
+                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+        {{/general-button}}
+    {{else}}
+        {{#general-button class='br-light-grey bg-white ft-grey pd-sq circle' isSVG=true disabled=true}}
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" >
+                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+        {{/general-button}}
+    {{/if}}
+    {{#if (or (eq userInfo.role 1) (eq userInfo.role 2))}}
+        {{#link-to 'tournaments.new' class='no-decoration'}}
+            {{#general-button class='br-green bg-green ft-white soft-corner' buttonName='Create' isSVG=true}}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            {{/general-button}}
+        {{/link-to}}
+    {{/if}}
+</div>
 {{yield}}

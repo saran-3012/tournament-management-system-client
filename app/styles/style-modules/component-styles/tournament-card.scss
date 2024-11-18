@@ -7,7 +7,16 @@
     overflow: hidden;
     border-radius: 0.5rem;
     transition: all 150ms;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.314);
+    background-color: $white;
+    
+    &.shadow{
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    &.border{
+        @include border($light-grey);
+    }
+
     &:hover{
         transform: scale(1.02);
     }
@@ -86,7 +95,8 @@
     overflow: hidden;
     border-radius: 0.125rem;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-
+    background-color: $pale-white;
+    
     a{
         width: 100%;
     }
@@ -105,6 +115,13 @@
 .tournament-card-box{
     @include flex(flex-end, space-between);
     width: 100%;
+    max-width: 100%;
+    gap: 0.5rem;
+
+    .mw-50p{
+        max-width: 50%;
+    }
+
     .button{
         &:hover{
             &.br-blue{

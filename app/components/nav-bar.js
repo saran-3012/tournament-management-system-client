@@ -1,8 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+    // Component config
     tagName: 'header',
     classNames: ['container', 'navbar'],
+
+    // Services
     authenticationService: Ember.inject.service(),
     router: Ember.computed(function() {
         return Ember.getOwner(this).lookup('router:main');
@@ -19,10 +22,33 @@ export default Ember.Component.extend({
     userInfo: Ember.computed('authenticationService.userInfo', function() {
         return this.get('authenticationService').userInfo;
     }),
+
+    // State config
+    isProfileMenuOpen: false,
+    toggleProfileMenu(event, thisRef){
+        const clickEventListener = (event) => {
+            if(thisRef.get('isProfileMenuOpen')){
+                document.removeEventListener('click', clickEventListener);
+                thisRef.set('isProfileMenuOpen', false);
+            }
+            else{
+                setTimeout(() => { 
+                    document.addEventListener('click', clickEventListener)
+                }, 0);
+                thisRef.set('isProfileMenuOpen', true);
+            }
+        };
+        clickEventListener(event);
+    },
+
+    // actions
     actions: {
+        handleProfileMenuVisibility(event){
+            this.get('toggleProfileMenu')(event, this);
+        },
         logout(){
-            this.get('authenticationService').logout();
-            this.get('router').transitionTo('index');
+            const router = this.get('router');
+            this.get('authenticationService').logout(() => router.transitionTo('index'));
         }
     }
 });

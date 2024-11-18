@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+    // Services
     messageQueueService: Ember.inject.service(),
     envService: Ember.inject.service(),
     authenticationService: Ember.inject.service(),
@@ -9,8 +10,28 @@ export default Ember.Controller.extend({
         const userInfo = this.get('authenticationService').userInfo;
         return userInfo || {};
     }),
+
+    // State
+    totalPages: Ember.computed('limit', 'tournamentsCount', function() {
+        const limit = this.get('limit');
+        const tournamentsCount = this.get('tournamentsCount');
+        return Math.ceil(tournamentsCount / limit);
+    }),
     isCancelPopupOpen: false,
     selectedTournament: {},
+
+    // clean up
+    cleanUp(){
+        this.set('filterValue', '');
+        this.set('searchValue', '');
+        this.set('sortValue', '');
+        this.set('orderValue', '');
+        this.set('currentPage', 0);
+
+        this.set('tournamentsCount', undefined);
+        this.set('tournaments', []);
+
+    },
     actions: {
         setIsCancelPopupOpen(value){
             this.set('isCancelPopupOpen', value);
@@ -18,8 +39,8 @@ export default Ember.Controller.extend({
         setSelectedTournament(tournament){
             this.set('selectedTournament', tournament);
         },
-        searchTournaments(searchValue){
-
+        searchTournaments(searchConfig){
+            
             const orgId = this.get('userInfo').organizationId;
 
             if(orgId === null || orgId === undefined){
@@ -28,28 +49,22 @@ export default Ember.Controller.extend({
                 return;
             }
 
-            const config = this.get('envService');
-            const apiURL = `${config.getEnv('BASE_API_URL')}/api/v1/orgs/${orgId}/tournaments?filter_tournament=${searchValue}`;
+            const searchValue = this.get('searchValue');
+            const filterValue = this.get('filterValue');
+            const sortValue = this.get('sortValue');
+            const orderValue = this.get('orderValue');
+            const page = (searchConfig.hasOwnProperty('currentPage'))? this.get('currentPage') : undefined;
 
-            $.ajax({
-                method: "GET",
-                url: apiURL,
-                accepts: {
-                    'json' : 'application/json' 
-                },
-                dataType: 'json'
-            })
-            .then((response, textStatus, xqXHR) => {
-                this.set('tournaments', response.data);
-            })
-            .catch((err) => {
-                this.get('messageQueueService').addPopupMessage(
-                    {
-                        message: err.message,
-                        level: 4
-                    }
-                )
-            });
+            const queryParams = {
+                search : searchValue || undefined,
+                filter : filterValue || undefined,
+                sort : sortValue || undefined,
+                order : orderValue || undefined,
+                page: page? +page + 1 : undefined
+            };
+
+            this.transitionToRoute({ queryParams });
+            
         },
         cancelTournament(){
             const messageQueueService = this.get('messageQueueService');

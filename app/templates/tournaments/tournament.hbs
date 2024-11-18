@@ -5,6 +5,11 @@
             <div class="tournament-poster-image-container">
                 <img class="tournament-poster-image" src={{prepend-root tournament.tournamentPoster}} alt="Tournament Image">
                 <div class="tournament-poster-overlay">
+                    {{#general-button class='br-light-grey bg-transparent ft-light-grey curved' buttonName='Back' isSVG=true onClick=(action 'goBack')}}
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                        </svg>
+                    {{/general-button}}
                     <h1 class="tournament-poster-header ft-white capitalize">{{tournament.tournamentName}}</h1>
                 </div>
             </div>
@@ -59,20 +64,24 @@
                 <div class="event-details-wrapper">
                     <div class="event-navbar">
                         <div class="event-navbar-buttons">
-                            {{general-button class=(concat 'bg-transparent curved ' (if (eq eventPageType 'Contestants') 'br-blue ft-blue' 'br-transparent ft-night-black')) buttonName='Contestants' onClick=(action 'setEventPageType' 'Contestants')}}
-                            {{general-button class=(concat 'bg-transparent curved ' (if (eq eventPageType 'Schedules') 'br-blue ft-blue' 'br-transparent ft-night-black')) buttonName='Schedules' onClick=(action 'setEventPageType' 'Schedules')}}
+                            {{general-button class=(concat 'bg-transparent curved ' (if (eq eventPageType 0) 'br-blue ft-blue' 'br-transparent ft-night-black')) buttonName='Contestants' onClick=(action 'setEventPageType' 0)}}
+                            {{general-button class=(concat 'bg-transparent curved ' (if (eq eventPageType 1) 'br-blue ft-blue' 'br-transparent ft-night-black')) buttonName='Schedules' onClick=(action 'setEventPageType' 1)}}
                         </div>
                         <div class="event-navbar-options">
-                            {{#if (eq eventPageType 'Contestants')}}
+                            {{#if (eq eventPageType 0)}}
                                 {{search-bar minWait=400 searchHandler=(action 'searchContestants') }}
-                            {{else if (eq eventPageType 'Schedules')}}
-                                {{#if (eq userInfo.role 1)}}
-                                    {{general-button class='br-green bg-green ft-white soft-corner' buttonName='Add Schedule'}}
+                            {{else if (eq eventPageType 1)}}
+                                {{#if (and (eq userInfo.role 1) (or (eq tournament.tournamentStatus 0) (eq tournament.tournamentStatus 1)) (instance-gt tournament.registrationEndDate))}}
+                                    {{#general-button class='br-green bg-green ft-white soft-corner' buttonName='Schedule' isSVG=true onClick=(action 'setTournamentScheduleFormType' 1)}}
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                        </svg>
+                                    {{/general-button}}
                                 {{/if}}
                             {{/if}}
                         </div>
                     </div>
-                    {{#if (eq eventPageType 'Contestants')}}
+                    {{#if (eq eventPageType 0)}}
                         <div class="contestansts-wrapper">
                             {{#if (eq tournament.sportType 0)}}
                                 {{#if userParticipation.userRegistered}}
@@ -80,19 +89,19 @@
                                 {{/if}}
                                 {{#unless (is-empty participants)}}
                                     {{#each participants as |participant|}}
-                                        {{participant-card participant=participant refreshModel=(action 'refreshModel')}}
+                                        {{participant-card participant=participant showContestantStatusControls=true refreshModel=(action 'refreshModel')}}
                                     {{/each}}
                                 {{else}}
                                     <p>No participants registered yet</p>
                                 {{/unless}}
                             {{else if (eq tournament.sportType 1)}}
                                 {{#if userParticipation.userRegistered}}
-                                    {{team-card class='my-participation' team=userParticipation pinCard=true refreshModel=(action 'refreshModel') title='My team'}}
+                                    {{team-card class='my-participation' team=userParticipation pinCard=true showRemoveMember=true refreshModel=(action 'refreshModel') title='My team'}}
                                 {{/if}}
                                 
                                 {{#unless (is-empty teams)}}
                                     {{#each teams as |team|}}
-                                        {{team-card team=team refreshModel=(action 'refreshModel')}}
+                                        {{team-card team=team showContestantStatusControls=true showRemoveMember=true refreshModel=(action 'refreshModel')}}
                                     {{/each}}
                                 {{else}}
                                     <p>No teams registered yet</p>
@@ -100,12 +109,11 @@
 
                             {{/if}}
                         </div>
-                    {{else if (eq eventPageType 'Schedules')}}
+                    {{else if (eq eventPageType 1)}}
                         <div class="schedules-wrapper">
                             {{#unless (is-empty schedules)}}
                                 {{#each schedules as |schedule|}}
-                                    <p>{{tournamentEventDate}}</p>
-                                    <p>{{tournamentEventVenue}}</p>
+                                    {{tournament-schedule-card schedule=schedule refreshModel=(action 'refreshModel') setTournamentScheduleFormType=(action 'setTournamentScheduleFormType') setSelectedSchedule=(action 'setSelectedSchedule')}}
                                 {{/each}}
                             {{else}}
                                 <p>No schedules assigned yet</p>
@@ -120,11 +128,19 @@
 
 
     {{#if (eq tournamentFormType 1) }}
-        {{tournament-participation-form tournament=tournament tournamentFormType=tournamentFormType teams=(if (eq tournament.sportType 1) teams null) closeTournamentForm=(action 'setTournamentFormType' 0) onConfirmation=(action 'handleTournamentRegistration') validationErrors=validationErrors}}
+        {{tournament-participation-form tournamentFormType=tournamentFormType tournament=tournament teams=(if (eq tournament.sportType 1) teams null) closeTournamentForm=(action 'setTournamentFormType' 0) onConfirmation=(action 'handleTournamentRegistration') }}
     {{else if (eq tournamentFormType 2)}}
-        {{tournament-participation-form tournament=tournament tournamentFormType=tournamentFormType userParticipation=userParticipation closeTournamentForm=(action 'setTournamentFormType' 0) onConfirmation=(action 'handleUpdateTournamentRegistration') validationErrors=validationErrors}}
+        {{tournament-participation-form tournamentFormType=tournamentFormType tournament=tournament userParticipation=userParticipation closeTournamentForm=(action 'setTournamentFormType' 0) onConfirmation=(action 'handleUpdateTournamentRegistration') }}
     {{else if (eq tournamentFormType 3)}}
-        {{tournament-participation-form tournament=tournament tournamentFormType=tournamentFormType userParticipation=userParticipation closeTournamentForm=(action 'setTournamentFormType' 0) onConfirmation=(action 'handleTournamentUnregistration') }}
+        {{tournament-participation-form tournamentFormType=tournamentFormType tournament=tournament userParticipation=userParticipation closeTournamentForm=(action 'setTournamentFormType' 0) onConfirmation=(action 'handleTournamentUnregistration') }}
+    {{else if (eq tournamentScheduleFormType 1)}}
+        {{tournament-schedule-form tournamentScheduleFormType=tournamentScheduleFormType tournament=tournament teams=teams participants=participants closeTournamentScheduleForm=(action 'setTournamentScheduleFormType' 0) refreshModel=(action 'refreshModel')}}
+    {{else if (eq tournamentScheduleFormType 2)}}
+        {{tournament-schedule-form tournamentScheduleFormType=tournamentScheduleFormType tournament=tournament teams=teams selectedSchedule=selectedSchedule participants=participants closeTournamentScheduleForm=(action 'setTournamentScheduleFormType' 0) refreshModel=(action 'refreshModel')}}
+    {{else if (eq tournamentScheduleFormType 3)}}
+        {{tournament-schedule-form tournamentScheduleFormType=tournamentScheduleFormType tournament=tournament teams=teams selectedSchedule=selectedSchedule participants=participants closeTournamentScheduleForm=(action 'setTournamentScheduleFormType' 0) refreshModel=(action 'refreshModel')}}
+    {{else if (eq tournamentScheduleFormType 4)}}
+        {{tournament-schedule-form tournamentScheduleFormType=tournamentScheduleFormType tournament=tournament teams=teams selectedSchedule=selectedSchedule participants=participants closeTournamentScheduleForm=(action 'setTournamentScheduleFormType' 0) refreshModel=(action 'refreshModel')}}
     {{/if}}
 
     {{outlet}}

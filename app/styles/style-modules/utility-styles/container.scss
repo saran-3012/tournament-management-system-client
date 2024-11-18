@@ -12,7 +12,15 @@
 .flex{
     display: flex;
 
-    &.column{
+    &.fd-column{
         flex-direction: column;
+    }
+
+    &.ai-center{
+        align-items: center;
+    }
+
+    &.jc-center{
+        justify-content: center;
     }
 }

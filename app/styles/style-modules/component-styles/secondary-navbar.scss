@@ -8,11 +8,30 @@
     z-index: 10;
     top: $navbar-height;
     left: 0;
+
+    .tournament-navbar-box{
+        @include flex(center, flex-start);
+
+        gap: 1rem;
+
+        button{
+            &:disabled{
+                &.br-light-grey{
+                    &.bg-white{
+                        &.ft-grey{
+                            background-color: $pale-white;
+                            color: $light-grey;
+                        }
+                    }
+                } 
+            }
+        }
+    }
 }
 
 .organization-user-navbar{
     @include flex(center, space-between);
-    width: 100%;
+    width: calc(100% - 6rem);
     padding: 1rem 2rem;
     border: 1px solid $light-grey;
     background-color: $white;
@@ -22,6 +41,25 @@
     z-index: 10;
     top: $navbar-height;
     left: 0;
+
+    .organization-user-navbar-box{
+        @include flex(center, flex-start);
+
+        gap: 1rem;
+
+        button{
+            &:disabled{
+                &.br-light-grey{
+                    &.bg-white{
+                        &.ft-grey{
+                            background-color: $pale-white;
+                            color: $light-grey;
+                        }
+                    }
+                } 
+            }
+        }
+    }
 }
 
 .organization-navbar{
@@ -34,19 +72,38 @@
     z-index: 10;
     top: $navbar-height;
     left: 0;
-}
 
-.button{
+    .organization-navbar-box{
+        @include flex(center, flex-start);
 
-    &:hover{
-        &.br-green{
-            &.bg-green{
-                background-color: $white;
-            }
-            &.ft-white{
-                color: $green;
+        gap: 1rem;
+
+        button{
+            &:disabled{
+                &.br-light-grey{
+                    &.bg-white{
+                        &.ft-grey{
+                            background-color: $pale-white;
+                            color: $light-grey;
+                        }
+                    }
+                } 
             }
         }
     }
 
+    .button{
+    
+        &:hover{
+            &.br-green{
+                &.bg-green{
+                    background-color: $white;
+                }
+                &.ft-white{
+                    color: $green;
+                }
+            }
+        }
+    
+    }
 }

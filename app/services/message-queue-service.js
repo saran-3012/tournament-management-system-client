@@ -3,6 +3,7 @@ import ControllableTimeout from '../utils/controllable-timeout';
 
 export default Ember.Service.extend({
     messageQueue: [],
+    
     addPopupMessage(messageInfo){
         messageInfo.timeout = messageInfo.timeout || 4000;
         messageInfo.id = Date.now();

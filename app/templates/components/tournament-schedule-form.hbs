@@ -5,50 +5,198 @@
         {{else if (eq tournamentScheduleFormType 2)}}
             Update Event
         {{else if (eq tournamentScheduleFormType 3)}}
-            Cancel Event
+            {{#unless (eq selectedSchedule.tournamentEventStatus 2)}}
+                Cancel Event
+            {{else}}
+                Reschedule Event
+            {{/unless}}
+        {{else if (eq tournamentScheduleFormType 4)}}
+            Finalize Result
         {{/if}}
     </h2>
     
     <form class="tournament-schedule-form" >
-        {{#if (eq tournamentFormType 1)}}
-            {{#if (eq tournament.sportType 1)}}
-                {{#if (eq teamRegistrationType 0)}}
-                    {{text-input inputName='teamName' inputId='create-teamname' labelName='Team Name' isRequired=true errorMessage=validationErrors.teamName}}
-                {{else if (eq teamRegistrationType 1)}}
-                    {{#select-input inputName="teamId" inputId="join-teamlist" labelName='Select Team' defaultValue=(object 'value' '' 'selected' true 'disabled' true 'hidden' true 'displayName' 'Select Team') isRequired=true errorMessage=validationErrors.teamId}}
-                        {{#each teams as |team|}}
-                            <option value={{team.teamId}}>{{team.teamName}}</option>
-                        {{/each}}
-                    {{/select-input}}
+
+        {{#if (eq tournamentScheduleFormType 1)}}
+            {{text-input inputName='tournamentEventDate' inputId='schedule-eventdate' labelName='Event Date (dd/mm/yyyy)' isRequired=true errorMessage=validationErrors.tournamentEventDate}}
+            {{text-input inputName='tournamentEventVenue' inputId='schedule-eventvenue' labelName='Event Venue' isRequired=true errorMessage=validationErrors.tournamentEventVenue}}
+            {{select-input inputName='tournamentEventRound' inputId='schedule-eventround' labelName='Event Round' defaultValue=(object 'value' '' 'selected' true 'disabled' true 'hidden' true 'displayName' 'Select Round') options=tournamentEventRoundOptions errorMessage=validationErrors.tournamentEventRound}}
+
+            <div class="tournament-schedule-select-contestants-wrapper">
+                <p class="tournament-schedule-select-contestants-label">Select event contestants <span class="ft-red">*</span></p>
+                <div class="tournament-schedule-select-contestants">
+                    {{#if (eq tournament.sportType 0)}}
+                        {{#unless (is-empty participants)}}
+                            {{#each participants as |participant|}}
+                                <div class="tournament-schedule-select-contestant-card">
+                                    <input type="checkbox" name="participantId" id="schedule-participant-{{participant.participantId}}" value={{participant.participantId}} hidden="true">
+                                    <label for="schedule-participant-{{participant.participantId}}" class="schedule-contestant-card">
+                                        <div class="schedule-contestant-card-info">
+                                            <span class="ft-night-black">{{participant.userName}}</span>
+                                        </div>
+                                        <div class="schedule-contestant-card-extra">
+                                            {{!-- <p><span class="ft-light-grey">Wins</span> : <span class="ft-night-black">{{participant.winCount}}</span></p> --}}
+                                        </div>
+                                    </label>
+                                </div>
+                            {{/each}}
+                        {{else}}
+                            <p>No participants available</p>
+                        {{/unless}}
+                    {{else if (eq tournament.sportType 1)}}
+                        {{#unless (is-empty teams)}}
+                            {{#each teams as |team|}}
+                                <div class="tournament-schedule-select-contestant-card">
+                                    <input type="checkbox" name="teamId" id="schedule-team-{{team.teamId}}" value={{team.teamId}} hidden="true">
+                                    <label for="schedule-team-{{team.teamId}}" class="schedule-contestant-card">
+                                        <div class="schedule-contestant-card-info">
+                                            <span class="ft-night-black">{{team.teamName}}</span>
+                                            <span class="ft-sm ft-grey">{{team.userName}}</span>
+                                        </div>
+                                        <div class="schedule-contestant-card-extra">
+                                            {{!-- <p><span class="ft-light-grey">Wins</span> : <span class="ft-night-black">{{team.winCount}}</span></p> --}}
+                                        </div>
+                                    </label>
+                                </div>
+                            {{/each}}
+                        {{else}} 
+                            <p>No teams available</p>
+                        {{/unless}}
+                    {{/if}}
+                </div>
+                {{#if (or validationErrors.participantId validationErrors.teamId)}}
+                    <p class="input-error">{{or validationErrors.participantId validationErrors.teamId}}</p>
                 {{/if}}
-            {{/if}}
-        {{else if (eq tournamentFormType 2)}}
-            {{text-input inputName='teamName' inputId='update-teamname' labelName='New Team Name' isRequired=true defaultValue=userParticipation.teamName errorMessage=validationErrors.teamName}}
+            </div>
+        {{else if (eq tournamentScheduleFormType 2)}}
+            {{text-input inputName='tournamentEventDate' inputId='update-eventdate' labelName='Event Date (dd/mm/yyyy)' defaultValue=(millis-to-date selectedSchedule.tournamentEventDate) isRequired=true errorMessage=validationErrors.tournamentEventDate}}
+            {{text-input inputName='tournamentEventVenue' inputId='update-eventvenue' labelName='Event Venue' defaultValue=selectedSchedule.tournamentEventVenue isRequired=true errorMessage=validationErrors.tournamentEventVenue}}
+            {{select-input inputName='tournamentEventRound' inputId='update-eventround' labelName='Event Round' defaultValue=(object 'value' '' 'selected' true 'disabled' true 'hidden' true 'displayName' 'Select Round') options=tournamentEventRoundOptions errorMessage=validationErrors.tournamentEventRound}}
+
+            <div class="tournament-schedule-select-contestants-wrapper">
+                <p class="tournament-schedule-select-contestants-label">Select event contestants <span class="ft-red">*</span></p>
+                <div class="tournament-schedule-select-contestants">
+                    {{#if (eq tournament.sportType 0)}}
+                        {{#unless (is-empty participants)}}
+                            {{#each participants as |participant|}}
+                                <div class="tournament-schedule-select-contestant-card">
+                                    {{#if (contains eventContestants participant 'participantId')}}
+                                        <input type="checkbox" name="participantId" id="update-participant-{{participant.participantId}}" value={{participant.participantId}} hidden="true" checked="true">
+                                    {{else}}
+                                        <input type="checkbox" name="participantId" id="update-participant-{{participant.participantId}}" value={{participant.participantId}} hidden="true">
+                                    {{/if}}
+                                    <label for="update-participant-{{participant.participantId}}" class="schedule-contestant-card">
+                                        <div class="schedule-contestant-card-info">
+                                            <span class="ft-night-black">{{participant.userName}}</span>
+                                        </div>
+                                        <div class="schedule-contestant-card-extra">
+                                            {{!-- <p><span class="ft-light-grey">Wins</span> : <span class="ft-night-black">{{participant.winCount}}</span></p> --}}
+                                        </div>
+                                    </label>
+                                </div>
+                            {{/each}}
+                        {{else}}
+                            <p>No participants available</p>
+                        {{/unless}}
+                    {{else if (eq tournament.sportType 1)}}
+                        {{#unless (is-empty teams)}}
+                            {{#each teams as |team|}}
+                                <div class="tournament-schedule-select-contestant-card">
+                                    {{#if (contains eventContestants team 'teamId')}}
+                                        <input type="checkbox" name="teamId" id="update-team-{{team.teamId}}" value={{team.teamId}} hidden="true" checked="true">
+                                    {{else}}
+                                        <input type="checkbox" name="teamId" id="update-team-{{team.teamId}}" value={{team.teamId}} hidden="true">
+                                    {{/if}}
+                                    <label for="update-team-{{team.teamId}}" class="schedule-contestant-card">
+                                        <div class="schedule-contestant-card-info">
+                                            <span class="ft-night-black">{{team.teamName}}</span>
+                                            <span class="ft-sm ft-grey">{{team.userName}}</span>
+                                        </div>
+                                        <div class="schedule-contestant-card-extra">
+                                            {{!-- <p><span class="ft-light-grey">Wins</span> : <span class="ft-night-black">{{team.winCount}}</span></p> --}}
+                                        </div>
+                                    </label>
+                                </div>
+                            {{/each}}
+                        {{else}} 
+                            <p>No teams available</p>
+                        {{/unless}}
+                    {{/if}}
+                </div>
+                {{#if (or validationErrors.participantId validationErrors.teamId)}}
+                    <p class="input-error">{{or validationErrors.participantId validationErrors.teamId}}</p>
+                {{/if}}
+            </div>
+        {{else if (eq tournamentScheduleFormType 4)}}
+            <div class="tournament-schedule-select-contestants-wrapper">
+                <p class="tournament-schedule-select-contestants-label">Select event contestants <span class="ft-red">*</span></p>
+                <div class="tournament-schedule-select-contestants">
+                    {{#if (eq tournament.sportType 0)}}
+                        {{#unless (is-empty participants)}}
+                            {{#each participants as |participant|}}
+                                <div class="tournament-schedule-select-contestant-card">
+                                    <input type="radio" name="tournamentEventWinnerId" id="result-participant-{{participant.participantId}}" value={{participant.participantId}} hidden="true">
+                                    <label for="result-participant-{{participant.participantId}}" class="schedule-contestant-card">
+                                        <div class="schedule-contestant-card-info">
+                                            <span class="ft-night-black">{{participant.userName}}</span>
+                                        </div>
+                                        <div class="schedule-contestant-card-extra">
+                                            {{!-- <p><span class="ft-light-grey">Wins</span> : <span class="ft-night-black">{{participant.winCount}}</span></p> --}}
+                                        </div>
+                                    </label>
+                                </div>
+                            {{/each}}
+                        {{else}}
+                            <p>No participants available</p>
+                        {{/unless}}
+                    {{else if (eq tournament.sportType 1)}}
+                        {{#unless (is-empty teams)}}
+                            {{#each teams as |team|}}
+                                <div class="tournament-schedule-select-contestant-card">
+                                    <input type="radio" name="tournamentEventWinnerId" id="result-team-{{team.teamId}}" value={{team.teamId}} hidden="true">
+                                    <label for="result-team-{{team.teamId}}" class="schedule-contestant-card">
+                                        <div class="schedule-contestant-card-info">
+                                            <span class="ft-night-black">{{team.teamName}}</span>
+                                            <span class="ft-sm ft-grey">{{team.userName}}</span>
+                                        </div>
+                                        <div class="schedule-contestant-card-extra">
+                                            {{!-- <p><span class="ft-light-grey">Wins</span> : <span class="ft-night-black">{{team.winCount}}</span></p> --}}
+                                        </div>
+                                    </label>
+                                </div>
+                            {{/each}}
+                        {{else}} 
+                            <p>No teams available</p>
+                        {{/unless}}
+                    {{/if}}
+                </div>
+                {{#if (or validationErrors.participantId validationErrors.teamId)}}
+                    <p class="input-error">{{or validationErrors.participantId validationErrors.teamId}}</p>
+                {{/if}}
+            </div>
         {{/if}}
 
-        {{text-input inputName='tournamentEventDate' inputId='schedule-eventdate' labelName='Event Date' isRequired=true errorMessage=validationErrors.tournamentEventDate}}
-        {{text-input inputName='tournamentEventVenue' inputId='schedule-eventvenue' labelName='Event Venue' isRequired=true errorMessage=validationErrors.tournamentEventVenue}}
-        {{text-input inputName='tournamentEventRound' inputId='schedule-eventround' labelName='Event Round' isRequired=true errorMessage=validationErrors.tournamentEventRound}}
-        <p class="tournament-participation-form-info">
+        <p class="tournament-schedule-form-info">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
             </svg>
-            {{#if (eq tournamentFormType 1)}}
-                Registering for 
-            {{else if (eq tournamentFormType 2)}}
-                Save changes for 
-            {{else if (eq tournamentFormType 3)}}
-                Are you sure? Want to unregister 
+            {{#if (eq tournamentScheduleFormType 1)}}
+                Schedule the event
+            {{else if (eq tournamentScheduleFormType 2)}}
+                Want to save changes?
+            {{else if (eq tournamentScheduleFormType 3)}}
+                {{#unless (eq selectedSchedule.tournamentEventStatus 2)}}
+                    Are you sure? Want to cancel the schedule
+                {{else}}
+                    Do you want to reschedule the event?
+                {{/unless}}
             {{/if}}
-            <span>
-                {{tournament.tournamentName}}
-            </span>
         </p>
-        <div class="tournament-participation-form-buttons">
-            {{general-button class='br-orange bg-white ft-orange soft-corner' buttonName='Cancel' onClick=(action closeTournamentForm) }}
-            {{general-button class=(concat 'ft-white soft-corner ' (if (eq tournamentFormType 3) 'br-red bg-red' 'br-blue bg-blue')) type='submit' buttonName='Confirm'}}
+
+        <div class="tournament-schedule-form-buttons">
+            {{general-button class='br-light-grey bg-pale-white ft-grey soft-corner' buttonName='Cancel' onClick=(action closeTournamentScheduleForm) }}
+            {{general-button class=(concat 'ft-white soft-corner ' (if (and (eq tournamentScheduleFormType 3) (n-eq selectedSchedule.tournamentEventStatus 2)) 'br-red bg-red' 'br-blue bg-blue')) type='submit' buttonName='Confirm'}}
         </div>
     </form>
 </div>
-
 {{yield}}

@@ -19,7 +19,8 @@ export default Ember.Controller.extend({
     schedulesPage: 0,
     limitPerPage: 20,
     tournamentFormType: 0,
-    eventPageType: 'Contestants',
+    tournamentScheduleFormType: 0,
+    eventPageType: 0,
 
     // API Calls
     fetchRegisteredContestants(includeLimit=true){
@@ -52,6 +53,36 @@ export default Ember.Controller.extend({
                     level: 3
                 }
             )
+        });
+    },
+    fetchTournamentEvents(includeLimit=true){
+        const messageQueueService = this.get('messageQueueService');
+
+        const tournament = this.get('tournament');
+        const userInfo = this.get('userInfo');
+        const orgId = userInfo.organizationId;
+        const config = this.get('envService');
+
+        const apiURL = `${config.getEnv('BASE_API_URL')}/api/v1/orgs/${orgId}/tournaments/${tournament.tournamentId}/events`;
+
+        $.ajax({
+            method: 'GET',
+            url: apiURL,
+            dataType: "json",
+            contentType: "application/json",
+            accepts: {
+                json: "application/json"
+            }
+        })
+        .then((response, textStatus, jqXHR) => {
+            this.set('schedules', response.data);
+        })
+        .catch((err) => {
+            console.log(err)
+            messageQueueService.addPopupMessage({
+                message: err.responseJSON.message,
+                level: 3
+            })
         });
     },
     registerTournament(thisRef, formData, teamRegistrationType){
@@ -238,13 +269,32 @@ export default Ember.Controller.extend({
         });
     },
 
+    // controller clean up on route change
+    cleanUp(){
+        this.set('contestantsPage', 0);
+        this.set('schedulesPage', 0);
+        this.set('tournamentFormType', 0);
+        this.set('tournamentScheduleFormType', 0);
+        this.set('eventPageType', 0);
+        this.set('schedules', null);
+    },
+
     // Actions
     actions: {
         refreshModel(){
             this.get('target').router.getHandler('tournaments.tournament').refresh();
         },
+        goBack(){
+            history.back();
+        },
+        setSelectedSchedule(schedule){
+            this.set('selectedSchedule', schedule);
+        },
         setEventPageType(value){
             if(this.get('eventPageType') === value) return;
+            if(value === 1 && !this.get('schedules')){
+                this.fetchTournamentEvents(false);
+            }
             this.set('eventPageType', value);
         },
         setTournamentFormType(value){
@@ -257,6 +307,9 @@ export default Ember.Controller.extend({
                 }
             }
             this.set('tournamentFormType', value);
+        },
+        setTournamentScheduleFormType(value){
+            this.set('tournamentScheduleFormType', value);
         },
         navigateNextPage(){
             const currPage = this.get('contestantsPage');

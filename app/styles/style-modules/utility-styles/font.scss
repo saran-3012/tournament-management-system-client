@@ -24,8 +24,20 @@
     color: $grey;
 }
 
+.ft-dark-grey{
+    color: $dark-grey;
+}
+
+.ft-light-grey{
+    color: $light-grey;
+}
+
 .ft-green{
     color: $green;
+}
+
+.ft-pale-white{
+    color: $pale-white;
 }
 
 .ft-red{
@@ -50,6 +62,13 @@
     text-wrap: wrap;
 }
 
+.txt-center{
+    text-align: center;
+}
+
+.elipsis{
+    @extend %elipsis;
+}
 
 // Font sizes
 
@@ -89,6 +108,22 @@
     font-size: 2rem;
 }
 
+.ft-6xl{
+    font-size: 2.5rem;
+}
+
+.ft-7xl{
+    font-size: 3rem;
+}
+
+.ft-8xl{
+    font-size: 3.75rem;
+}
+
+.ft-9xl{
+    font-size: 4.5rem;
+}
+
 // Font weights
 
 .wt-300{
@@ -109,4 +144,10 @@
 
 .wt-700{
     font-weight: 700;
+}
+
+// Before font line
+
+.ft-before-blue{
+    @include ft-before($blue);
 }

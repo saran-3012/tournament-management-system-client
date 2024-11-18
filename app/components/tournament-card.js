@@ -29,7 +29,7 @@ export default Ember.Component.extend({
         this._super(...arguments);
         const tournament = this.get('tournament') || {};
         const tournamentPoster = tournamentImageFallback(tournament.sportName);
-        tournament['tournamentPoster'] = tournamentPoster;
+        Ember.set(tournament, 'tournamentPoster', tournamentPoster);
         this.set('tournament', tournament);
     },
     actions: {
